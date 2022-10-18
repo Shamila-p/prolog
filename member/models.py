@@ -2,12 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-
 class User(AbstractUser):
     STUDENT = "ST"
     TEACHER = "TR"
     PRINCIPAL = "PR"
-    
 
     ROLES_CHOICES = [
         (STUDENT, "Student"),
@@ -24,7 +22,7 @@ class User(AbstractUser):
     @property
     def profile_image_url(self):
         try:
-            url=self.profile_image.url
+            url = self.profile_image.url
         except ValueError:
-            url=""
+            url = ""
         return url
