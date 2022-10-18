@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'prolog.wsgi.application'
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'college_management',
+        'NAME': 'prolog',
         'USER':'root',
         'PASSWORD':'1234',
         'HOST':'127.0.0.1'
