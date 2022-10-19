@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'access.apps.AccessConfig',
     'member.apps.MemberConfig',
+    'common.apps.CommonConfig',
+    'course.apps.CourseConfig'
 ]
 AUTH_USER_MODEL = 'member.User'
 MIDDLEWARE = [
@@ -58,8 +60,10 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            os.path.join(BASE_DIR,'course/templates'),
             os.path.join(BASE_DIR,'access/templates'),
-            os.path.join(BASE_DIR,'templates'),
+            os.path.join(BASE_DIR,'common/templates'),
+            os.path.join(BASE_DIR,'member/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -131,7 +135,7 @@ STATICFILES_DIRS=[
 ]
 
 
-LOGIN_URL = 'index'
+LOGIN_URL = 'login'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

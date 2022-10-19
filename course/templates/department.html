@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Departments</th>
+        <!-- <th scope="col">Status</th> -->
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        {%for department in departments%}
+      <tr>
+        <td>{{department.dname}}</td>
+        <!-- <td><a class="btn btn-light">Approved</a></td> -->
+        <td><a href="/edit-department/{{department.id}}" class="btn btn-primary">Edit</a></td>
+        
+        <td>
+            <form method="post" action="/remove-department/{{department.id}}">
+                {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
+        </td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+
+{%endblock%}

@@ -3,9 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import auth
 from member.models import User
 
-def index(request):
-    return redirect('login')
-    
+
 def login(request):
     if request.user.is_authenticated:
         return redirect('profile')

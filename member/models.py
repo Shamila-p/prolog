@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from common.models import auditModel
 
 
-class User(AbstractUser):
+class User(AbstractUser,auditModel):
     STUDENT = "ST"
     TEACHER = "TR"
     PRINCIPAL = "PR"
@@ -26,3 +27,6 @@ class User(AbstractUser):
         except ValueError:
             url = ""
         return url
+
+
+

@@ -5,5 +5,6 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def profile(request):
         if request.method == 'GET':
-            return render(request, 'profile.html')
+            context={'title':'Profile'}
+            return render(request, 'profile.html',context)
         
