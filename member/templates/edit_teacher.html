@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form class="row g-3" method="post" href="/edit-teacher/{{user_id}}">
+    {%csrf_token%}
+   
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Name</label>
+      <input type="text" class="form-control" name="name" value="{{teacher.first_name}}">
+    </div>
+    <div class="col-md-6">
+        <label for="inputState" class="form-label">Department</label>
+        <select id="inputState" class="form-select" name="department" >
+        {%for department in departments %}
+          <option selected >{{department.dname}}</option>
+        {%endfor%}
+        </select>
+      </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">Email</label>
+      <input type="email" class="form-control" name="email" value="{{teacher.email}}">
+    </div>
+    <div class="col-6">
+      <label for="inputAddress" class="form-label">Mobile</label>
+      <input type="text" class="form-control" name="mobile" value="{{teacher.phone}}">
+    </div>
+    
+   
+    <div class="col-md-12">
+      <label for="inputState" class="form-label">Position</label>
+      <select id="inputState" class="form-select" name="position" >
+        {%for position in positions%}
+        <option selected value="{{position.0}}">{{position.1}}</option>
+        {%endfor%}
+      </select>
+    </div>
+   
+    <div class="col-12 text-center">
+      <button type="submit" class="btn btn-primary">EDIT</button>
+    </div>
+  </form>
+{%endblock%}

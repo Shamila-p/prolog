@@ -104,13 +104,25 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
-              <span class="menu-title">List Faculties</span>
+            <a class="nav-link" href="/list-semester">
+              <span class="menu-title">Semester</span>
+              <i class="mdi mdi-recycle menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/list-classes">
+              <span class="menu-title">Class</span>
+              <i class="mdi mdi-recycle menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/list-teachers">
+              <span class="menu-title">List Teachers</span>
               <i class="mdi mdi-credit-card-scan menu-icon"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="/list-students">
               <span class="menu-title">List Students</span>
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
@@ -131,16 +143,8 @@
                 <i class="mdi mdi-home"></i>
               </span> {{title}}
             </h3>
-            <!-- {%if add_button_name is not None %} -->
-            <nav aria-label="breadcrumb">
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">
-                  <a href="/add-department" class="btn btn-primary">{{add_button_name}}
-                    <i class="mdi mdi-plus icon-sm align-middle"></i></a>
-                </li>
-              </ul>
-            </nav>
-            <!-- {%endif%} -->
+          
+         
           </div>
           {%block content%}
 

@@ -1,10 +1,10 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form method="post" href="/edit-department">
+<form method="post" href="/edit-semester">
 {%csrf_token%}
     
-    <input  type="text" name="dept_name" value={{department.dname}} required>
+    <input  type="text" name="sem_name" value="{{semester.semname}}" required>
     <button class="btn btn-primary">  EDIT</button>
    
 </form>

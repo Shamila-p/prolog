@@ -1,0 +1,10 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form method="post" href="/add-semester">
+{%csrf_token%}
+
+    <input  type="text" name="sem_name"  required>
+    <button class="btn btn-primary">  ADD</button>
+</form>
+{%endblock%}

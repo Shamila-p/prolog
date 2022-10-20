@@ -1,0 +1,64 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8"></div>
+  <div class="col-md-4">
+  
+        <a href="/add-student" class="btn btn-primary" type="submit">ADD STUDENT
+          <i class="mdi mdi-plus icon-sm align-middle"></i></a>
+     
+  
+  </div>
+  </div>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Admission Number</th>
+        <th scope="col">Department</th>
+        <th scope="col">Mobile</th>
+        <th scope="col">Email</th>
+        <th scope="col">Parent Name</th>
+        <th scope="col">Parent Mobile</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        {%for teacher in teachers%}
+      <tr>
+        <td>{{teacher.user.first_name}} {{teacher.last_name}}</td>
+        <td>{{teacher.user.department.dname}}</td>
+        <td>{{teacher.position}}</td>
+        <td>
+         
+
+          {%if teacher.user.is_active is True%}
+          <button class="btn btn-info" type="submit">Approved</button>
+          {%else%}
+          <button class="btn btn-danger" type="submit">Dispproved</button>
+          {%endif%}
+       
+        </td>
+        <td>{{teacher.user.phone}}</td>
+        <td>{{teacher.user.email}}</td>
+       
+        <td>                         
+
+             <a class="btn btn-primary btn-sm"  href="" type="submit">EDIT</form>
+         </td>
+        <td>                         
+          <form method="post" action="">
+              {%csrf_token%}<button class="btn btn-primary btn-sm" type="submit">APPROVE/DISAPPROVE</form>
+         </td>
+        
+        <td>
+            <form method="post" action="">
+                {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
+        </td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+{%endblock%}

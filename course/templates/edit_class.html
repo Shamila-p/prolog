@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form class="row g-3" method="post" href="/edit-class">
+    {%csrf_token%}
+    
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Class name</label>
+      <input type="text" class="form-control" name="name" value="{{batch.classname}}">
+    </div>
+    <div class="col-md-6">
+        <label for="inputState" class="form-label">Department</label>
+        <select id="inputState" class="form-select" name="department">
+        {%for department in departments%}
+          <option selected value="{{department.id}}">{{department.dname}}</option>
+       {%endfor%}
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="inputState" class="form-label">Semester</label>
+        <select id="inputState" class="form-select" name="semester">
+            {%for semester in semesters%}
+          <option selected value="{{semester.id}}">{{semester.semname}}</option>
+          {%endfor%}
+        </select>
+      </div>
+   
+    <div class="col-12 text-center">
+      <button type="submit" class="btn btn-primary">EDIT</button>
+    </div>
+  </form>
+{%endblock%}

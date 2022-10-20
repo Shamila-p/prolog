@@ -1,0 +1,59 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form class="row g-3" method="post" href="/add-student">
+    {%csrf_token%}
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Name</label>
+      <input type="text" class="form-control" name="name">
+    </div>
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Admission Number</label>
+      <input type="text" class="form-control" name="admsn_no">
+    </div>
+    <div class="col-md-4">
+        <label for="inputState" class="form-label">Department</label>
+        <select id="inputState" class="form-select" name="department">
+        {%for department in departments %}
+          <option selected>{{department.dname}}</option>
+        {%endfor%}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="inputState" class="form-label">Semester</label>
+        <select id="inputState" class="form-select" name="department">
+        {%for department in departments %}
+          <option selected>{{department.dname}}</option>
+        {%endfor%}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="inputState" class="form-label">Class</label>
+        <select id="inputState" class="form-select" name="department">
+        {%for department in departments %}
+          <option selected>{{department.dname}}</option>
+        {%endfor%}
+        </select>
+      </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">Email</label>
+      <input type="email" class="form-control" name="email" >
+    </div>
+    <div class="col-6">
+      <label for="inputAddress" class="form-label">Mobile</label>
+      <input type="text" class="form-control" name="mobile">
+    </div>
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Parent Name</label>
+      <input type="text" class="form-control" name="p_name">
+    </div>
+    <div class="col-6">
+      <label for="inputAddress" class="form-label">Parent Mobile</label>
+      <input type="text" class="form-control" name="p_mobile">
+    </div>
+   
+    <div class="col-12 text-center">
+      <button type="submit" class="btn btn-primary">ADD</button>
+    </div>
+  </form>
+{%endblock%}

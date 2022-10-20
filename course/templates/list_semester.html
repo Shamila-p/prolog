@@ -5,7 +5,7 @@
 <div class="col-md-8"></div>
 <div class="col-md-4">
 
-      <a href="/add-department" class="btn btn-primary" type="submit">ADD DEPARTMENT
+      <a href="/add-semester" class="btn btn-primary" type="submit">ADD SEMESTER
         <i class="mdi mdi-plus icon-sm align-middle"></i></a>
    
 
@@ -15,21 +15,21 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">Departments</th>
+        <th scope="col">Semester</th>
         <!-- <th scope="col">Status</th> -->
         <th scope="col"></th>
         <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
-        {%for department in departments%}
+        {%for semester in semesters%}
       <tr>
-        <td>{{department.dname}}</td>
+        <td>{{semester.semname}}</td>
         <!-- <td><a class="btn btn-light">Approved</a></td> -->
-        <td><a href="/edit-department/{{department.id}}" class="btn btn-primary">Edit</a></td>
+        <td><a href="/edit-semester/{{semester.id}}" class="btn btn-primary">Edit</a></td>
         
         <td>
-            <form method="post" action="/remove-department/{{department.id}}">
+            <form method="post" action="/remove-semester/{{semester.id}}">
                 {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
         </td>
       </tr>
