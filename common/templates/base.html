@@ -127,7 +127,87 @@
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
+          {%elif request.user.role == 'ST' %} 
           
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Attendence</span>
+              <i class="mdi mdi-recycle menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Performance</span>
+              <i class="mdi mdi-credit-card-scan menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Time Table</span>
+              <i class="mdi mdi mdi-table  menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Assignents</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Study Materials</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Fees</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Chat</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Certificates</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Notification</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Complaint Box</span>
+              <i class="mdi mdi-table menu-icon"></i>
+            </a>
+          </li>
+          {%elif request.user.role == 'TR' %} 
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">List Teachers</span>
+              <i class="mdi mdi-credit-card-scan menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/list-students">
+              <span class="menu-title">List Students</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/list-students">
+              <span class="menu-title">Add Marks</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
           {%endif%}
       
           
@@ -186,6 +266,7 @@
   <!-- End custom js for this page -->
   {%block script%}
   {%endblock%}
+  
 </body>
 
 </html>

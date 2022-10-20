@@ -1,4 +1,93 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
+<div class="container">
+    <div class="card mb-3" style="border-radius: .5rem;"></div>   
+          <div class="col-md-8">
+            <div class="card-body p-4">
+              <div class="row pt-1">
+                <div class="col-4 mb-3">
+                  <h6>Name</h6>
+                  <p class="text-muted">{{request.user.first_name}}</p>
+                </div>
+                <div class="col-4 mb-3">
+                    <h6>Mobile</h6>
+                    <p class="text-muted">{{request.user.phone}}</p>
+                  </div>
+                  <div class="col-4 mb-3">
+                    <h6>Email</h6>
+                    <p class="text-muted">{{request.user.email}}</p>
+                  </div>
+              </div>
+                {% if request.user.role == 'ST' %}
+                <div class="row pt-1">
+                <div class="col-6 mb-3">
+                    <h6>Admission Number</h6>
+                    <p class="text-muted">{{student.admsn_no}}</p>
+                  </div>
+             
+                <div class="col-6 mb-3">
+                  <h6>Department</h6>
+                  <p class="text-muted">{{request.user.department.dname}}</p>
+                </div>
+                </div>
+                <div class="row pt-1">
+                <div class="col-6 mb-3">
+                  <h6>Semester</h6>
+                  <p class="text-muted">{{student.batch.Semester.semname}}</p>
+                </div>
+                <div class="col-6 mb-3">
+                    <h6>Class</h6>
+                    <p class="text-muted">{{student.batch.classname}}</p>
+                  </div>
+              </div>
+              <div class="row pt-1">
+                <div class="col-6 mb-3">
+                  <h6>Parent Name</h6>
+                  <p class="text-muted">{{student.parent_name}}</p>
+                </div>
+                <div class="col-6 mb-3">
+                    <h6>Parent Mobile</h6>
+                    <p class="text-muted">{{student.parent_mobile}}</p>
+                  </div>
+              </div>
+              {% elif request.user.role == 'TR' %}
+              <div class="row pt-1">
+                <div class="col-6 mb-3">
+                    <h6>Department</h6>
+                    <p class="text-muted">{{request.user.department.dname}}</p>
+                  </div>
+             
+                <div class="col-6 mb-3">
+                  <h6>Position</h6>
+                  <p class="text-muted">{{request.user.position}}</p>
+                </div>
+                </div>
+              {%endif%}
+            </div>
+    </div>
+    <div class="row mt-4">
+        <h2>Change/Reset Password</h2>
+        <br>
+        <form action="/profile/change_password" method="post" class="mt-3">
+          {%csrf_token%}
+          <div class="form-group ">
+            <label for="newpassword">Current Password</label>
+            <input type="password" class="form-control" id="newpassword" name="currentpassword">
+          </div>
+          <div class="form-group">
+            <label for="newpassword">New Password</label>
+            <input type="password" class="form-control" id="newpassword" name="newpassword">
+          </div>
+          <div class="form-group">
+            <label for="confirm password">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmpassword" name="confirmpassword">
+          </div>
+          <div class=" text-center">
+            <button type="submit" class="btn btn-primary profile-button">CHANGE</button>
+          </div>
+        </form>
+      </div>
+       
+</div>
 {%endblock%}

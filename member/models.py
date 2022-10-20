@@ -4,7 +4,7 @@ from common.models import auditModel
 from course.models import Class, Department
 
 
-class User(AbstractUser,auditModel):
+class User(AbstractUser, auditModel):
     STUDENT = "ST"
     TEACHER = "TR"
     PRINCIPAL = "PR"
@@ -20,7 +20,7 @@ class User(AbstractUser,auditModel):
     profile_image = models.ImageField(upload_to='profile_image')
     role = models.CharField(
         max_length=2, choices=ROLES_CHOICES, null=False)
-    department=models.ForeignKey(Department,null=True,on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, null=True, on_delete=models.CASCADE)
 
     @property
     def profile_image_url(self):
@@ -33,7 +33,7 @@ class User(AbstractUser,auditModel):
 
 class Teacher(auditModel):
     HOD = "HD"
-    ASSISTANT_PROFESSOR="AST"
+    ASSISTANT_PROFESSOR = "AST"
     ASSOCIATE_PROFESSOR = "ASO"
 
     POSITION_CHOICES = [
@@ -42,20 +42,22 @@ class Teacher(auditModel):
         (ASSOCIATE_PROFESSOR, "Associate professor"),
     ]
 
-    user=models.ForeignKey(User,null=True,on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     position = models.CharField(
         max_length=3, choices=POSITION_CHOICES, null=False)
-    
+
     @property
     def position_value(self):
-        current_position=self.position
+        current_position = self.position
         for position in Teacher.POSITION_CHOICES:
-             if position[0]==current_position:
-                value=position[1]
+            if position[0] == current_position:
+                value = position[1]
         return value
-        
+
+
 class Student(auditModel):
-    user=models.ForeignKey(User,null=True,on_delete=models.CASCADE)
-    batch=models.ForeignKey(Class,null=True,on_delete=models.CASCADE)
-    parent_name=models.CharField(max_length=30)
-    parent_mobile=models.CharField(max_length=15)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    batch = models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
+    admsn_no=models.CharField(max_length=6,null=True)
+    parent_name = models.CharField(max_length=30)
+    parent_mobile = models.CharField(max_length=15)

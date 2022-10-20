@@ -1,15 +1,15 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form class="row g-3" method="post" href="/add-student">
+<form class="row g-3" method="post" href="/edit-student">
     {%csrf_token%}
     <div class="col-md-6">
       <label for="inputEmail4" class="form-label">Name</label>
-      <input type="text" class="form-control" name="name">
+      <input type="text" class="form-control" name="name" value="{{student.user.first_name}}">
     </div>
     <div class="col-md-6">
       <label for="inputEmail4" class="form-label">Admission Number</label>
-      <input type="text" class="form-control" name="admsn_no">
+      <input type="text" class="form-control" name="admsn_no" value="{{student.admsn_no}}">
     </div>
     <div class="col-md-4">
         <label for="inputState" class="form-label">Department</label>
@@ -37,31 +37,23 @@
       </div>
     <div class="col-md-6">
       <label for="inputPassword4" class="form-label">Email</label>
-      <input type="email" class="form-control" name="email" >
+      <input type="email" class="form-control" name="email" value="{{student.user.email}}">
     </div>
     <div class="col-6">
       <label for="inputAddress" class="form-label">Mobile</label>
-      <input type="text" class="form-control" name="mobile">
-    </div>
-    <div class="col-6">
-      <label for="inputAddress" class="form-label">Password</label>
-      <input type="text" class="form-control" name="password">
+      <input type="text" class="form-control" name="mobile" value="{{student.user.phone}}">
     </div>
     <div class="col-md-6">
       <label for="inputEmail4" class="form-label">Parent Name</label>
-      <input type="text" class="form-control" name="p_name">
+      <input type="text" class="form-control" name="p_name" value="{{student.parent_name}}">
     </div>
     <div class="col-6">
       <label for="inputAddress" class="form-label">Parent Mobile</label>
-      <input type="text" class="form-control" name="p_mobile">
+      <input type="text" class="form-control" name="p_mobile" value="{{student.parent_mobile}}">
     </div>
-    <!-- <div class="col-md-6 mt-3">
-      <label class="labels">Upload Profile image</label>
-      <input type="file" class="form-control" accept="image/*" name="profile_image"
-              required>
-    </div> -->
+   
     <div class="col-12 text-center">
-      <button type="submit" class="btn btn-primary">ADD</button>
+      <button type="submit" class="btn btn-primary">EDIT</button>
     </div>
   </form>
 {%endblock%}
