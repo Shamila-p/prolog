@@ -12,7 +12,7 @@
 </div>
 </div>
 
-<table class="table">
+<table class="table" id="list_semesters">
     <thead>
       <tr>
         <th scope="col">Semester</th>
@@ -37,4 +37,11 @@
     </tbody>
   </table>
 
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#list_semesters").dataTable();
+    })
+</script>
 {%endblock%}

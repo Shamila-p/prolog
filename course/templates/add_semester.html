@@ -3,8 +3,12 @@
 {% block content %}
 <form method="post" href="/add-semester">
 {%csrf_token%}
+<div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Semester Name</label>
+    <input type="text" class="form-control" name="semname">
+  </div>
 
-    <input  type="text" name="sem_name"  required>
-    <button class="btn btn-primary">  ADD</button>
+    <button class="btn btn-primary mt-5">  ADD</button>
+
 </form>
 {%endblock%}

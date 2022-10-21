@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form class="row g-3" method="post" href="/edit-teacher/{{user_id}}">
+<form class="row g-3" method="post" href="/edit-teacher/{{user_id}}" enctype="multipart/form-data">
     {%csrf_token%}
    
     <div class="col-md-6">
@@ -26,13 +26,18 @@
     </div>
     
    
-    <div class="col-md-12">
+    <div class="col-md-6">
       <label for="inputState" class="form-label">Position</label>
       <select id="inputState" class="form-select" name="position" >
         {%for position in positions%}
         <option selected value="{{position.0}}">{{position.1}}</option>
         {%endfor%}
       </select>
+    </div>
+    <div class="col-md-6 mt-3">
+      <label class="labels">Edit Profile image</label>
+      <input type="file" class="form-control" accept="image/*" name="profile_image"
+              required>
     </div>
    
     <div class="col-12 text-center">

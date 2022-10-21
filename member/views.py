@@ -12,8 +12,12 @@ def profile(request):
         if request.user.role == User.STUDENT:
             student=Student.objects.get(user_id=request.user.id)
             context = {'title': 'Profile','student':student}
-        elif request.user.role == User.PRINCIPAL or request.user.role == User.TEACHER :
-             context = {'title': 'Profile'}
+        elif request.user.role == User.TEACHER :
+             teacher=Teacher.objects.get(user_id=request.user.id)
+             context = {'title': 'Profile','teacher':teacher}
+
+        elif request.user.role == User.PRINCIPAL:
+            context = {'title': 'Profile'}
         return render(request, 'profile.html', context)
 
 @login_required
@@ -58,8 +62,9 @@ def add_teachers(request):
             password=request.POST.get('password')
             mobile = request.POST.get('mobile')
             position = request.POST.get('position')
+            profile_image = request.FILES['profile_image']
             user = User.objects.create_user(first_name=name, username=email, password=password,email=email, phone=mobile, role=User.TEACHER,
-                                    department_id=department)
+                                    department_id=department,profile_image=profile_image)
             Teacher.objects.create(position=position, user_id=user.id)
             return redirect('list_teachers')
 
@@ -78,10 +83,10 @@ def edit_teacher(request, user_id):
         if request.method == 'POST':
             name = request.POST.get('name')
             department = request.POST.get('department')
-            print(department)
             email = request.POST.get('email')
             mobile = request.POST.get('mobile')
             position = request.POST.get('position')
+            profile_image = request.FILES['profile_image']
             user = User.objects.get(id=user_id)
             teacher = Teacher.objects.get(user_id=user_id)
             dep = Department.objects.get(dname=department)
@@ -89,6 +94,7 @@ def edit_teacher(request, user_id):
             user.email = email
             user.phone = mobile
             user.department_id = dep.id
+            user.profile_image=profile_image
             user.save()
             teacher.position = position
             teacher.save()
@@ -153,9 +159,11 @@ def add_student(request):
 
             p_name = request.POST.get('p_name')
             p_mobile = request.POST.get('p_mobile')
-            # profile_image = request.FILES['profile_image']
+            print( request.FILES['profile_image'])
+
+            profile_image = request.FILES['profile_image']
             user = User.objects.create_user(first_name=name, password=password,username=email, email=email, phone=mobile,
-                                            role=User.STUDENT, department_id=department)
+                                            role=User.STUDENT, department_id=department,profile_image=profile_image)
             Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
                                 user_id=user.id, parent_mobile=p_mobile, batch_id=batch)
             return redirect('list_students')
@@ -184,6 +192,7 @@ def edit_student(request, user_id):
             mobile = request.POST.get('mobile')
             p_name = request.POST.get('p_name')
             p_mobile = request.POST.get('p_mobile')
+            profile_image = request.FILES['profile_image']
             student = Student.objects.get(user_id=user_id)
             user=student.user
             user.first_name = name
@@ -194,6 +203,8 @@ def edit_student(request, user_id):
             student.batch_id = batch
             user.email = email
             user.phone = mobile
+            user.profile_image=profile_image
+            print(profile_image)
             student.parent_mobile = p_mobile
             student.parent_name = p_name
             user.save()

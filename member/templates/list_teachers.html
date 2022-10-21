@@ -11,7 +11,8 @@
   
   </div>
   </div>
-<table class="table">
+  <div class="table-responsive">
+<table class="table " id="list_teachers">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -20,6 +21,7 @@
         <th scope="col" class="text-center">Status</th>
         <th scope="col">Mobile</th>
         <th scope="col">Email</th>
+        <th scope="col">Profile Image</th>
         <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>
@@ -43,6 +45,7 @@
         </td>
         <td>{{teacher.user.phone}}</td>
         <td>{{teacher.user.email}}</td>
+        <td><img src="{{teacher.user.profile_image_url}}" alt=""></td>
        
         <td>                         
 
@@ -61,4 +64,12 @@
       {%endfor%}
     </tbody>
   </table>
+</div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#list_teachers").dataTable();
+    })
+</script>
 {%endblock%}

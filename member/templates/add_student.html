@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form class="row g-3" method="post" href="/add-student">
+<form class="row g-3" method="post" href="/add-student" enctype="multipart/form-data" >
     {%csrf_token%}
     <div class="col-md-6">
       <label for="inputEmail4" class="form-label">Name</label>
@@ -55,11 +55,11 @@
       <label for="inputAddress" class="form-label">Parent Mobile</label>
       <input type="text" class="form-control" name="p_mobile">
     </div>
-    <!-- <div class="col-md-6 mt-3">
+    <div class="col-md-6 mt-3">
       <label class="labels">Upload Profile image</label>
       <input type="file" class="form-control" accept="image/*" name="profile_image"
               required>
-    </div> -->
+    </div>
     <div class="col-12 text-center">
       <button type="submit" class="btn btn-primary">ADD</button>
     </div>

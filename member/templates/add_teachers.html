@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form class="row g-3" method="post" href="/add-teachers">
+<form class="row g-3" method="post" href="/add-teachers" enctype="multipart/form-data">
     {%csrf_token%}
     <div class="col-md-6">
       <label for="inputEmail4" class="form-label">Name</label>
@@ -24,17 +24,23 @@
       <input type="text" class="form-control" name="mobile">
     </div>
     <div class="col-md-6">
-      <label for="inputEmail4" class="form-label">Passwod</label>
+      <label for="inputEmail4" class="form-label">Password</label>
       <input type="password" class="form-control" name="password">
     </div>
+    
    
-    <div class="col-md-12">
+    <div class="col-md-6">
       <label for="inputState" class="form-label">Position</label>
       <select id="inputState" class="form-select" name="position">
         {%for position in positions%}
         <option selected value="{{position.0}}">{{position.1}}</option>
         {%endfor%}
       </select>
+    </div>
+    <div class="col-md-6 mt-3">
+      <label class="labels">Upload Profile image</label>
+      <input type="file" class="form-control" accept="image/*" name="profile_image"
+              required>
     </div>
    
     <div class="col-12 text-center">
