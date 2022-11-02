@@ -6,6 +6,7 @@ from common.models import auditModel
 
 class Department(auditModel):
     dname = models.CharField(max_length=30)
+    hod = models.ForeignKey("member.User", null=True, on_delete=models.CASCADE,related_name="hod_name")
 
 
 class Semester(auditModel):

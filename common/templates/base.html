@@ -127,7 +127,8 @@
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
-          {%elif request.user.role == 'ST' %} 
+         
+          {% elif request.user.role == 'ST' %} 
           
           <li class="nav-item">
             <a class="nav-link" href="">
@@ -189,8 +190,27 @@
               <i class="mdi mdi-table menu-icon"></i>
             </a>
           </li>
-          {%elif request.user.role == 'TR' %} 
+          {%elif request.user.role == 'TR' and request.user.position == 'HD' %} 
           
+          <li class="nav-item">
+            <a class="nav-link" href="/list-students">
+              <span class="menu-title">List Students</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/list-teachers">
+              <span class="menu-title">List Teachers</span>
+              <i class="mdi mdi-credit-card-scan menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/list-students">
+              <span class="menu-title">Add Marks</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          {%elif request.user.role == 'TR'%}
           <li class="nav-item">
             <a class="nav-link" href="/list-students">
               <span class="menu-title">List Students</span>
@@ -203,6 +223,7 @@
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
+          {%endif%}
 
         </ul>
       </nav>
@@ -227,7 +248,7 @@
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="container-fluid d-flex justify-content-between">
-            <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © smartrash 2022</span>
+            <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © prolog 2022</span>
             
           </div>
         </footer>
@@ -256,6 +277,7 @@
   <!-- Custom js for this page -->
   <script src="{% static 'js/dashboard.js'%}"></script>
   <script src="{% static 'js/todolist.js'%}"></script>
+  <script src="{% static 'js/admin.js'%}"></script>
   <!-- End custom js for this page -->
   {%block script%}
   {%endblock%}

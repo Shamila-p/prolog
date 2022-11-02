@@ -1,0 +1,81 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8"></div>
+ 
+  </div>
+  <div class="table-responsive">
+<table class="table" id="edit_requests">
+    <thead>
+      <tr>
+       
+        <th scope="col">Previous Data</th>
+        <th scope="col">Edits</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>    
+    </tbody>
+    <tr>
+      
+      <td>
+      {%if user.role == 'ST' %}
+     
+      {{student.user.first_name}}<br>
+        {{student.user.email}}<br>
+        {{student.user.phone}}<br>
+        {{student.parent_name}}<br>
+        {{student.parent_mobile}}<br>
+        <img src="{{student.user.profile_image_url}}" alt=""><br>
+      {%elif user.role == 'TR' %}
+        {{teacher.first_name}}<br>
+        {{teacher.email}}<br>
+        {{teacher.phone}}<br>
+        <img src="{{teacher.profile_image_url}}" alt=""><br>
+      
+      {%endif%}
+    </td>
+      <td>
+        {%if user.role == 'ST' %}
+        {{edit.name}}<br>
+        {{edit.email}}<br>
+        {{edit.phone}}<br>
+        {{edit.parent_name}}<br>
+        {{edit.parent_mobile}}<br>
+        <img src=" {{edit.profile_image_url}}" alt=""><br>
+        {%elif user.role == 'TR' %}
+        {{edit.name}}<br>
+        {{edit.email}}<br>
+        {{edit.phone}}<br>
+        <img src=" {{edit.profile_image_url}}" alt=""><br>
+
+        {%endif%}
+
+           
+
+      </td>
+      <td>
+        <form method="post" action="/accept-request/{{edit.user_id}}">
+          {%csrf_token%}<button class="btn btn-primary btn-sm" type="submit">ACCEPT</form>
+     </td>
+     
+      <td>
+        <form method="post" action="/decline-request/{{edit.user_id}}">
+          {%csrf_token%}<button class="btn btn-primary btn-sm" type="submit">DECLINE</form>
+      </td>
+
+    </tr>
+   
+    
+
+  </table>
+</div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#edit_requests").dataTable();
+    })
+</script>
+{%endblock%}

@@ -11,7 +11,13 @@
       <label for="inputEmail4" class="form-label">Admission Number</label>
       <input type="text" class="form-control" name="admsn_no">
     </div>
-    <div class="col-md-4">
+    {%if request.user.position == 'HD' %}
+    <div class="col-md-6">
+    <label  class="form-label">Department</label>
+    <input type="text" class="form-control" name="name" value="{{request.user.department.dname}}" disabled>
+    </div>
+    {%else%}
+    <div class="col-md-6">
         <label for="inputState" class="form-label">Department</label>
         <select id="inputState" class="form-select" name="department">
         {%for department in departments %}
@@ -19,7 +25,8 @@
         {%endfor%}
         </select>
       </div>
-      <div class="col-md-4">
+      {%endif%}
+      <div class="col-md-6">
         <label for="inputState" class="form-label">Semester</label>
         <select id="inputState" class="form-select" name="semester">
         {%for semester in semesters %}

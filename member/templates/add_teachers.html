@@ -4,9 +4,15 @@
 <form class="row g-3" method="post" href="/add-teachers" enctype="multipart/form-data">
     {%csrf_token%}
     <div class="col-md-6">
-      <label for="inputEmail4" class="form-label">Name</label>
+      <label class="form-label">Name</label>
       <input type="text" class="form-control" name="name">
     </div>
+    {%if request.user.position == 'HD' %}
+    <div class="col-md-6">
+    <label  class="form-label">Department</label>
+    <input type="text" class="form-control" name="name" value="{{request.user.department.dname}}" disabled>
+    </div>
+    {%else%}
     <div class="col-md-6">
         <label for="inputState" class="form-label">Department</label>
         <select id="inputState" class="form-select" name="department">
@@ -15,6 +21,7 @@
         {%endfor%}
         </select>
       </div>
+      {%endif%}
     <div class="col-md-6">
       <label for="inputPassword4" class="form-label">Email</label>
       <input type="email" class="form-control" name="email" >

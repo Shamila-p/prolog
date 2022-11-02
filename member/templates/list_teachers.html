@@ -25,43 +25,106 @@
         <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
+      {%if request.user.role == 'PR'%}
         {%for teacher in teachers%}
+        
       <tr>
-        <td>{{teacher.user.first_name}} {{teacher.last_name}}</td>
-        <td>{{teacher.user.department.dname}}</td>
+        <td>{{teacher.first_name}} {{teacher.last_name}}</td>
+        <td>{{teacher.department.dname}}</td>
         <td>{{teacher.position_value}}</td>
         <td>
          
 
-          {%if teacher.user.is_active is True%}
+          {%if teacher.is_active is True%}
           <button class="btn btn-info" type="submit">Approved</button>
           {%else%}
           <button class="btn btn-danger" type="submit">Dispproved</button>
           {%endif%}
        
         </td>
-        <td>{{teacher.user.phone}}</td>
-        <td>{{teacher.user.email}}</td>
-        <td><img src="{{teacher.user.profile_image_url}}" alt=""></td>
+        <td>{{teacher.phone}}</td>
+        <td>{{teacher.email}}</td>
+        <td><img src="{{teacher.profile_image_url}}" alt=""></td>
        
         <td>                         
 
-             <a class="btn btn-primary btn-sm"  href="/edit-teacher/{{teacher.user.id}}" type="submit">EDIT</form>
+             <a class="btn btn-primary btn-sm"  href="/edit-teacher/{{teacher.id}}" type="submit">EDIT</form>
          </td>
         <td>                         
-          <form method="post" action="/approve-teacher/{{teacher.user.id}}">
+          <form method="post" action="/approve-teacher/{{teacher.id}}">
               {%csrf_token%}<button class="btn btn-primary btn-sm" type="submit">APPROVE/DISAPPROVE</form>
+         </td>
+         <td>
+          {%for edit in edits%}
+  
+          {%if edit.user_id == teacher.id%}
+          <a class="btn btn-primary btn-sm"  href="/edit-profile/request/{{teacher.id}}" type="submit">EDIT REQUESTS</a>
+          {%endif%}
+          
+          {%endfor%}
+         </td>
+         <td>
+          <form method="post" action="/remove-teacher/{{teacher.id}}">
+              {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
+      </td>
+ 
+      {%endfor%}
+      {%endif%}
+      {%if request.user.role == 'TR' and request.user.position == 'HD'%}
+      
+      {%for teacher in teacher_belongs%}
+      
+      <td>{{teacher.first_name}}</td>
+        <td>{{teacher.department.dname}}</td>
+        <td>{{teacher.position_value}}</td>
+        <td>
+         
+
+          {%if teacher.is_active is True%}
+          <button class="btn btn-info" type="submit">Approved</button>
+          {%else%}
+          <button class="btn btn-danger" type="submit">Dispproved</button>
+          {%endif%}
+       
+        </td>
+        <td>{{teacher.phone}}</td>
+        <td>{{teacher.email}}</td>
+        <td><img src="{{teacher.profile_image_url}}" alt=""></td>
+       
+        <td>                         
+
+             <a class="btn btn-primary btn-sm"  href="/edit-teacher/{{teacher.id}}" type="submit">EDIT</form>
+         </td>
+        <td>                         
+          <form method="post" action="/approve-teacher/{{teacher.id}}">
+              {%csrf_token%}<button class="btn btn-primary btn-sm" type="submit">APPROVE/DISAPPROVE</form>
+         </td>
+         <td>
+          {%for edit in edits%}
+  
+          {%if edit.user_id == teacher.id%}
+          <a class="btn btn-primary btn-sm"  href="/edit-profile/request/{{teacher.id}}" type="submit">EDIT REQUESTS</a>
+          
+          {%endif%}
+          {%endfor%}
+          
+
          </td>
         
         <td>
-            <form method="post" action="/remove-teacher/{{teacher.user.id}}">
+            <form method="post" action="/remove-teacher/{{teacher.id}}">
                 {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
         </td>
+   
       </tr>
       {%endfor%}
+      {%endif%}
+
+
     </tbody>
   </table>
 </div>

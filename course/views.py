@@ -1,3 +1,4 @@
+from turtle import position
 from django.shortcuts import render, redirect,HttpResponse
 
 from member.models import User
@@ -26,11 +27,14 @@ def add_department(request):
         return HttpResponse('Unauthorized', status=401)
     else:
         if request.method == 'GET':
-            return render(request, 'add_department.html')
+            teachers=User.objects.filter(role=User.TEACHER,position=User.HOD)
+            context={'teachers':teachers}
+            return render(request, 'add_department.html',context)
         if request.method == 'POST':
             dept_name = request.POST.get("dept_name")
+            hod=request.POST.get("hod")
             print(dept_name)
-            Department.objects.create(dname=dept_name)
+            Department.objects.create(dname=dept_name,hod_id=hod)
             return redirect('department')
 
 
@@ -41,12 +45,15 @@ def edit_department(request, id):
     else:
         if request.method == 'GET':
             department = Department.objects.get(id=id)
-            context = {'department': department}
+            teachers=User.objects.filter(role=User.TEACHER,position=User.HOD)
+            context = {'department': department,'teachers':teachers}
             return render(request, 'edit_department.html', context)
         if request.method == 'POST':
             dept_name = request.POST.get('dept_name')
+            hod=request.POST.get('hod')
             department = Department.objects.get(id=id)
             department.dname = dept_name
+            department.hod_id=hod
             department.save()
             return redirect('department')
 

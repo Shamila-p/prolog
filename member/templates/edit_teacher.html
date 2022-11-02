@@ -8,14 +8,17 @@
       <label for="inputEmail4" class="form-label">Name</label>
       <input type="text" class="form-control" name="name" value="{{teacher.first_name}}">
     </div>
+    {%if request.user.position != 'HD'%}
+    
     <div class="col-md-6">
         <label for="inputState" class="form-label">Department</label>
         <select id="inputState" class="form-select" name="department" >
         {%for department in departments %}
-          <option selected >{{department.dname}}</option>
+          <option selected value="{{department.id}}">{{department.dname}}</option>
         {%endfor%}
         </select>
-      </div>
+    </div>
+    {%endif%}
     <div class="col-md-6">
       <label for="inputPassword4" class="form-label">Email</label>
       <input type="email" class="form-control" name="email" value="{{teacher.email}}">
@@ -36,8 +39,12 @@
     </div>
     <div class="col-md-6 mt-3">
       <label class="labels">Edit Profile image</label>
-      <input type="file" class="form-control" accept="image/*" name="profile_image"
-              required>
+      <br>
+      {% if teacher.profile_image %}
+      <img src="{{teacher.profile_image_url}}" alt="Image here" style="height: 30px;width:30px">
+      {%endif%}
+      
+      <input type="file" class="form-control" accept="image/*" name="profile_image">
     </div>
    
     <div class="col-12 text-center">

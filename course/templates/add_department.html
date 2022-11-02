@@ -3,8 +3,24 @@
 {% block content %}
 <form method="post" href="/add-department">
 {%csrf_token%}
-
-    <input  type="text" name="dept_name"  required>
-    <button class="btn btn-primary">  ADD</button>
+    <div class="row">
+        <div class="col-md-6">
+            <label  class="form-label">Department Name</label>
+            <input type="text" class="form-control" name="dept_name">
+          </div>
+          <div class="col-md-6">
+            <label  class="form-label">HOD</label>
+            <select  class="form-select" name="hod">
+                {%for teacher in teachers%}
+                <option selected value="{{teacher.id}}">{{teacher.first_name}}</option>
+                {%endfor%}
+              </select>
+          </div>
+    </div>
+    <div class="row">
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary mt-5">ADD</button>
+      </div>
+    </div>
 </form>
 {%endblock%}

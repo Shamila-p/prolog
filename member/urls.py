@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     path('profile',views.profile,name="profile"),
-    path('profile/change_password', views.change_password, name='change_password'),
+    path('profile/edit-profile',views.edit_profile,name="edit_profile"),
+    path('profile/change-password', views.change_password, name='change_password'),
 
 
     path('list-teachers',views.list_teachers,name="list_teachers"),
@@ -18,6 +19,7 @@ urlpatterns = [
     path('approve-student/<int:user_id>',views.approve_student,name="approve_student"),
     path('remove-student/<int:user_id>',views.remove_student,name="remove_student"),
 
-
-
+    path('edit-profile/request/<int:user_id>',views.edit_profile_request,name="edit_profile_request"),
+    path('accept-request/<int:user_id>',views.accept_request,name="accept_request"),
+    path('decline-request/<int:user_id>',views.decline_request,name="decline_request"),
 ]

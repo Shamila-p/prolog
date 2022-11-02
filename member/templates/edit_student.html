@@ -11,6 +11,7 @@
       <label for="inputEmail4" class="form-label">Admission Number</label>
       <input type="text" class="form-control" name="admsn_no" value="{{student.admsn_no}}">
     </div>
+    {%if request.user.position != 'HD'%}
     <div class="col-md-4">
         <label for="inputState" class="form-label">Department</label>
         <select id="inputState" class="form-select" name="department">
@@ -19,6 +20,7 @@
         {%endfor%}
         </select>
       </div>
+      {%endif%}
       <div class="col-md-4">
         <label for="inputState" class="form-label">Semester</label>
         <select id="inputState" class="form-select" name="semester">
@@ -53,8 +55,7 @@
     </div>
     <div class="col-md-6 mt-3">
       <label class="labels">Edit Profile image</label>
-      <input type="file" class="form-control" accept="image/*" name="profile_image"
-              required>
+      <input type="file" class="form-control" accept="image/*" name="profile_image">
     </div>
    
     <div class="col-12 text-center">

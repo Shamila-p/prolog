@@ -16,6 +16,7 @@
     <thead>
       <tr>
         <th scope="col">Departments</th>
+        <th scope="col">HOD</th>
         <!-- <th scope="col">Status</th> -->
         <th scope="col"></th>
         <th scope="col"></th>
@@ -25,6 +26,7 @@
         {%for department in departments%}
       <tr>
         <td>{{department.dname}}</td>
+        <td>{{department.hod.first_name}}</td>
         <!-- <td><a class="btn btn-light">Approved</a></td> -->
         <td><a href="/edit-department/{{department.id}}" class="btn btn-primary">Edit</a></td>
         

@@ -3,9 +3,24 @@
 {% block content %}
 <form method="post" href="/edit-department">
 {%csrf_token%}
-    
-    <input  type="text" name="dept_name" value={{department.dname}} required>
-    <button class="btn btn-primary">  EDIT</button>
-   
+    <div class="row">
+        <div class="col-md-6">
+            <label  class="form-label">Department Name</label>
+            <input type="text" class="form-control" name="dept_name" value={{department.dname}}>
+          </div>
+          <div class="col-md-6">
+            <label  class="form-label">HOD</label>
+            <select  class="form-select" name="hod">
+                {%for teacher in teachers%}
+                <option selected value="{{teacher.id}}">{{teacher.first_name}}</option>
+                {%endfor%}
+              </select>
+          </div>
+    </div>
+    <div class="row">
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary mt-5">EDIT</button>
+      </div>
+    </div>
 </form>
 {%endblock%}
