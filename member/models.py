@@ -34,7 +34,8 @@ class User(AbstractUser, auditModel):
     department = models.ForeignKey(Department, null=True, on_delete=models.CASCADE)
     position = models.CharField(
         max_length=3, choices=POSITION_CHOICES, null=False,default=NULL)
-
+    
+    
     @property
     def profile_image_url(self):
         try:

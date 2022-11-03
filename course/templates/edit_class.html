@@ -9,6 +9,15 @@
       <input type="text" class="form-control" name="name" value="{{batch.classname}}">
     </div>
     <div class="col-md-6">
+      <label for="inputState" class="form-label">Semester</label>
+      <select id="inputState" class="form-select" name="semester">
+          {%for semester in semesters%}
+        <option selected value="{{semester.id}}">{{semester.semname}}</option>
+        {%endfor%}
+      </select>
+    </div>
+    {%if request.user.role == 'PR'%}
+    <div class="col-md-6">
         <label for="inputState" class="form-label">Department</label>
         <select id="inputState" class="form-select" name="department">
         {%for department in departments%}
@@ -16,14 +25,23 @@
        {%endfor%}
         </select>
       </div>
+      {%elif request.user.position == 'HD'%}
       <div class="col-md-6">
-        <label for="inputState" class="form-label">Semester</label>
-        <select id="inputState" class="form-select" name="semester">
-            {%for semester in semesters%}
-          <option selected value="{{semester.id}}">{{semester.semname}}</option>
-          {%endfor%}
+        <div class="col-md-6">
+          <label  class="form-label">Department</label>
+          <input type="text" class="form-control" name="name" value="{{request.user.department.dname}}" disabled>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="inputState" class="form-label">Tutor</label>
+        <select id="inputState" class="form-select" name="tutor">
+        {%for teacher in teachers %}
+          <option selected value="{{teacher.id}}">{{teacher.first_name}}</option>
+        {%endfor%}
         </select>
       </div>
+      {%endif%}
+    
    
     <div class="col-12 text-center">
       <button type="submit" class="btn btn-primary">EDIT</button>

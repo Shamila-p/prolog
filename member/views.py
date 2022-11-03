@@ -21,6 +21,9 @@ def profile(request):
         elif request.user.role == User.PRINCIPAL:
             principal = User.objects.get(role=User.PRINCIPAL)
             context = {'title': 'Profile', 'principal': principal}
+        # tutor=Class.objects.filter(tutor_id=request.user.id).exists()
+        # context={'tutor':tutor}
+        
         return render(request, 'profile.html', context)
 
 
@@ -172,7 +175,6 @@ def list_teachers(request):
             print(hod)
             teacher_belongs=User.objects.filter(role=User.TEACHER,department_id=hod.department_id).exclude(position=User.HOD)
             print(teacher_belongs)
-            
             edits=EditProfile.objects.all()
             context = {'title': 'Teachers' ,'teachers': teachers,'edits':edits,'teacher_belongs':teacher_belongs}
             return render(request, 'list_teachers.html', context)
@@ -266,7 +268,7 @@ def remove_teacher(request, user_id):
 
 @login_required
 def list_students(request):
-    if not (request.user.role == User.PRINCIPAL or request.user.role == User.TEACHER or  request.user.position == User.HOD):
+    if not (request.user.role == User.PRINCIPAL or request.user.role == User.TEACHER  or  request.user.position == User.HOD):
         return HttpResponse('Unauthorized', status=401)
     else:
         if request.method == 'GET':
@@ -274,11 +276,11 @@ def list_students(request):
             edits=EditProfile.objects.all()
             hod=User.objects.get(id=request.user.id)
             student_belongs=User.objects.filter(role=User.STUDENT,department_id=hod.department_id)
+            # is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
             student_list=[]
             for student in student_belongs:
                 student_list.append(student.id)
             studentslist=Student.objects.filter(user_id__in=student_list)
-            # Student.objects.raw('SELECT * FROM member_student WHERE id IN %s', params=student_list)
             context = {'students': students,'edits':edits,'student_belongs':student_belongs,'studentslist':studentslist}
             return render(request, 'list_students.html', context)
 

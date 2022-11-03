@@ -71,7 +71,7 @@ def remove_department(request, id):
 
 @login_required
 def list_semester(request):
-    if not (request.user.role == User.PRINCIPAL or request.user.role == User.TEACHER):
+    if not (request.user.role == User.PRINCIPAL or (request.user.role == User.TEACHER and request.user.position == User.HOD)):
         return HttpResponse('Unauthorized', status=401)
     else:
         if request.method == 'GET':
@@ -82,7 +82,7 @@ def list_semester(request):
 
 @login_required
 def add_semester(request):
-    if not (request.user.role == User.PRINCIPAL or request.user.role == User.TEACHER):
+    if not (request.user.role == User.PRINCIPAL or (request.user.role == User.TEACHER and request.user.position == User.HOD)):
         return HttpResponse('Unauthorized', status=401)
     else:
         if request.method == 'GET':
@@ -128,7 +128,9 @@ def list_classes(request):
     else:
         if request.method == 'GET':
             batches = Class.objects.all()
-            context = {'batches': batches}
+            hod=User.objects.get(id=request.user.id)
+            classes=Class.objects.filter(department_id=hod.department_id)
+            context = {'batches': batches,'classes':classes,'hod':hod}
             return render(request, 'list_classes.html', context)
 
 
@@ -140,13 +142,22 @@ def add_class(request):
         if request.method == 'GET':
             departments = Department.objects.all()
             semesters = Semester.objects.all()
-            context = {'departments': departments, 'semesters': semesters}
+            hod=User.objects.get(id=request.user.id)
+            teachers=User.objects.filter(department_id=hod.department_id,role=User.TEACHER).exclude(position=User.HOD)
+            context = {'departments': departments, 'semesters': semesters,'teachers':teachers,'tutor':tutor}
             return render(request, 'add_class.html', context)
         if request.method == 'POST':
             class_name = request.POST.get('name')
             semester = request.POST.get('semester')
             department = request.POST.get('department')
-            Class.objects.create(classname=class_name,
+            tutorid=request.POST.get('tutor')
+            hod=User.objects.get(id=request.user.id)
+            teachers=User.objects.filter(role=User.TEACHER).exclude(position=User.HOD)
+            if request.user.position == User.HOD:
+                Class.objects.create(classname=class_name,
+                                Semester_id=semester, department_id=hod.department_id,tutor_id=tutorid)
+            if request.user.role == User.PRINCIPAL:
+                Class.objects.create(classname=class_name,
                                 Semester_id=semester, department_id=department)
             return redirect('list_classes')
 
@@ -156,21 +167,29 @@ def edit_class(request, id):
     if not (request.user.role == User.PRINCIPAL or request.user.role == User.TEACHER):
         return HttpResponse('Unauthorized', status=401)
     else:
+        hod=User.objects.get(id=request.user.id)
+
         if request.method == 'GET':
             batch = Class.objects.get(id=id)
             departments = Department.objects.all()
             semesters = Semester.objects.all()
+            teachers=User.objects.filter(department_id=hod.department_id,role=User.TEACHER).exclude(position=User.HOD)
             context = {'batch': batch, 'departments': departments,
-                    'semesters': semesters}
+                    'semesters': semesters,'teachers':teachers}
             return render(request, 'edit_class.html', context)
         if request.method == 'POST':
             class_name = request.POST.get('name')
             semester = request.POST.get('semester')
             department = request.POST.get('department')
+            tutor=request.POST.get('tutor')
             batch = Class.objects.get(id=id)
             batch.classname = class_name
             batch.Semester_id = semester
-            batch.department_id = department
+            if request.user.position == User.HOD:
+                batch.tutor_id=tutor
+                batch.department_id = hod.department_id
+            else:
+                batch.department_id = department
             batch.save()
             return redirect('list_classes')
 

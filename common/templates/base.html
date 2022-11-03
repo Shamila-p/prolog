@@ -205,24 +205,31 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="/list-semester">
+              <span class="menu-title">Semester</span>
+              <i class="mdi mdi-recycle menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/list-classes">
+              <span class="menu-title">Class</span>
+              <i class="mdi mdi-recycle menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/list-students">
               <span class="menu-title">Add Marks</span>
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
-          {%elif request.user.role == 'TR'%}
+          {%elif request.user.role == 'TR' and tutor is not True %}
           <li class="nav-item">
-            <a class="nav-link" href="/list-students">
+            <a class="nav-link" href="">
               <span class="menu-title">List Students</span>
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/list-students">
-              <span class="menu-title">Add Marks</span>
-              <i class="mdi mdi-lead-pencil menu-icon"></i>
-            </a>
-          </li>
+          
           {%endif%}
 
         </ul>

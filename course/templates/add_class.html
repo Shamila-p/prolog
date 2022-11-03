@@ -15,6 +15,7 @@
         {%endfor%}
         </select>
       </div>
+      {%if request.user.role == 'PR'%}
       <div class="col-md-6">
         <label for="inputState" class="form-label">Department</label>
         <select id="inputState" class="form-select" name="department">
@@ -23,6 +24,21 @@
         {%endfor%}
         </select>
       </div>
+      {%endif%}
+      {%if request.user.position == 'HD'%}
+      <div class="col-md-6">
+        <label  class="form-label">Department</label>
+        <input type="text" class="form-control" name="name" value="{{request.user.department.dname}}" disabled>
+      </div>
+      <div class="col-md-6">
+        <label for="inputState" class="form-label">Tutor</label>
+        <select id="inputState" class="form-select" name="tutor">
+        {%for teacher in teachers %}
+          <option selected value="{{teacher.id}}">{{teacher.first_name}}</option>
+        {%endfor%}
+        </select>
+      </div>
+      {%endif%}
    
     <div class="col-12 text-center">
       <button type="submit" class="btn btn-primary">ADD</button>

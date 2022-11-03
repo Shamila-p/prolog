@@ -2,48 +2,66 @@
 {% load static %}
 {% block content %}
 <div class="row">
-<div class="col-md-8"></div>
-<div class="col-md-4">
+  <div class="col-md-8"></div>
+  <div class="col-md-4">
 
-      <a href="/add-class" class="btn btn-primary" type="submit">ADD CLASS
-        <i class="mdi mdi-plus icon-sm align-middle"></i></a>
-   
+    <a href="/add-class" class="btn btn-primary" type="submit">ADD CLASS
+      <i class="mdi mdi-plus icon-sm align-middle"></i></a>
 
-</div>
+
+  </div>
 </div>
 
 <table class="table" id="list_classes">
-    <thead>
-      <tr>
-        <th scope="col">Class name</th>
-        <!-- <th scope="col">Status</th> -->
-        <th scope="col">Department</th>
-        <th scope="col">Semester</th>
-      </tr>
-    </thead>
-    <tbody>
-        {%for class in batches%}
-      <tr>
-        <td>{{class.classname}}</td>
-        <td>{{class.department.dname}}</td>
-        <td>{{class.Semester.semname}}</td>
-        <!-- <td><a class="btn btn-light">Approved</a></td> -->
-        <td><a href="/edit-class/{{class.id}}" class="btn btn-primary">Edit</a></td>
-        
-        <td>
-            <form method="post" action="/remove-class/{{class.id}}">
-                {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
-        </td>
-      </tr>
+  <thead>
+    <tr>
+      <th scope="col">Class name</th>
+      {%if request.user.position == 'HD'%}
+      <th scope="col">Tutor</th>
+      {%endif%}
+      <th scope="col">Department</th>
+      <th scope="col">Semester</th>
+    </tr>
+  </thead>
+  <tbody>
+    <p></p>
+    {%if request.user.role == 'PR'%}
+    {%for class in batches%}
+    <tr>
+      <td>{{class.classname}}</td>
+      <td>{{class.department.dname}}</td>
+      <td>{{class.Semester.semname}}</td>
+      <!-- <td><a class="btn btn-light">Approved</a></td> -->
+      <td><a href="/edit-class/{{class.id}}" class="btn btn-primary">Edit</a></td>
+
+      <td>
+        <form method="post" action="/remove-class/{{class.id}}">
+          {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
+      </td>
+    </tr>
+    {%endfor%}
+    {%elif request.user.role == 'TR' and request.user.position == 'HD'%}
+    {%for class in classes%}
+    <tr>
+      <td>{{class.classname}}</td>
+      <td>{{class.tutor.first_name}}</td>
+      <td>{{hod.department.dname}}</td>
+      <td>{{class.Semester.semname}}</td>
+      <td><a href="/edit-class/{{class.id}}" class="btn btn-primary">Edit</a></td>
+      <td>
+        <form method="post" action="/remove-class/{{class.id}}">
+          {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
+      </td>
       {%endfor%}
-    </tbody>
-  </table>
+      {%endif%}
+  </tbody>
+</table>
 
 {%endblock%}
 {%block script%}
 <script>
-    $(function () {
-        $("#list_classes").dataTable();
-    })
+  $(function () {
+    $("#list_classes").dataTable();
+  })
 </script>
 {%endblock%}
