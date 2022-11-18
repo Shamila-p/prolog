@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+          <a href="/add-module" class="btn btn-primary" type="submit">ADD MODULE
+            <i class="mdi mdi-plus icon-sm align-middle"></i></a>
+        </div>
+       
+      </div>
+    <div class="row ">
+        <div class="col-md-12 mt-5" >
+            <div class="card d-flex ">
+                <div class="card-body d-flex  ">
+                    {%for module in modules%}
+                    <div class="col-md-2 ml-1"> <button class="btn btn-primary ">{{module.modulename}}
+                        <br>
+                        <form method="post" action="/remove-module/{{module.id}}">
+                            {%csrf_token%}<button class="btn btn-danger btn-sm mt-1" type="submit">Remove</form>
+                    </button></div>
+
+                    {%endfor%}
+                    
+              </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{%endblock%}

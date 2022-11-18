@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'course.apps.CourseConfig',
     'StudyMaterials.apps.StudymaterialsConfig',
+    'assignment.apps.AssignmentConfig',
+    
 ]
 AUTH_USER_MODEL = 'member.User'
 MIDDLEWARE = [
@@ -66,6 +68,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR,'common/templates'),
             os.path.join(BASE_DIR,'member/templates'),
             os.path.join(BASE_DIR,'StudyMaterials/templates'),
+            os.path.join(BASE_DIR,'assignment/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

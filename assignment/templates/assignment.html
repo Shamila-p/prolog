@@ -1,0 +1,50 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+<div class="col-md-9"></div>
+<div class="col-md-3">
+    <a href="/add-assignment" class="btn btn-primary" type="submit"> ADD ASSIGNMENT</a>
+</div>
+</div>
+<div class="table-responsive mt-5">
+<table class="table" id="assignment_details">
+    <thead>
+      <tr>
+        <th scope="col">Topic</th>
+        <th scope="col">Module
+            <a class="btn btn-primary btn-sm" href="/list-module" type="submit">Manage Modules</a>
+        </th>
+        <th scope="col">Category</th>
+        <th scope="col">Submission Date</th>
+        <th scope="col">Created Date</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for assignment in assignments%}
+      <tr>
+        <td>{{assignment.topic}}</td>
+        <td>{{assignment.module}}</td>
+        <td>{{assignment.type_value}}</td>
+        <td>{{assignment.submission_date}}</td>
+        <td>{{assignment.created_date}}</td>
+        <td><a href="/edit-assignment/{{assignment.id}}" class="btn btn-primary btn-sm">Edit</a></td>
+        <td>
+            <form method="post" action="/remove-assignment/{{assignment.id}}">
+              {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
+          </td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#assignment_details").dataTable();
+    })
+</script>
+{%endblock%}

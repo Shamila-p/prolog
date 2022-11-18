@@ -1,0 +1,45 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form method="post" href="/add-assignment" enctype="multipart/form-data">
+{%csrf_token%}
+
+    <div class="row">
+        <div class="col-md-6">
+            <label  class="form-label">Topic</label>
+            <input type="text" class="form-control" name="topic">
+          </div>
+          <div class="col-md-6">
+            <label  class="form-label">Assignment type</label>
+            <select  class="form-select" name="type">
+                {%for type in types%}
+                <option selected value="{{type.0}}">{{type.1}}</option>
+                {%endfor%}
+              </select>
+          </div>
+         
+          <div class="col-md-6 mt-3">
+            <label  class="form-label">Submission Date</label>
+            <input type="date" class="form-control" name="submission" >
+          </div>
+          <div class="col-md-6">
+            <label  class="form-label">Module</label>
+            <select  class="form-select" name="modulename">
+                {%for module in modules%}
+                <option selected>{{module.modulename}}</option>
+                {%endfor%}
+              </select>
+          </div>
+            <div class="col-md-6 mt-3">
+                <label  class="form-label">Upload Question</label>
+                <input type="file" class="form-control" name="upload"  accept="file/*,application/pdf">
+            </div>
+          
+    </div>
+    <div class="row">
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary mt-5">ADD</button>
+      </div>
+    </div>
+</form>
+{%endblock%}

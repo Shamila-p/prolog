@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form method="post" href="/add-module" >
+    {%csrf_token%}
+  <div class="row">
+
+<div class="col-md-6">
+    <label  class="form-label">Module Name</label>
+    <input type="text" class="form-control" name="modulename">
+  </div>
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary mt-5">ADD</button>
+      </div>
+    </div>
+</form>
+{%endblock%}

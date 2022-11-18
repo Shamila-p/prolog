@@ -26,3 +26,5 @@ class Notes(auditModel):
             if category[0] == current_category:
                 value = category[1]
         return value
+
+
