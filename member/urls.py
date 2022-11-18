@@ -22,4 +22,17 @@ urlpatterns = [
     path('edit-profile/request/<int:user_id>',views.edit_profile_request,name="edit_profile_request"),
     path('accept-request/<int:user_id>',views.accept_request,name="accept_request"),
     path('decline-request/<int:user_id>',views.decline_request,name="decline_request"),
+
+    path('my-class',views.my_class,name="my_class"),
+    path('add-subject', views.add_subject, name="add_subject"),
+    path('edit-subject/<int:subject_id>', views.edit_subject, name="edit_subject"),
+    path('remove-subject/<int:subject_id>', views.remove_subject, name="remove_subject"),
+    path('subject-request',views.subject_request,name="subject_request"),
+    path('approve-request/<int:subject_id>',views.approve_request,name="approve_request"),
+
+    path('my-subjects',views.my_subjects,name="my_subjects"),
+    path('student-details/<int:subject_id>',views.student_details,name="student_details"),
+    
+
+
 ]

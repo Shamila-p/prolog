@@ -6,6 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    var jQuery_1_7_1 = $.noConflict(true);
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico '%}"/>
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{% static 'admin_vendor/bootstrap/css/bootstrap.min.css'%}">
@@ -21,6 +26,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/admin_util.css'%}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/admin.css'%}">
     <!--===============================================================================================-->
+
+   
 </head>
 <body>
 
@@ -44,15 +51,17 @@
 					</span>
 
 
-                <div class="wrap-input100 validate-input" data-validate="Enter username">
-                    <input class="input100" type="email" name="email" placeholder="Enter email" required>
+                <div class="wrap-input100" >
+                    <input class="input100" type="text" name="email" placeholder="Enter email" id="email" onkeyup=validateEmail()>
                     <span class="focus-input100" data-placeholder="&#xf207;"></span>
                 </div>
+                <small id="email-error" class="ml-2"></small>
 
-                <div class="wrap-input100 validate-input" data-validate="Enter password">
-                    <input class="input100" type="password" name="password" placeholder="Enter password" required>
+                <div class="wrap-input100 ">
+                    <input class="input100" type="password" name="password" placeholder="Enter password" id="password" onkeyup=validatePassword()>
                     <span class="focus-input100" data-placeholder="&#xf191;"></span>
                 </div>
+                <small id="password-error" class="ml-2"></small>
 
 
                 <div class="container-login100-form-btn">
@@ -73,6 +82,57 @@
 </div>
 
 
+<script>
+    var emailError = document.getElementById('email-error');
+    var passwordError = document.getElementById('password-error');
+
+    function validateEmail(){
+        var email = document.getElementById('email').value.trim();
+        if (email.length==0) {
+            emailError.innerHTML='Email is Required';
+            emailError.style.color='red'
+            return false;
+        }
+
+        if (!email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+            emailError.innerHTML='Email is Invalid';
+            emailError.style.color='red'
+            return false;
+        }
+        emailError.innerHTML='Email is valid';
+        emailError.style.color='green'
+        return true;
+    }
+    function validatePassword(){
+        var password = document.getElementById('password').value.trim();
+        if (password.length==0) {
+            passwordError.innerHTML='Password is Required';
+            passwordError.style.color='red'
+            return false;
+        }
+        
+        passwordError.innerHTML='Password is valid';
+        passwordError.style.color='green'
+        return true; 
+        
+    }
+    jQuery_1_7_1(document).on("submit", "form", function (e) {
+        validateEmail()
+        validatePassword()
+
+        
+        
+        if (validateEmail() && validatePassword()) {
+           
+        } else {
+            e.preventDefault();
+            swal('Invalid data! Ensure You have entered correct data');
+            return true;
+        }
+    });
+    
+
+</script>
 <!--===============================================================================================-->
 <script src="{% static 'admin_vendor/jquery/jquery-3.2.1.min.js'%}"></script>
 <!--===============================================================================================-->

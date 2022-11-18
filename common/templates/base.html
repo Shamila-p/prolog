@@ -17,6 +17,7 @@
   <!-- endinject -->
   <!-- Layout styles -->
   <link rel="stylesheet" href="{% static 'css/style.css'%}">
+  <link rel="stylesheet" href="{% static 'css/modal.css'%}">
   <!-- End layout styles -->
   <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}" />
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
@@ -217,19 +218,48 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/list-students">
-              <span class="menu-title">Add Marks</span>
+            <a class="nav-link" href="/subject-request">
+              <span class="menu-title">Subjects</span>
+              <i class="mdi mdi-recycle menu-icon"></i>
+            </a>
+          </li>
+          
+          
+          {%endif%}
+          {%if request.user.role == 'TR' and is_tutor %}
+          {%if not request.user.role == 'HD' %}
+          <li class="nav-item">
+            <a class="nav-link" href="/my-class">
+              <span class="menu-title">My class</span>
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
-          {%elif request.user.role == 'TR' and tutor is not True %}
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="/list-students">
               <span class="menu-title">List Students</span>
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
-          
+          <li class="nav-item">
+            <a class="nav-link" href="/my-subjects">
+              <span class="menu-title">My Subjects</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <span class="menu-title">Add Marks</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          {%elif request.user.role == 'TR' and  not is_tutor  %}
+          <li class="nav-item">
+            <a class="nav-link" href="/list-students">
+              <span class="menu-title">List Students</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          {%endif%}
           {%endif%}
 
         </ul>

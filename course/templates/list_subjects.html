@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+          <a href="/add-subject" class="btn btn-primary" type="submit">ADD SUBJECT
+            <i class="mdi mdi-plus icon-sm align-middle"></i></a>
+    </div>
+</div>
+<div class="row ">
+  {%for subject in subjects%}
+  <div class="col-md-4 mt-5">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Subject Name: {{subject.subjectname}}</h5>
+        <!-- <a href="#" class="btn btn-primary">EDIT</a> -->
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+</div>
+
+{%endblock%}

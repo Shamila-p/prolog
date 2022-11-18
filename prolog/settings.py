@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'access.apps.AccessConfig',
     'member.apps.MemberConfig',
     'common.apps.CommonConfig',
-    'course.apps.CourseConfig'
+    'course.apps.CourseConfig',
+    'StudyMaterials.apps.StudymaterialsConfig',
 ]
 AUTH_USER_MODEL = 'member.User'
 MIDDLEWARE = [
@@ -64,6 +65,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR,'access/templates'),
             os.path.join(BASE_DIR,'common/templates'),
             os.path.join(BASE_DIR,'member/templates'),
+            os.path.join(BASE_DIR,'StudyMaterials/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -72,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'course.context_processor.is_tutor'
             ],
         },
     },

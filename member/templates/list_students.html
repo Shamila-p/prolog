@@ -18,9 +18,11 @@
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Admission Number</th>
+        {%if not is_tutor%}
         <th scope="col">Class</th>
         <th scope="col">Semester</th>
         <th scope="col">Department</th>
+        {%endif%}
         <th scope="col">Status</th>
         <th scope="col">Mobile</th>
         <th scope="col">Email</th>
@@ -39,9 +41,11 @@
       <tr>
         <td>{{student.user.first_name}}</td>
         <td>{{student.admsn_no}}</td>
+        {%if not is_tutor%}
         <td>{{student.batch.classname}}</td>
         <td>{{student.batch.Semester.semname}}</td>
         <td>{{student.user.department.dname}}</td>
+        {%endif%}
         <td>
          
 
@@ -133,6 +137,45 @@
                 {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
         </td>
       </tr>
+      {%endfor%}
+     
+      {%elif request.user.role == 'TR' and is_tutor %}
+      {%for student in tutor_students%}
+      <td>{{student.user.first_name}}</td>
+      <td>{{student.admsn_no}}</td>
+      <td>{{student.user.phone}}</td>
+      <td></td>
+      <td>{{student.user.email}}</td>
+      <td>{{student.parent_name}}</td>
+      <td>{{student.parent_mobile}}</td>
+      <td><img src="{{student.user.profile_image_url}}" alt=""></td>
+       
+        
+        <td>                         
+
+             <a class="btn btn-primary btn-sm"  href="/edit-student/{{student.user.id}}" type="submit">EDIT</form>
+         </td>
+        <td>                         
+          <form method="post" action="/approve-student/{{student.user.id}}">
+              {%csrf_token%}<button class="btn btn-primary btn-sm" type="submit">APPROVE/DISAPPROVE</form>
+         </td>
+         <td>  
+         {%for edit in edits%}
+
+          {%if edit.user_id == id%}
+          <a class="btn btn-primary btn-sm"  href="/edit-profile/request/{{student.user.id}}" type="submit">EDIT REQUESTS</a>
+          {%endif%}
+      {%endfor%}
+
+      </td>
+
+        
+        <td>
+            <form method="post" action="/remove-student/{{student.user.id}}">
+                {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
+        </td>
+      </tr>
+
       {%endfor%}
       {%endif%}
     </tbody>

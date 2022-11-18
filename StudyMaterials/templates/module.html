@@ -1,0 +1,87 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8"></div>
+  <div class="col-md-4">
+    <a href="/add-materials/{{module_name}}" class="btn btn-primary" type="submit">ADD MATERIALS
+      <i class="mdi mdi-plus icon-sm align-middle"></i></a>
+  </div>
+ 
+</div>
+<div class="row">
+    <div class="col-md-8"></div>
+   
+    </div>
+    <div class="table-responsive mt-5">
+  <table class="table" id="edit_requests">
+      <thead>
+        <tr>
+          <th scope="col">Upladed File</th>
+          <th scope="col">Category</th>
+          <th scope="col">Uploaded Date</th>
+          <th scope="col"></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>    
+      </tbody>
+{%for material in materials%}
+
+      <tr>
+       
+    <td>{{material.filename}}</td>
+    <td>{{material.category_value}}</td>
+    <td>{{material.uploaded_date}}</td>
+    <td>
+      
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalForm">
+  EDIT
+</button>
+<div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="ModalFormLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="myform bg-dark">
+              <h1 class="text-center">EDIT FORM</h1>
+              <form action="/edit-materials/{{material.id}}" method="post" enctype="multipart/form-data">
+                {% csrf_token%}
+                  <div class="mb-3 mt-4">
+                      <label class="form-label">File Name</label>
+                      <input type="text" class="form-control" name="filename" value="{{material.filename}}">
+                  </div>
+                  <div class="mb-3">
+                    <label  class="form-label">Category</label>
+                    <select  class="form-select" name="category">
+                        {%for category in categories%}
+                        <option selected value="{{category.0}}">{{category.1}}</option>
+                        {%endfor%}
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                      <label  class="form-label">Upload Note</label>
+                      <input type="file" class="form-control" name="upload"  accept="file/*,audio/*,video/*,image/*,application/pdf" value="{{material.filepath}}">
+                  </div>
+                  <button type="submit" class="btn btn-light mt-3">EDIT</button>
+              </form>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+    </td>
+    <td>
+      <form method="post" action="/remove-materials/{{material.id}}">
+        {%csrf_token%}<button class="btn btn-danger btn-md" type="submit">Remove</form>
+    </td>
+
+
+
+</tr>
+{%endfor%}
+     
+  
+    </table>
+  </div>
+{%endblock%}

@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form method="post" href="/add-subject">
+{%csrf_token%}
+<div class="col-md-6">
+    <label class="form-label">Subject Name</label>
+    <input type="text" class="form-control" name="subject_name">
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Subject Code</label>
+    <input type="text" class="form-control" name="subject_code">
+  </div>
+  <div class="col-md-6">
+    <label for="inputState" class="form-label">Teacher</label>
+    <select id="inputState" class="form-select" name="assigned">
+    {%for teacher in teachers %}
+      <option selected value="{{teacher.id}}">{{teacher.first_name}}</option>
+    {%endfor%}
+    </select>
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Class</label>
+    <input type="text" class="form-control" name="class" value="{{class_belongs_to.classname}}"  disabled>
+  </div>
+    <button class="btn btn-primary mt-5">  ADD</button>
+
+</form>
+{%endblock%}

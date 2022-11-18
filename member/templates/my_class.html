@@ -1,0 +1,52 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<h1>{{teacher.classname}}</h1>
+<h3>{{teacher.Semester.semname}}</h3>
+<h2>Allocated Subjects</h2>
+<a href="/add-subject" class="btn btn-primary" type="submit">ADD SUBJECT
+    <i class="mdi mdi-plus icon-sm align-middle"></i></a>
+<div class="row">
+    <div class="col-md-8"></div>
+   
+    </div>
+    <div class="table-responsive">
+  <table class="table" id="edit_requests">
+      <thead>
+        <tr>
+          <th scope="col">Subject Name</th>
+          <th scope="col">Subject Code</th>
+          <th scope="col">Assigned Teacher</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>    
+      </tbody>
+      {%for subject in subject_details%}
+
+      <tr>
+       
+        <td>{{subject.subjectname}}</td>
+        <td>{{subject.subjectcode}}</td>
+        <td>{{subject.assigned_to.first_name}}</td>
+
+  
+        <td>                         
+
+            <a class="btn btn-primary btn-sm"  href="/edit-subject/{{subject.id}}" type="submit">EDIT</form>
+        </td>
+       <td>
+        <form method="post" action="/remove-subject/{{subject.id}}">
+          {%csrf_token%}<button class="btn btn-primary btn-sm" type="submit">REMOVE</form>
+         </td>
+  
+  
+      </tr>
+     
+      
+      {%endfor%}
+  
+    </table>
+    <a href="/add-subject" class="btn btn-primary" type="submit">Create Time Table</a>
+  </div>
+{%endblock%}

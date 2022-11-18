@@ -45,12 +45,16 @@ def forgot_password(request):
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [email]
             send_mail( subject, message, email_from, recipient_list )
-            return redirect('login')
+            return redirect('after')
+
+def after(request):
+    if request.method=='GET':
+        return render(request,'after.html')
 
 def reset_password(request,reset_id):
     if request.method == 'GET':
-        if not ForgotPassword.objects.filter(id=reset_id).exists():
-            return HttpResponse('Unauthorized', status=401)
+        if not ForgotPassword.objects.filter(uuid=reset_id).exists():
+            return HttpResponse('Sorry, this link is no more available', status=401)
         return render(request,'reset_password.html')
     else:
         new=request.POST.get('password')
@@ -61,9 +65,10 @@ def reset_password(request,reset_id):
             user=User.objects.get(id=forgot.user_id)
             user.set_password(new)
             user.save()
+            forgot.delete()
             return redirect('login')
         else:
-            messages.error(request,"Two passwords doesnt match")
+            messages.error(request,"Two passwords doesn't match")
             return redirect('reset_password')
 
 def logout(request):

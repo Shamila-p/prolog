@@ -2,7 +2,7 @@ from turtle import position
 from django.shortcuts import render, redirect,HttpResponse
 
 from member.models import User
-from .models import Class, Department, Semester
+from .models import Class, Department, EditSubject, Semester,Subject
 from django.contrib.auth.decorators import login_required
 
 
@@ -27,7 +27,8 @@ def add_department(request):
         return HttpResponse('Unauthorized', status=401)
     else:
         if request.method == 'GET':
-            teachers=User.objects.filter(role=User.TEACHER,position=User.HOD)
+            teachers=User.objects.filter(position=User.HOD)
+            print(teachers)
             context={'teachers':teachers}
             return render(request, 'add_department.html',context)
         if request.method == 'POST':
@@ -45,7 +46,7 @@ def edit_department(request, id):
     else:
         if request.method == 'GET':
             department = Department.objects.get(id=id)
-            teachers=User.objects.filter(role=User.TEACHER,position=User.HOD)
+            teachers=User.objects.filter(position=User.HOD)
             context = {'department': department,'teachers':teachers}
             return render(request, 'edit_department.html', context)
         if request.method == 'POST':
@@ -143,8 +144,9 @@ def add_class(request):
             departments = Department.objects.all()
             semesters = Semester.objects.all()
             hod=User.objects.get(id=request.user.id)
+
             teachers=User.objects.filter(department_id=hod.department_id,role=User.TEACHER).exclude(position=User.HOD)
-            context = {'departments': departments, 'semesters': semesters,'teachers':teachers,'tutor':tutor}
+            context = {'departments': departments, 'semesters': semesters,'teachers':teachers}
             return render(request, 'add_class.html', context)
         if request.method == 'POST':
             class_name = request.POST.get('name')
@@ -173,7 +175,9 @@ def edit_class(request, id):
             batch = Class.objects.get(id=id)
             departments = Department.objects.all()
             semesters = Semester.objects.all()
+            # if request.user.role == User.TEACHER and request.user.position == User.HOD:
             teachers=User.objects.filter(department_id=hod.department_id,role=User.TEACHER).exclude(position=User.HOD)
+                # context={}
             context = {'batch': batch, 'departments': departments,
                     'semesters': semesters,'teachers':teachers}
             return render(request, 'edit_class.html', context)
@@ -203,3 +207,11 @@ def remove_class(request, id):
             batch = Class.objects.get(id=id)
             batch.delete()
             return redirect('list_classes')
+
+
+# def list_subjects(request):
+#     if request.method=='GET':
+#         subjects=Subject.objects.all()
+#         context={'subjects':subjects}
+#         return render(request,'list_subjects.html',context)
+

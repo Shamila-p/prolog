@@ -34,6 +34,7 @@
         <label for="inputState" class="form-label">Tutor</label>
         <select id="inputState" class="form-select" name="tutor">
         {%for teacher in teachers %}
+        
           <option selected value="{{teacher.id}}">{{teacher.first_name}}</option>
         {%endfor%}
         </select>

@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
+    path('',include('StudyMaterials.urls')),
     path('',include('course.urls')),
     path('',include('common.urls')),
     path('',include('access.urls')),

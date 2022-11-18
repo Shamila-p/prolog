@@ -1,0 +1,53 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8"></div>
+ 
+  </div>
+  <div class="table-responsive">
+<table class="table" id="edit_requests">
+    <thead>
+      <tr>
+        <th scope="col">Tutor</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Subject Code</th>
+        <th scope="col">Assigned Teacher</th>
+        <th scope="col">Class</th>
+
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>    
+    </tbody>
+    {%for subject in subjects%}
+
+    <tr>
+     
+      <td>{{subject.tutor.first_name}}</td>
+      <td>{{subject.subjectname}}</td>
+      <td>{{subject.subjectcode}}</td>
+      <td>{{subject.assigned_to.first_name}}</td>
+      <td>{{subject.class_belongs.classname}}</td>
+
+      <td>
+        <form method="post" action="/approve-request/{{subject.id}}">
+          {%csrf_token%}<button class="btn btn-primary btn-sm" type="submit">APPROVE</form>
+     </td>
+
+
+    </tr>
+    {%endfor%}
+   
+    
+
+  </table>
+</div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#edit_requests").dataTable();
+    })
+</script>
+{%endblock%}

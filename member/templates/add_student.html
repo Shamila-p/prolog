@@ -11,7 +11,7 @@
       <label for="inputEmail4" class="form-label">Admission Number</label>
       <input type="text" class="form-control" name="admsn_no">
     </div>
-    {%if request.user.position == 'HD' %}
+    {%if request.user.position == 'HD' or is_tutor%}
     <div class="col-md-6">
     <label  class="form-label">Department</label>
     <input type="text" class="form-control" name="name" value="{{request.user.department.dname}}" disabled>
@@ -34,14 +34,18 @@
         {%endfor%}
         </select>
       </div>
-      <div class="col-md-4">
-        <label for="inputState" class="form-label">Class</label>
-        <select id="inputState" class="form-select" name="batch">
-        {%for batch in batches %}
-          <option selected value="{{batch.id}}">{{batch.classname}}</option>
-        {%endfor%}
-        </select>
-      </div>
+      {%if is_tutor%}
+      <div class="col-md-6">
+        <label  class="form-label">Class</label>
+        <input type="text" class="form-control" name="class" value="CSE" disabled>
+        </div>
+        {%elif request.user.role == 'PR' or request.user.position == 'HD'%}
+        <div class="col-md-6">
+          <label  class="form-label">Class</label>
+          <input type="text" class="form-control" name="class" >
+          </div>
+      {%endif%}
+      
     <div class="col-md-6">
       <label for="inputPassword4" class="form-label">Email</label>
       <input type="email" class="form-control" name="email" >

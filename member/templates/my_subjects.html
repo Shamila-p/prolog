@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        {%for class in classes%}
+        <div class="col-md-4 mt-5">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body ">
+                    <a href="/student-details/{{class.id}}"> 
+                    <h4 class="card-title mx-4">{{class.subjectname}} - {{class.subjectcode}}</h4>
+                  <h5 class="card-title mx-5">{{class.class_belongs.Semester.semname}} {{class.class_belongs.classname}}</h5>
+                </a>
+              </div>
+        </div>
+        {%endfor%}
+
+    </div>
+
+</div>
+{%endblock%}

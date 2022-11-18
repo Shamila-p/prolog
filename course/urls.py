@@ -17,8 +17,5 @@ urlpatterns = [
     path('edit-class/<int:id>', views.edit_class, name="edit_class"),
     path('remove-class/<int:id>', views.remove_class, name="remove_class"),
 
-
-
-
-
+    # path('list-subjects', views.list_subjects, name="list_subjects"),
 ]

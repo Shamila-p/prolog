@@ -1,12 +1,11 @@
 from asyncio.windows_events import NULL
-from contextlib import nullcontext
-from turtle import position
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from course.models import Class, Department, Semester
+from course.models import Class, Department, EditSubject, Semester,Subject
 from course.views import department
 from member.models import EditProfile, Student, User
 from django.contrib import messages
+from django.db.models import Q
 
 
 @login_required
@@ -14,16 +13,16 @@ def profile(request):
     if request.method == 'GET':
         if request.user.role == User.STUDENT:
             student = Student.objects.get(user_id=request.user.id )
-            context = {'title': 'Profile', 'student': student}
+            context = { 'student': student,'title': 'Profile'}
         elif request.user.role == User.TEACHER:
             teacher = User.objects.get(id=request.user.id)
-            context = {'title': 'Profile', 'teacher': teacher}
+            context = { 'teacher': teacher,'title': 'Profile'}
         elif request.user.role == User.PRINCIPAL:
             principal = User.objects.get(role=User.PRINCIPAL)
-            context = {'title': 'Profile', 'principal': principal}
-        # tutor=Class.objects.filter(tutor_id=request.user.id).exists()
-        # context={'tutor':tutor}
-        
+            context = {'principal': principal,'title': 'Profile'}
+        # is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
+        # teacher = User.objects.get(id=request.user.id)
+        # context={'teacher':teacher,}
         return render(request, 'profile.html', context)
 
 
@@ -268,22 +267,31 @@ def remove_teacher(request, user_id):
 
 @login_required
 def list_students(request):
-    if not (request.user.role == User.PRINCIPAL or request.user.role == User.TEACHER  or  request.user.position == User.HOD):
+    if not (request.user.role == User.PRINCIPAL or request.user.role == User.TEACHER   or  request.user.position == User.HOD):
         return HttpResponse('Unauthorized', status=401)
     else:
         if request.method == 'GET':
-            students = Student.objects.all()
-            edits=EditProfile.objects.all()
-            hod=User.objects.get(id=request.user.id)
-            student_belongs=User.objects.filter(role=User.STUDENT,department_id=hod.department_id)
-            # is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
-            student_list=[]
-            for student in student_belongs:
-                student_list.append(student.id)
-            studentslist=Student.objects.filter(user_id__in=student_list)
-            context = {'students': students,'edits':edits,'student_belongs':student_belongs,'studentslist':studentslist}
+            if request.user.role == User.PRINCIPAL or request.user.position ==User.HOD:
+                students = Student.objects.all()
+                edits=EditProfile.objects.all()
+                hod=User.objects.get(id=request.user.id)
+                student_belongs=User.objects.filter(role=User.STUDENT,department_id=hod.department_id)
+                student_list=[]
+                for student in student_belongs:
+                    student_list.append(student.id)
+                studentslist=Student.objects.filter(user_id__in=student_list)
+                context={'students': students,'edits':edits,'student_belongs':student_belongs,'studentslist':studentslist}
+            is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
+            
+            if request.user.role==User.TEACHER and is_tutor:
+                tutor=User.objects.get(id=request.user.id)
+                class_students=Class.objects.get(tutor_id=tutor.id)
+                tutor_students=Student.objects.filter(batch_id=class_students.id)
+                context={'is_tutor':is_tutor,'tutor_students':tutor_students}
+            # tutor_student_list=[]
+            # for student in tutor_students:
+            #     tutor_student_list.append(student.id)
             return render(request, 'list_students.html', context)
-
 
 @login_required
 def add_student(request):
@@ -294,6 +302,10 @@ def add_student(request):
             departments = Department.objects.all()
             batches = Class.objects.all()
             semesters = Semester.objects.all()
+            is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
+            if request.user.role == User.TEACHER and is_tutor:
+                student=Class.objects.get(tutor_id=request.user.id)
+                context={'student':student}
             context = {'departments': departments,
                        'batches': batches, 'semesters': semesters}
             return render(request, 'add_student.html', context)
@@ -302,7 +314,8 @@ def add_student(request):
             admsn_no = request.POST.get('admsn_no')
             department = request.POST.get('department')
             semester = request.POST.get('semester')
-            batch = request.POST.get('batch')
+            batch = request.POST.get('class')
+            print(batch)
             email = request.POST.get('email')
             mobile = request.POST.get('mobile')
             password = request.POST.get('password')
@@ -313,7 +326,6 @@ def add_student(request):
 
             profile_image = request.FILES['profile_image']
             hod=User.objects.get(id=request.user.id)
-
             if request.user.role==User.PRINCIPAL:
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                             phone=mobile,
@@ -395,3 +407,96 @@ def remove_student(request, user_id):
             student.delete()
             user.delete()
             return redirect('list_students')
+
+
+
+def my_class(request):
+    if request.method == 'GET':
+        teacher=Class.objects.get(tutor_id=request.user.id)
+        subject_details=Subject.objects.filter(tutor_id=request.user.id)
+        context={'teacher':teacher,'subject_details':subject_details}
+        return render(request,'my_class.html',context)
+
+def add_subject(request):
+    if request.method=='GET':
+        teacher=User.objects.get(id=request.user.id)
+        class_belongs_to=Class.objects.get(tutor_id=request.user.id)
+        # |Q(id=teacher.id)
+        teachers=User.objects.filter(department_id=teacher.department_id,role=User.TEACHER).exclude(position=User.HOD)
+        context={'teachers':teachers,'class_belongs_to':class_belongs_to}
+        return render(request,'add_subject.html',context)
+    if request.method == 'POST':
+        subject_name=request.POST.get('subject_name')
+        subject_code=request.POST.get('subject_code')
+        print(subject_code)
+
+        assigned=request.POST.get('assigned')
+        class_belongs=Class.objects.get(tutor_id=request.user.id)
+        print(class_belongs)
+        batches=Class.objects.filter(classname=class_belongs.classname,Semester_id=class_belongs.Semester_id)
+        for batch in batches:
+            id=batch.id       
+        EditSubject.objects.create(subjectname=subject_name,subjectcode=subject_code,tutor_id=request.user.id,assigned_to_id=assigned,class_belongs_id=id)
+        return redirect('my_class')
+
+def edit_subject(request,subject_id):
+    if request.method=='GET':
+        subject=Subject.objects.get(id=subject_id)
+        teacher=User.objects.get(id=request.user.id)
+        teachers=User.objects.filter(department_id=teacher.department_id,role=User.TEACHER).exclude(Q(position=User.HOD)|Q(id=teacher.id))
+        context={'subject':subject,'teachers':teachers}
+        return render(request,'edit_subject.html',context)
+    if request.method == 'POST':
+        subject_name=request.POST.get('subject_name')
+        subject_code=request.POST.get('subject_code')
+        assigned=request.POST.get('assigned')
+        edit=Subject.objects.get(id=subject_id)
+        edit.subjectname=subject_name
+        edit.subjectcode=subject_code
+        edit.assigned_to_id=assigned
+        edit.save()
+        return redirect('my_class')
+
+def remove_subject(request,subject_id):
+     if request.method == 'POST':
+        edit=Subject.objects.get(id=subject_id)
+        edit.delete()
+        return redirect('my_class')
+
+def subject_request(request):
+    if request.method == 'GET':
+        subjects=EditSubject.objects.all()
+        # hod=User.objects.get(id=request.user.id)
+        # is_tutor=Class.objects.filter(department_id=hod.department_id)
+        # for tutor in is_tutor:
+        #     tutors=EditSubject.objects.all()
+        #     print(tutors)
+        #     if tutor.tutor_id in tutors.tutor_id:
+        #         t=tutor
+        #         print(t)
+        # tutor=User.objects.filter(department_id=hod.department_id,role=User.TEACHER)
+       
+       
+        context={'subjects':subjects}
+        return render(request,'subject_request.html',context)
+
+def approve_request(request,subject_id):
+    if request.method == 'POST':
+        edit=EditSubject.objects.get(id=subject_id)
+        Subject.objects.create(subjectname=edit.subjectname,subjectcode=edit.subjectcode,tutor_id=edit.tutor_id,assigned_to_id=edit.assigned_to_id,class_belongs_id=edit.class_belongs_id)
+        edit.delete()
+        return redirect('subject_request')
+
+def my_subjects(request):
+    if request.method == 'GET':
+        classes=Subject.objects.filter(assigned_to_id=request.user.id)
+        context={'classes':classes}
+        return render(request,'my_subjects.html',context)
+
+def student_details(request,subject_id):
+    if request.method == 'GET':
+        subject=Subject.objects.get(id=subject_id)
+        students=Student.objects.filter(batch_id=subject.class_belongs_id)
+        print(students)
+        context={'students':students}
+        return render(request,'student_details.html',context)

@@ -1,0 +1,48 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row mb-5">
+    <div class="col-md-3">
+        <a href="" class="btn btn-primary" type="submit">ATTENDENCE</a>
+    </div>
+    <div class="col-md-3">
+          <a href="/study-materials" class="btn btn-primary" type="submit">STUDY MATERIALS</a>
+    </div>
+    <div class="col-md-3">
+        <a href="" class="btn btn-primary" type="submit">MARKS</a>
+  </div>
+  <div class="col-md-3">
+    <a href="" class="btn btn-primary" type="submit">ASSIGNMENTS</a>
+</div>
+</div>
+<div class="table-responsive">
+<table class="table" id="student_details">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Admission Number</th>
+        <th scope="col">Mobile</th>
+        <th scope="col">Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        {%for student in students%}
+      <tr>
+        <td>{{student.user.first_name}}</td>
+        <td>{{student.admsn_no}}</td>
+        <td>{{student.user.phone}}</td>
+        <td>{{student.user.email}}</td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#student_details").dataTable();
+    })
+</script>
+{%endblock%}
