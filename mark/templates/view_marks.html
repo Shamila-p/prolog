@@ -8,6 +8,14 @@
         </div>
     
 </div>
+<div>
+{%for message in messages%}
+                <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+                    <span> {{message}}</span>
+
+                </div>
+  {%endfor%}
+</div>
 <div class="row mt-5">
 <table class="table " id="mark" class="mark">
   <thead>

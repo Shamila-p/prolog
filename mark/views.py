@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from mark.models import Mark
 from member.models import Student
 from course.models import Class, Subject
+from django.contrib import messages
 
 # Create your views here.
 def mark(request,class_id,subject_id):
@@ -39,7 +40,12 @@ def add_mark(request,class_id,subject_id,student_id):
         #     id=i
         # subject=Subject.objects.get(id=id.id)
         student=Student.objects.get(user_id=student_id)
-        Mark.objects.create(exam_type=exam_type,total_score=total_score,marked_score=scored_mark,subject_id=subject_id,teacher_id=request.user.id,student_id=student.id,class_belongs_id=class_id)
+        studentadded=Mark.objects.filter(student_id=student.id,class_belongs_id=class_id,subject_id=subject_id).exists()
+        print(studentadded)
+        if studentadded is True:
+            messages.error(request, "Mark of this student already added.If you are looking for editing option please click on edit button")
+        else:
+            Mark.objects.create(exam_type=exam_type,total_score=total_score,marked_score=scored_mark,subject_id=subject_id,teacher_id=request.user.id,student_id=student.id,class_belongs_id=class_id)
         return redirect('view_marks',class_id=class_id,subject_id=subject_id)
 
 

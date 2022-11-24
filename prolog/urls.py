@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
+    path('',include('notifications.urls')),
     path('',include('mark.urls')),
     path('',include('attendence.urls')),
     path('',include('assignment.urls')),

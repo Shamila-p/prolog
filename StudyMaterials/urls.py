@@ -8,4 +8,8 @@ urlpatterns = [
     path('class/<int:class_id>/subject/<int:subject_id>/study-materials/<str:module_name>/edit-material/<int:material_id>',views.edit_materials,name="edit_materials"),
     path('class/<int:class_id>/subject/<int:subject_id>/study-materials/<str:module_name>/remove-material/<int:material_id>',views.remove_materials,name="remove_materials"),
 
+    path('view-materials',views.view_materials,name="view_materials"),
+    path('list-materials',views.list_materials,name="list_materials"),
+
+
 ]

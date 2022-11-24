@@ -1,0 +1,47 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4"><a href="/add-subject" class="btn btn-primary" type="submit">VIEW MARKS</a></div>
+</div>
+
+<div class="table-responsive mt-5">
+  <table class="table" id="view_assignments">
+      <thead>
+        <tr>
+          <th scope="col">File Name</th>
+          <th scope="col">Module</th>
+          <th scope="col">Material Type</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>    
+      </tbody>
+      {%for material in materials%}
+
+      <tr>
+       
+        <td>{{material.filename}}</td>
+        <td>{{material.module}}</td>
+        <td>{{material.category_value}}</td>
+        <td>
+            <a href="{{material.filepath.url}}" download="{{material.filepath.url}}" class="btn btn-primary" type="submit">Download<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
+        </td>
+        
+        
+       
+       
+      </tr>  
+      {%endfor%}
+  
+    </table>
+  </div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#view_assignments").dataTable();
+    })
+</script>
+{%endblock%}

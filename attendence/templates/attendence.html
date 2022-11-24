@@ -8,6 +8,14 @@
         <input type="date" class="form-control" name="date" id="date">
     </div>
 </div>
+<div>
+  {%for message in messages%}
+                  <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+                      <span> {{message}}</span>
+  
+                  </div>
+    {%endfor%}
+  </div>
 <div class="row mt-5">
 <table class="table " id="attendence" class="attendence">
   <thead>
@@ -71,13 +79,13 @@
     
     $.ajax({
         type: 'POST',
-        url: 'add-attendence',
+        url: '/class/{{class_id}}/subject/{{subject_id}}/add-attendence',
         data:newJSON,
         datatype: 'json',
         
         success: function (data) {
           
-            window.location.replace('/attendence')
+            window.location.replace('/class/{{class_id}}/subject/{{subject_id}}/attendence')
         
         }
         

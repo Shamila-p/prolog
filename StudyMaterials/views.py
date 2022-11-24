@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 
 from StudyMaterials.models import Notes
+from member.models import Student
 
 
 
@@ -51,4 +52,19 @@ def remove_materials(request,material_id,class_id,subject_id,module_name):
         material=Notes.objects.get(id=material_id)
         material.delete()
         return redirect('module',module_name=module_name,class_id=class_id,subject_id=subject_id)
+
+def view_materials(request):
+    if request.method == 'GET':
+        student=Student.objects.get(user_id=request.user.id)
+        materials=Notes.objects.filter(class_belongs_id=student.batch_id)
+        context={'materials':materials}
+        return render(request,'view_materials.html',context)
+
+def list_materials(request):
+    if request.method == 'GET':
+        student=Student.objects.get(user_id=request.user.id)
+        materials=Notes.objects.filter(class_belongs_id=student.batch_id)
+        context={'materials':materials}
+        return render(request,'list_materials.html',context)
+
 

@@ -1,0 +1,15 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form method="post" action="">
+    <div class="col-md-4">
+        <label for="">Send To:</label>
+        <select id="inputState" class="form-select" name="send_to">
+        {%for semester in semesters %}
+          <option selected value="{{semester.id}}">{{semester.semname}}</option>
+        {%endfor%}
+        </select>
+    </div>
+    <textarea rows="5" cols="33" name="complaint"></textarea>
+</form>
+{%endblock%}

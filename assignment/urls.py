@@ -11,4 +11,7 @@ urlpatterns = [
     path('add-module',views.add_module,name="add_module"),
     path('remove-module/<int:module_id>',views.remove_module,name="remove_module"),
 
+    path('view-assignments',views.view_assignments,name="view_assignments"),
+    path('download/', views.download_file)
+
 ]

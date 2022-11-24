@@ -4,6 +4,7 @@ from django.shortcuts import render,redirect
 from course.models import Class, Subject
 from .models import Attendence
 from member.models import Student,User
+from django.contrib import messages
 
 # Create your views here.
 def attendence(request,class_id,subject_id):
@@ -17,7 +18,7 @@ def attendence(request,class_id,subject_id):
         context={'students':students,'class_id':class_id,'subject_id':subject_id}
         return render(request,'attendence.html',context)
     
-def add_attendence(request):
+def add_attendence(request,class_id,subject_id):
     if request.method == 'POST':
         date=request.POST['date']
         bb=request.POST['attendences']
@@ -33,5 +34,9 @@ def add_attendence(request):
             user=User.objects.get(first_name=name)
             student=Student.objects.get(user_id=user.id)
             Attendence.objects.create(date=date,subject_id=subject.id,is_present=is_present,teacher_id=request.user.id,student_id=student.id)
+            messages.info(request,"attendence added")
             return JsonResponse({'status': 'success'})
+
+
+
 

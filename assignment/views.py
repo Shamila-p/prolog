@@ -1,5 +1,7 @@
-from django.shortcuts import render,redirect
-
+import mimetypes
+import os
+from django.shortcuts import render,redirect,HttpResponse
+from member.models import Student
 from assignment.models import Assignment,module
 from course.models import Class, Subject
 
@@ -85,3 +87,20 @@ def remove_module(request,module_id):
     modulename.delete()
     return redirect('list_module')
     
+
+def view_assignments(request):
+    if request.method == 'GET':
+        student=Student.objects.get(user_id=request.user.id)
+        assignments=Assignment.objects.filter(class_belongs_id=student.batch_id)
+        context={'assignments':assignments}
+        return render(request,'view_assignments.html',context)
+
+def download_file(request):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    filename = 'test.txt'
+    filepath = BASE_DIR + '/downloadapp/Files/' + filename
+    path = open(filepath, 'r')
+    mime_type, _ = mimetypes.guess_type(filepath)
+    response = HttpResponse(path, content_type=mime_type)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    return response

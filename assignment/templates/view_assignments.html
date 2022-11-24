@@ -1,0 +1,62 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4"><a href="/add-subject" class="btn btn-primary" type="submit">VIEW MARKS</a></div>
+</div>
+
+<div class="table-responsive mt-5">
+  <table class="table" id="view_assignments">
+      <thead>
+        <tr>
+          <th scope="col">Topic</th>
+          <th scope="col">Subject</th>
+          <th scope="col">Assigned By</th>
+          <th scope="col">Assigned Date</th>
+          <th scope="col">Submission Date</th>
+          <th scope="col">Assignment Type</th>
+          <th scope="col">Questions</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>    
+      </tbody>
+      {%for assignment in assignments%}
+
+      <tr>
+       
+        <td>{{assignment.topic}}</td>
+        <td>{{assignment.subject.subjectname}}</td>
+        <td>{{assignment.teacher.first_name}}</td>
+        <td>{{assignment.created_date}}</td>
+        <td>{{assignment.submission_date}}</td>
+        <td>{{assignment.type_value}}</td>
+        <td>
+            <a href="{{assignment.questions.url}}" download="{{assignment.questions.url}}" class="btn btn-primary" type="submit">Download<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
+        </td>
+        <td>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="myfile" >
+                <a href="upload-file/"  class="btn btn-warning" type="submit">Upload<i class="mdi mdi-arrow-up icon-sm align-middle"></i></a>
+              </form>
+        </td>
+        <td>
+            
+        </td>
+       
+       
+      </tr>  
+      {%endfor%}
+  
+    </table>
+  </div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#view_assignments").dataTable();
+    })
+</script>
+{%endblock%}
