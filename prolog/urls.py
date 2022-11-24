@@ -19,6 +19,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
+    path('',include('mark.urls')),
+    path('',include('attendence.urls')),
     path('',include('assignment.urls')),
     path('',include('StudyMaterials.urls')),
     path('',include('course.urls')),

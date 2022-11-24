@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'course.apps.CourseConfig',
     'StudyMaterials.apps.StudymaterialsConfig',
     'assignment.apps.AssignmentConfig',
+    'attendence.apps.AttendenceConfig',
+    'mark.apps.MarkConfig',
+    
     
 ]
 AUTH_USER_MODEL = 'member.User'
@@ -69,6 +72,8 @@ TEMPLATES = [
             os.path.join(BASE_DIR,'member/templates'),
             os.path.join(BASE_DIR,'StudyMaterials/templates'),
             os.path.join(BASE_DIR,'assignment/templates'),
+            os.path.join(BASE_DIR,'attendence/templates'),
+            os.path.join(BASE_DIR,'mark/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

@@ -1,0 +1,33 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form method="post" href="/add-mark">
+{%csrf_token%}
+
+    <div class="row">
+        
+          <div class="col-md-6">
+            <label  class="form-label">Exam Type</label>
+            <select  class="form-select" name="type">
+                {%for exam in exams%}
+                <option selected value="{{exam.0}}">{{exam.1}}</option>
+                {%endfor%}
+              </select>
+          </div>
+            <div class="col-md-6 mt-3">
+                <label  class="form-label">Total Mark</label>
+                <input type="text" class="form-control" name="tmark"  >
+            </div>
+            <div class="col-md-6 mt-3">
+                <label  class="form-label"> Scored Mark</label>
+                <input type="text" class="form-control" name="smark"  >
+            </div>
+          
+    </div>
+    <div class="row">
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary mt-5">ADD</button>
+      </div>
+    </div>
+</form>
+{%endblock%}

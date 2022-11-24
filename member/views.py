@@ -493,10 +493,10 @@ def my_subjects(request):
         context={'classes':classes}
         return render(request,'my_subjects.html',context)
 
-def student_details(request,subject_id):
-    if request.method == 'GET':
+def student_details(request,class_id,subject_id):
+     print(subject_id)
+     if request.method == 'GET':
         subject=Subject.objects.get(id=subject_id)
-        students=Student.objects.filter(batch_id=subject.class_belongs_id)
-        print(students)
-        context={'students':students}
+        students=Student.objects.filter(batch_id=class_id)
+        context={'students':students,'subject':subject}
         return render(request,'student_details.html',context)

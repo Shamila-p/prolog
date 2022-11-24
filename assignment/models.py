@@ -1,7 +1,8 @@
 from django.db import models
 from common.models import auditModel
-from course.models import Subject
+from course.models import Class, Subject
 from asyncio.windows_events import NULL
+from member.models import User
 
 
 # Create your models here.
@@ -19,6 +20,8 @@ class Assignment(auditModel):
     submission_date=models.DateField()
     module=models.CharField(max_length=15)
     subject=models.ForeignKey(Subject, null=True, on_delete=models.CASCADE)
+    teacher=models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    class_belongs=models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
     type=models.CharField(
         max_length=2, choices=ASSIGNMENT_CHOICES, null=False,default=NULL)
     questions=models.FileField(upload_to='files/', null=True)

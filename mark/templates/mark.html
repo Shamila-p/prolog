@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8"></div>
+        <div class="col-md-4">
+          <a href="/class/{{class_id}}/subject/{{subject_id}}/view-marks" class="btn btn-primary" type="submit">VIEW</a>
+        </div>
+    
+</div>
+<div class="row mt-5">
+<table class="table " id="mark" class="mark">
+  <thead>
+    <tr>
+      <th scope="col">Student Name</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+   {%for student in students%}
+    <tr>
+      <td id="name">{{student.user.first_name}}</td>
+      <td><a href="/class/{{class_id}}/subject/{{subject_id}}/mark/student/{{student.user.id}}/add-mark" class="btn btn-primary">ADD MARK</a></td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+</div>
+{%endblock%}

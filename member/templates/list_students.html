@@ -22,13 +22,15 @@
         <th scope="col">Class</th>
         <th scope="col">Semester</th>
         <th scope="col">Department</th>
-        {%endif%}
         <th scope="col">Status</th>
+
+        {%endif%}
         <th scope="col">Mobile</th>
         <th scope="col">Email</th>
         <th scope="col">Parent Name</th>
         <th scope="col">Parent Mobile</th>
         <th scope="col">Profile image</th>
+        <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>
@@ -45,7 +47,6 @@
         <td>{{student.batch.classname}}</td>
         <td>{{student.batch.Semester.semname}}</td>
         <td>{{student.user.department.dname}}</td>
-        {%endif%}
         <td>
          
 
@@ -56,6 +57,8 @@
           {%endif%}
        
         </td>
+        {%endif%}
+        
         <td>{{student.user.phone}}</td>
         <td>{{student.user.email}}</td>
         <td>{{student.parent_name}}</td>
@@ -96,7 +99,7 @@
         <td>{{student.batch.classname}}</td>
         <td>{{student.batch.Semester.semname}}</td>
         <td>{{student.user.department.dname}}</td>
-        <td>
+        <!-- <td>
          
 
           {%if student.user.is_active is True%}
@@ -105,7 +108,7 @@
           <button class="btn btn-danger" type="submit">Dispproved</button>
           {%endif%}
        
-        </td>
+        </td> -->
         <td>{{student.user.phone}}</td>
         <td>{{student.user.email}}</td>
         <td>{{student.parent_name}}</td>

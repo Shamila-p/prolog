@@ -5,12 +5,12 @@ from course.models import Class, Subject
 
 # Create your views here.
 
-def assignment(request):
+def assignment(request,class_id,subject_id):
     if request.method == 'GET':
-        assignments=Assignment.objects.all()
-        context={'assignments':assignments}
+        assignments=Assignment.objects.filter(teacher_id=request.user.id,subject_id=subject_id,class_belongs_id=class_id)
+        context={'assignments':assignments,'subject_id':subject_id,'class_id':class_id}
         return render(request,'assignment.html',context)
-def add_assignment(request):
+def add_assignment(request,class_id,subject_id):
     if request.method == 'GET':
         module_list=module.objects.all()
         context={'types':Assignment.ASSIGNMENT_CHOICES,'modules':module_list}
@@ -21,12 +21,15 @@ def add_assignment(request):
         modulename = request.POST.get('modulename')
         submission = request.POST.get('submission')
         upload = request.FILES.get('upload')
-        class_belongs=Class.objects.get(tutor_id=request.user.id)
-        subjects=Subject.objects.filter(assigned_to_id=request.user.id ,class_belongs_id=class_belongs.id)
-        for subject in subjects:
-            id=subject.id
-        Assignment.objects.create(topic=topic,submission_date=submission,type=type,questions=upload,subject_id=id,module=modulename)
-        return redirect('assignment')
+        # class_belongs=Class.objects.get(tutor_id=request.user.id)
+        # subjects=Subject.objects.filter(assigned_to_id=request.user.id ,class_belongs_id=class_belongs.id)
+        # for subject in subjects:
+        #     print(subject)
+        #     id=subject.id
+        #     print(id)
+        subject=subject_id
+        Assignment.objects.create(topic=topic,submission_date=submission,type=type,questions=upload,module=modulename,teacher_id=request.user.id,subject_id=subject,class_belongs_id=class_id)
+        return redirect('assignment',subject_id=subject_id,class_id=class_id)
 
 
 def edit_assignment(request,assignment_id):
@@ -49,13 +52,14 @@ def edit_assignment(request,assignment_id):
         if upload is not None:
             assignment.questions=upload
         assignment.save()
-        return redirect('assignment')
+        return redirect('assignment',subject_id=assignment.subject_id,class_id=assignment.class_belongs_id)
 
 def remove_assignment(request,assignment_id):
+    print(assignment_id)
     if request.method == 'POST':
         assignment=Assignment.objects.get(id=assignment_id)
         assignment.delete()
-        return redirect('assignment')
+        return redirect('assignment',subject_id=assignment.subject_id,class_id=assignment.class_belongs_id)
 
 
     

@@ -1,0 +1,104 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+    
+    <div class="col-md-6">
+        <label class="form-label">Choose Date</label>
+        <input type="date" class="form-control" name="date" id="date">
+    </div>
+</div>
+<div class="row mt-5">
+<table class="table " id="attendence" class="attendence">
+  <thead>
+    <tr>
+      <th scope="col">Student Name</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+   {%for student in students%}
+    <tr>
+      <td id="name">{{student.user.first_name}}</td>
+      <td>
+            <input type="checkbox" class="styled-checkbox" name="check" id="check"  >
+      </td>
+      <td><a href="" class="btn btn-primary">Edit</a></td>
+    </tr>
+{%endfor%}
+  </tbody>
+</table>
+</div>
+<div class="row">
+  <button class=" my_button"  onclick="greet()">ADD</button>
+</div>
+
+<script>
+
+  function greet() {
+    var date=document.getElementById('date')
+    var myTab = document.getElementById('attendence')
+    var rowLength = myTab.rows.length;
+    list=[]
+    
+    for (i = 1; i < rowLength; i++){
+
+      //gets cells of current row  
+       var oCells = myTab.rows.item(i).cells;
+
+        //gets amount of cells of current row
+       var cellLength = oCells.length;
+
+       
+       var cellVal1 = oCells.item(0).innerHTML
+       var cellVal2 = oCells.item(1).childNodes[1].checked
+       
+       console.log(cellVal1)
+       console.log(cellVal2) 
+
+       const obj={name:cellVal1,is_present:cellVal2}
+       //const myJSON = JSON.stringify(obj);
+       list.push(obj)
+
+       
+    } 
+    console.log(list) 
+    const newJSON={'attendences':JSON.stringify(list),'csrfmiddlewaretoken':'{{csrf_token}}','date':date.value}
+    
+    console.log(newJSON)
+    
+    
+    $.ajax({
+        type: 'POST',
+        url: 'add-attendence',
+        data:newJSON,
+        datatype: 'json',
+        
+        success: function (data) {
+          
+            window.location.replace('/attendence')
+        
+        }
+        
+        });
+  }
+
+
+</script> 
+
+
+
+
+
+
+
+
+{%endblock%}
+{%block script%}
+<script>
+  $(function () {
+    $("#attendence").dataTable();
+  })
+</script>
+{%endblock%}

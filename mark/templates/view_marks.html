@@ -1,0 +1,36 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8"></div>
+        <div class="col-md-4">
+          <a href="/class/{{class_id}}/subject/{{subject_id}}/mark" class="btn btn-primary" type="submit">ADD</a>
+        </div>
+    
+</div>
+<div class="row mt-5">
+<table class="table " id="mark" class="mark">
+  <thead>
+    <tr>
+      <th scope="col">Student Name</th>
+      <th scope="col">Exam Type</th>
+      <th scope="col">Total Score</th>
+      <th scope="col">Scored Marks</th>
+      <th scope="col"></th>
+      
+    </tr>
+  </thead>
+  <tbody>
+   {%for student in marks%}
+    <tr>
+      <td id="name">{{student.student.user.first_name}}</td>
+      <td id="name">{{student.exam_value}}</td>
+      <td id="name">{{student.total_score}}</td>
+      <td id="name">{{student.marked_score}}</td>
+      <td><a href="/class/{{class_id}}/subject/{{subject_id}}/mark/student/{{student.student.id}}/edit-mark" class="btn btn-primary">EDIT</a></td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+</div>
+{%endblock%}

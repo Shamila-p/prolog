@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-md-8"></div>
   <div class="col-md-4">
-    <a href="/add-materials/{{module_name}}" class="btn btn-primary" type="submit">ADD MATERIALS
+    <a href="/class/{{class_id}}/subject/{{subject_id}}/study-materials/{{module_name}}/add-material" class="btn btn-primary" type="submit">ADD MATERIALS
       <i class="mdi mdi-plus icon-sm align-middle"></i></a>
   </div>
  
@@ -34,45 +34,10 @@
     <td>{{material.category_value}}</td>
     <td>{{material.uploaded_date}}</td>
     <td>
-      
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalForm">
-  EDIT
-</button>
-<div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="ModalFormLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body">
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-          <div class="myform bg-dark">
-              <h1 class="text-center">EDIT FORM</h1>
-              <form action="/edit-materials/{{material.id}}" method="post" enctype="multipart/form-data">
-                {% csrf_token%}
-                  <div class="mb-3 mt-4">
-                      <label class="form-label">File Name</label>
-                      <input type="text" class="form-control" name="filename" value="{{material.filename}}">
-                  </div>
-                  <div class="mb-3">
-                    <label  class="form-label">Category</label>
-                    <select  class="form-select" name="category">
-                        {%for category in categories%}
-                        <option selected value="{{category.0}}">{{category.1}}</option>
-                        {%endfor%}
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                      <label  class="form-label">Upload Note</label>
-                      <input type="file" class="form-control" name="upload"  accept="file/*,audio/*,video/*,image/*,application/pdf" value="{{material.filepath}}">
-                  </div>
-                  <button type="submit" class="btn btn-light mt-3">EDIT</button>
-              </form>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
+      <a href="/class/{{class_id}}/subject/{{subject_id}}/study-materials/module-1/edit-material/{{material.id}}" class="btn btn-primary">Edit</a>
     </td>
     <td>
-      <form method="post" action="/remove-materials/{{material.id}}">
+      <form method="post" action="/class/{{class_id}}/subject/{{subject_id}}/study-materials/module-1/remove-material/{{material.id}}">
         {%csrf_token%}<button class="btn btn-danger btn-md" type="submit">Remove</form>
     </td>
 

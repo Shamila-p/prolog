@@ -3,16 +3,16 @@
 {% block content %}
 <div class="row mb-5">
     <div class="col-md-3">
-        <a href="" class="btn btn-primary" type="submit">ATTENDENCE</a>
+        <a href="/class/{{subject.class_belongs_id}}/subject/{{subject.id}}/attendence" class="btn btn-primary" type="submit">ATTENDENCE</a>
     </div>
     <div class="col-md-3">
-          <a href="/study-materials" class="btn btn-primary" type="submit">STUDY MATERIALS</a>
+          <a href="/class/{{subject.class_belongs_id}}/subject/{{subject.id}}/study-materials" class="btn btn-primary" type="submit">STUDY MATERIALS</a>
     </div>
     <div class="col-md-3">
-        <a href="" class="btn btn-primary" type="submit">MARKS</a>
+        <a href="/class/{{subject.class_belongs_id}}/subject/{{subject.id}}/mark" class="btn btn-primary" type="submit">MARKS</a>
   </div>
   <div class="col-md-3">
-    <a href="/assignment" class="btn btn-primary" type="submit">ASSIGNMENTS</a>
+    <a href="/assignment/{{subject.class_belongs_id}}/{{subject.id}}" class="btn btn-primary" type="submit">ASSIGNMENTS</a>
 </div>
 </div>
 <div class="table-responsive">
