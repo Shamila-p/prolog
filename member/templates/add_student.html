@@ -41,9 +41,13 @@
         </div>
         {%elif request.user.role == 'PR' or request.user.position == 'HD'%}
         <div class="col-md-6">
-          <label  class="form-label">Class</label>
-          <input type="text" class="form-control" name="class" >
-          </div>
+          <label for="inputState" class="form-label">Semester</label>
+          <select id="inputState" class="form-select" name="class">
+          {%for class in batches %}
+            <option selected value="{{class.id}}">{{class.classname}}</option>
+          {%endfor%}
+          </select>
+        </div>
       {%endif%}
       
     <div class="col-md-6">

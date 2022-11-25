@@ -1,7 +1,7 @@
 from django.db import models
 
 from common.models import auditModel
-from course.models import Class, Subject
+from course.models import Class, Semester, Subject
 
 # Create your models here.
 class Notes(auditModel):
@@ -21,6 +21,7 @@ class Notes(auditModel):
     uploaded_date=models.DateTimeField(auto_now=True)
     subject=models.ForeignKey(Subject, null=True, on_delete=models.CASCADE)
     class_belongs=models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
+    semester=models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
 
     @property
     def category_value(self):

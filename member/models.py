@@ -3,7 +3,7 @@ from email.policy import default
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from common.models import auditModel
-from course.models import Class, Department
+from course.models import Class, Department, Semester
 
 
 class User(AbstractUser, auditModel):
@@ -57,6 +57,7 @@ class User(AbstractUser, auditModel):
 class Student(auditModel):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     batch = models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
     admsn_no=models.CharField(max_length=6,null=True)
     parent_name = models.CharField(max_length=30)
     parent_mobile = models.CharField(max_length=15)

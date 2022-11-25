@@ -5,7 +5,7 @@ from course.models import Class, Subject
 from django.contrib import messages
 
 # Create your views here.
-def mark(request,class_id,subject_id):
+def mark(request,class_id,subject_id,semester_id):
     if request.method == 'GET':
         # class_belongs=Class.objects.get(tutor_id=request.user.id)
         # subjects=Subject.objects.filter(assigned_to_id=request.user.id ,class_belongs_id=class_belongs.id)
@@ -14,21 +14,21 @@ def mark(request,class_id,subject_id):
         #     subject=i
         # subject=Subject.objects.get(id=subject.id)
         # students=Student.objects.filter(batch_id=subject.class_belongs_id)
-        students=Student.objects.filter(batch_id=class_id)
+        students=Student.objects.filter(batch_id=class_id,semester_id=semester_id)
 
-        context={'students':students,'class_id':class_id,'subject_id':subject_id}
+        context={'students':students,'class_id':class_id,'subject_id':subject_id,'semester_id':semester_id}
         return render(request,'mark.html',context)
 
-def view_marks(request,class_id,subject_id):
+def view_marks(request,class_id,subject_id,semester_id):
     if request.method=='GET':
-        marks=Mark.objects.filter(class_belongs_id=class_id,subject_id=subject_id,teacher_id=request.user.id)
-        context={'marks':marks,'class_id':class_id,'subject_id':subject_id}
+        marks=Mark.objects.filter(class_belongs_id=class_id,subject_id=subject_id,teacher_id=request.user.id,semester_id=semester_id)
+        context={'marks':marks,'class_id':class_id,'subject_id':subject_id,'semester_id':semester_id}
         return render(request,'view_marks.html',context)
 
-def add_mark(request,class_id,subject_id,student_id):
+def add_mark(request,class_id,subject_id,student_id,semester_id):
     if request.method == 'GET':
         print(student_id)
-        context={'exams':Mark.EXAM_CHOICES,'class_id':class_id,'subject_id':subject_id,'student_id':student_id}
+        context={'exams':Mark.EXAM_CHOICES,'class_id':class_id,'subject_id':subject_id,'student_id':student_id,'semester_id':semester_id}
         return render(request,'add_mark.html',context)
     if request.method == 'POST':
         total_score=request.POST.get('tmark')
@@ -45,16 +45,16 @@ def add_mark(request,class_id,subject_id,student_id):
         if studentadded is True:
             messages.error(request, "Mark of this student already added.If you are looking for editing option please click on edit button")
         else:
-            Mark.objects.create(exam_type=exam_type,total_score=total_score,marked_score=scored_mark,subject_id=subject_id,teacher_id=request.user.id,student_id=student.id,class_belongs_id=class_id)
-        return redirect('view_marks',class_id=class_id,subject_id=subject_id)
+            Mark.objects.create(exam_type=exam_type,total_score=total_score,marked_score=scored_mark,subject_id=subject_id,teacher_id=request.user.id,student_id=student.id,class_belongs_id=class_id,semester_id=semester_id)
+        return redirect('view_marks',class_id=class_id,subject_id=subject_id,semester_id=semester_id)
 
 
 
-def edit_mark(request,class_id,subject_id,student_id):
-    mark=Mark.objects.filter(student_id=student_id,class_belongs_id=class_id,subject_id=subject_id,teacher_id=request.user.id).exists()
+def edit_mark(request,class_id,subject_id,student_id,semester_id):
+    mark=Mark.objects.filter(student_id=student_id,class_belongs_id=class_id,subject_id=subject_id,teacher_id=request.user.id,semester_id=semester_id).exists()
     if mark is not None:
         if request.method == 'GET':
-            mark=Mark.objects.filter(student_id=student_id,class_belongs_id=class_id,subject_id=subject_id,teacher_id=request.user.id)
+            mark=Mark.objects.filter(student_id=student_id,class_belongs_id=class_id,subject_id=subject_id,teacher_id=request.user.id,semester_id=semester_id)
             print(mark)
             context={'exams':Mark.EXAM_CHOICES,'mark':mark}
             return render(request,'edit_mark.html',context)        
@@ -62,10 +62,10 @@ def edit_mark(request,class_id,subject_id,student_id):
             total_score=request.POST.get('tmark')
             scored_mark=request.POST.get('smark')
             exam_type=request.POST.get('type')
-            marks=Mark.objects.filter(student_id=student_id,class_belongs_id=class_id,subject_id=subject_id,teacher_id=request.user.id)
+            marks=Mark.objects.filter(student_id=student_id,class_belongs_id=class_id,subject_id=subject_id,teacher_id=request.user.id,semester_id=semester_id)
             for mark in marks:
                 mark.total_score=total_score
                 mark.marked_score=scored_mark
                 mark.exam_type=exam_type
                 mark.save()
-            return redirect('view_marks',class_id=class_id,subject_id=subject_id)
+            return redirect('view_marks',class_id=class_id,subject_id=subject_id,semester_id=semester_id)

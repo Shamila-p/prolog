@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-md-8"></div>
         <div class="col-md-4">
-          <a href="/class/{{class_id}}/subject/{{subject_id}}/mark" class="btn btn-primary" type="submit">ADD</a>
+          <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/mark" class="btn btn-primary" type="submit">ADD</a>
         </div>
     
 </div>
@@ -35,7 +35,7 @@
       <td id="name">{{student.exam_value}}</td>
       <td id="name">{{student.total_score}}</td>
       <td id="name">{{student.marked_score}}</td>
-      <td><a href="/class/{{class_id}}/subject/{{subject_id}}/mark/student/{{student.student.id}}/edit-mark" class="btn btn-primary">EDIT</a></td>
+      <td><a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/mark/student/{{student.student.id}}/edit-mark" class="btn btn-primary">EDIT</a></td>
     </tr>
     {%endfor%}
   </tbody>

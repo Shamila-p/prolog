@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-md-8"></div>
   <div class="col-md-4">
-    <a href="/class/{{class_id}}/subject/{{subject_id}}/study-materials/{{module_name}}/add-material" class="btn btn-primary" type="submit">ADD MATERIALS
+    <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/study-materials/{{module_name}}/add-material" class="btn btn-primary" type="submit">ADD MATERIALS
       <i class="mdi mdi-plus icon-sm align-middle"></i></a>
   </div>
  
@@ -34,10 +34,10 @@
     <td>{{material.category_value}}</td>
     <td>{{material.uploaded_date}}</td>
     <td>
-      <a href="/class/{{class_id}}/subject/{{subject_id}}/study-materials/module-1/edit-material/{{material.id}}" class="btn btn-primary">Edit</a>
+      <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/study-materials/module-1/material/{{material.id}}/edit-material" class="btn btn-primary">Edit</a>
     </td>
     <td>
-      <form method="post" action="/class/{{class_id}}/subject/{{subject_id}}/study-materials/module-1/remove-material/{{material.id}}">
+      <form method="post" action="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/study-materials/module-1/material/{{material.id}}/remove-material">
         {%csrf_token%}<button class="btn btn-danger btn-md" type="submit">Remove</form>
     </td>
 

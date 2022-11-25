@@ -26,6 +26,7 @@ class Subject(auditModel):
     subjectcode=models.CharField(max_length=50,null=True)
     assigned_to=models.ForeignKey("member.User", null=True, on_delete=models.CASCADE,related_name="assigned")
     tutor = models.ForeignKey("member.User", null=True, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
     class_belongs = models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
 
 
@@ -34,6 +35,7 @@ class EditSubject(auditModel):
     subjectname=models.CharField(max_length=50)
     subjectcode=models.CharField(max_length=50,null=True)
     assigned_to=models.ForeignKey("member.User", null=True, on_delete=models.CASCADE,related_name="assigned_request")
+    semester = models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
     tutor = models.ForeignKey("member.User", null=True, on_delete=models.CASCADE)
     class_belongs = models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
 

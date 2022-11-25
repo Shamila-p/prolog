@@ -31,7 +31,7 @@ urlpatterns = [
     path('approve-request/<int:subject_id>',views.approve_request,name="approve_request"),
 
     path('my-subjects',views.my_subjects,name="my_subjects"),
-    path('student-details/<int:class_id>/<int:subject_id>',views.student_details,name="student_details"),
+    path('class/<int:class_id>/semester/<int:semester_id>/subject/<int:subject_id>/student-details',views.student_details,name="student_details"),
     
 
 

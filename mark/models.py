@@ -3,7 +3,7 @@ from django.db import models
 from common.models import auditModel
 from asyncio.windows_events import NULL
 from member.models import Student,User
-from course.models import Class, Subject
+from course.models import Class, Semester, Subject
 
 # Create your models here.
 class Mark(auditModel):
@@ -26,6 +26,7 @@ class Mark(auditModel):
     student=models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
     teacher=models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     class_belongs=models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
+    semester=models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
 
     @property
     def exam_value(self):

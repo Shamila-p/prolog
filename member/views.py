@@ -300,8 +300,12 @@ def add_student(request):
     else:
         if request.method == 'GET':
             departments = Department.objects.all()
-            batches = Class.objects.all()
             semesters = Semester.objects.all()
+            if request.user.role == User.TEACHER:
+                logined_department=Department.objects.get(hod_id=request.user.id)
+                batches=Class.objects.filter(department_id=logined_department.id)
+            elif request.user.role == User.PRINCIPAL:
+                batches=Class.objects.all()
             is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
             if request.user.role == User.TEACHER and is_tutor:
                 student=Class.objects.get(tutor_id=request.user.id)
@@ -331,13 +335,13 @@ def add_student(request):
                                             phone=mobile,
                                             role=User.STUDENT, department_id=department, profile_image=profile_image)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
-                                   user_id=user.id, parent_mobile=p_mobile, batch_id=batch)
+                                   user_id=user.id, parent_mobile=p_mobile, batch_id=batch,semester_id=semester)
             if request.user.position == User.HOD:   
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                             phone=mobile,
                                             role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
-                                   user_id=user.id, parent_mobile=p_mobile, batch_id=batch)
+                                   user_id=user.id, parent_mobile=p_mobile, batch_id=batch,semester_id=semester)
             return redirect('list_students')
 
 
@@ -350,7 +354,11 @@ def edit_student(request, user_id):
             student = Student.objects.get(user_id=user_id)
             departments = Department.objects.all()
             semesters = Semester.objects.all()
-            batches = Class.objects.all()
+            if request.user.role == User.TEACHER:
+                logined_department=Department.objects.get(hod_id=request.user.id)
+                batches=Class.objects.filter(department_id=logined_department.id)
+            elif request.user.role == User.PRINCIPAL:
+                batches=Class.objects.all()
             context = {'student': student, 'departments': departments,
                        'batches': batches, 'semesters': semesters}
             return render(request, 'edit_student.html', context)
@@ -431,12 +439,14 @@ def add_subject(request):
         print(subject_code)
 
         assigned=request.POST.get('assigned')
+        teacher=Class.objects.get(tutor_id=request.user.id)
+
         class_belongs=Class.objects.get(tutor_id=request.user.id)
         print(class_belongs)
         batches=Class.objects.filter(classname=class_belongs.classname,Semester_id=class_belongs.Semester_id)
         for batch in batches:
             id=batch.id       
-        EditSubject.objects.create(subjectname=subject_name,subjectcode=subject_code,tutor_id=request.user.id,assigned_to_id=assigned,class_belongs_id=id)
+        EditSubject.objects.create(subjectname=subject_name,subjectcode=subject_code,tutor_id=request.user.id,assigned_to_id=assigned,class_belongs_id=id,semester_id=teacher.Semester_id)
         return redirect('my_class')
 
 def edit_subject(request,subject_id):
@@ -493,10 +503,12 @@ def my_subjects(request):
         context={'classes':classes}
         return render(request,'my_subjects.html',context)
 
-def student_details(request,class_id,subject_id):
+def student_details(request,class_id,subject_id,semester_id):
      print(subject_id)
+     print(semester_id)
      if request.method == 'GET':
+        print('g')
         subject=Subject.objects.get(id=subject_id)
-        students=Student.objects.filter(batch_id=class_id)
+        students=Student.objects.filter(batch_id=class_id,semester_id=semester_id)
         context={'students':students,'subject':subject}
         return render(request,'student_details.html',context)

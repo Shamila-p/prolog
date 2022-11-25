@@ -79,13 +79,13 @@
     
     $.ajax({
         type: 'POST',
-        url: '/class/{{class_id}}/subject/{{subject_id}}/add-attendence',
+        url: '/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/add-attendence',
         data:newJSON,
         datatype: 'json',
         
         success: function (data) {
           
-            window.location.replace('/class/{{class_id}}/subject/{{subject_id}}/attendence')
+            window.location.replace('/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/attendence')
         
         }
         

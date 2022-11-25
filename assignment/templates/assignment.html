@@ -4,7 +4,7 @@
 <div class="row">
 <div class="col-md-9"></div>
 <div class="col-md-3">
-    <a href="/add-assignment/{{class_id}}/{{subject_id}}" class="btn btn-primary" type="submit"> ADD ASSIGNMENT</a>
+    <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/add-assignment" class="btn btn-primary" type="submit"> ADD ASSIGNMENT</a>
 </div>
 </div>
 <div class="table-responsive mt-5">
@@ -30,7 +30,7 @@
         <td>{{assignment.type_value}}</td>
         <td>{{assignment.submission_date}}</td>
         <td>{{assignment.created_date}}</td>
-        <td><a href="/edit-assignment/{{assignment.id}}" class="btn btn-primary btn-sm">Edit</a></td>
+        <td><a href="/class/{{assignment.class_belongs_id}}/semester/{{assignment.semester_id}}/subject/{{assignment.subject_id}}/assignment/{{assignment.id}}/edit-assignment" class="btn btn-primary btn-sm">Edit</a></td>
         <td>
             <form method="post" action="/remove-assignment/{{assignment.id}}">
               {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
