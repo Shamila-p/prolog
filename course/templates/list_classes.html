@@ -44,7 +44,12 @@
     {%for class in classes%}
     <tr>
       <td>{{class.classname}}</td>
-      <td>{{class.tutor.first_name}}</td>
+      <td>
+      {%if class.tutor.first_name is None%}
+      Unassigned
+      {%else%}
+      {{class.tutor.first_name}}</td>
+      {%endif%}
       <td>{{hod.department.dname}}</td>
       <td>{{class.Semester.semname}}</td>
       <td><a href="/edit-class/{{class.id}}" class="btn btn-primary">Edit</a></td>

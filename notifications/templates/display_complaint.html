@@ -1,0 +1,75 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="table-responsive">
+    {%for message in messages%}
+                <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+                    <span> {{message}}</span>
+
+                </div>
+    {%endfor%}
+<table class="table" id="complaints">
+    <thead>
+      <tr>
+        {%if request.user.role == 'PR'%}
+        <th scope="col">Student Name</th>
+        <th scope="col">Department</th>
+        <th scope="col">Semester</th>
+        <th scope="col">Class</th>
+        <th scope="col">Complaint</th>
+        {% elif request.user.position == 'HD'%}
+        <th scope="col">Student Name</th>
+        <th scope="col">Semester</th>
+        <th scope="col">Class</th>
+        <th scope="col">Complaint</th>
+        {% elif request.user.role == 'TR' and is_tutor%}
+        <th scope="col">Student Name</th>
+        <th scope="col">Complaint</th>
+        {%endif%}
+      </tr>
+    </thead>
+    <tbody>
+      
+        
+      <tr>
+        {%if request.user.role == 'PR'%}
+        {%for complaint in complaints%}
+        <td>{{complaint.student.user.first_name}}</td>
+        <td>{{complaint.department.dname}}</td>
+        <td>{{complaint.semester.semname}}</td>
+        <td>{{complaint.batch.classname}}</td>
+        <td>{{complaint.message}}</td>
+        {%endfor%}
+
+        {% elif request.user.position == 'HD'%}
+        {%for complaint in complaints%}
+
+        <td>{{complaint.student.user.first_name}}</td>
+        <td>{{complaint.semester.semname}}</td>
+        <td>{{complaint.batch.classname}}</td>
+        <td>{{complaint.message}}</td>
+        {%endfor%}
+
+        {% elif request.user.role == 'TR' and is_tutor%}
+        {%for complaint in complaints%}
+
+        <td>{{complaint.student.user.first_name}}</td>
+        
+        <td>{{complaint.message}}</td>
+        {%endfor%}
+
+        {%endif%}
+
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#complaints").dataTable();
+    })
+</script>
+{%endblock%}

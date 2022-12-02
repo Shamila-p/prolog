@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row mt-2">
+    {%for subject in subjects%}
+    <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title mx-auto">{{subject.subjectname}}</h5>
+              <a href="/attendence/view-attendence/subject/{{subject.id}}" class="btn btn-primary">VIEW</a>
+            </div>
+          </div>
+    </div>
+    {%endfor%}
+</div>
+{%endblock%}

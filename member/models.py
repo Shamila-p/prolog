@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from common.models import auditModel
 from course.models import Class, Department, Semester
+# from fees.models import Fee
 
 
 class User(AbstractUser, auditModel):
@@ -16,6 +17,12 @@ class User(AbstractUser, auditModel):
         (TEACHER, "Teacher"),
         (PRINCIPAL, "Principal"),
     ]
+
+    
+
+
+
+
     HOD = "HD"
     ASSISTANT_PROFESSOR = "AST"
     ASSOCIATE_PROFESSOR = "ASO"
@@ -52,15 +59,36 @@ class User(AbstractUser, auditModel):
                 value = position[1]
         return value
 
+   
   
 
 class Student(auditModel):
+
+
+    MANAGEMENT="MA"
+    NRI="NR"
+    GOVRNMENT="GO"
+
+    QUOTA_CHOICES = [
+        (MANAGEMENT, "MANAGEMENT"),
+        (NRI, "NRI"),
+        (GOVRNMENT, "GOVRNMENT"),
+    ]
+
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     batch = models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
     admsn_no=models.CharField(max_length=6,null=True)
     parent_name = models.CharField(max_length=30)
     parent_mobile = models.CharField(max_length=15)
+    quota=models.CharField(max_length=2,choices=QUOTA_CHOICES,null=False,default=NULL)
+   
+    @property
+    def quota_value(self):
+        fee_quota_value= self.quota
+        for fee_quota in Student.QUOTA_CHOICES:
+            if fee_quota[0] == fee_quota_value:
+                return fee_quota[1]
 
 class EditProfile(auditModel):
     user = models.ForeignKey(User,null=True, on_delete=models.CASCADE)
@@ -78,3 +106,9 @@ class EditProfile(auditModel):
         except ValueError:
             url = ""
         return url
+
+
+class TimeTable(auditModel):
+    time_table=models.FileField(upload_to='files/', null=True)
+    batch = models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)

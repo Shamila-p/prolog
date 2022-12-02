@@ -1,0 +1,9 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+{%for time in timetable%}
+    <td>
+      <a href="{{time.time_table.url}}" download="{{time.time_table.url}}" class="btn btn-primary" type="submit" >DOWNLOAD TIMETABLE<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
+    </td> 
+    {%endfor%}
+{%endblock%}

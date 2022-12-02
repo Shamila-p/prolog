@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="col-md-4 mx-auto ">
+
+<form method="post" action="/notification">
+  {%csrf_token%}
+  <label for="">Send To:</label>
+  <select id="inputState" class="form-select" name="send_to">
+
+  {%for position in sends %}
+  {%if position.0 != 'PR' %}
+
+    <option selected value="{{position.0}}">{{position.1}}</option>
+  {%endif%}
+  {%endfor%}
+
+  {%for position in send_to %}
+  {%if position.0 != 'ASO' and position.0 != 'AST' %}
+
+    <option selected value="{{position.0}}">{{position.1}}</option>
+  {%endif%}
+  {%endfor%}
+
+  </select>
+    <textarea rows="5" cols="33" name="notification" class="mt-5"></textarea>
+  <button  class="btn btn-primary mt-5" type="submit">SEND</button>
+
+</form>
+</div>
+
+{%endblock%}

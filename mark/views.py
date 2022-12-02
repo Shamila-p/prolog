@@ -22,6 +22,7 @@ def mark(request,class_id,subject_id,semester_id):
 def view_marks(request,class_id,subject_id,semester_id):
     if request.method=='GET':
         marks=Mark.objects.filter(class_belongs_id=class_id,subject_id=subject_id,teacher_id=request.user.id,semester_id=semester_id)
+        print(marks)
         context={'marks':marks,'class_id':class_id,'subject_id':subject_id,'semester_id':semester_id}
         return render(request,'view_marks.html',context)
 
@@ -40,7 +41,7 @@ def add_mark(request,class_id,subject_id,student_id,semester_id):
         #     id=i
         # subject=Subject.objects.get(id=id.id)
         student=Student.objects.get(user_id=student_id)
-        studentadded=Mark.objects.filter(student_id=student.id,class_belongs_id=class_id,subject_id=subject_id).exists()
+        studentadded=Mark.objects.filter(student_id=student.id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,exam_type=exam_type).exists()
         print(studentadded)
         if studentadded is True:
             messages.error(request, "Mark of this student already added.If you are looking for editing option please click on edit button")
@@ -69,3 +70,33 @@ def edit_mark(request,class_id,subject_id,student_id,semester_id):
                 mark.exam_type=exam_type
                 mark.save()
             return redirect('view_marks',class_id=class_id,subject_id=subject_id,semester_id=semester_id)
+
+
+def performance(request):
+    if request.method == 'GET':
+        context={'exam_types':Mark.EXAM_CHOICES}
+        print(context)
+        return render(request,'performance.html',context)
+        
+def performance_display(request,exam_type):
+    if request.method == 'GET':
+        student=Student.objects.get(user_id=request.user.id)
+        subjects=Subject.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester_id)
+        marks=Mark.objects.filter(student_id=student.id,class_belongs_id=student.batch_id,semester_id=student.semester_id,exam_type=exam_type)
+        print(marks)
+        # print(subjects)
+        # scored_marks=[]
+        # total_score=[]
+        # for subject in subjects:
+        #     if Mark.objects.filter(student_id=student.id,subject_id=subject.id).exists():
+        #         students=Mark.objects.filter(student_id=student.id,subject_id=subject.id)
+        #         for student in students:
+        #             scored_marks.append(student.marked_score)
+        #             total_score.append(student.total_score)
+        # print(scored_marks)
+        # print(total_score)
+        # ,'total_score':total_score,'scored_marks':scored_marks,'subjects':subjects
+        context={'marks':marks}
+        # context={'exam_types':Mark.EXAM_CHOICES}
+        # print(context)
+        return render(request,'performance_display.html',context)

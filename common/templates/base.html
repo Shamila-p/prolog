@@ -127,23 +127,41 @@
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/display-fee">
+              <span class="menu-title">Fees</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/display-complaint">
+              <span class="menu-title">Complaint Box</span>
+              <i class="mdi mdi-table menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/notification">
+              <span class="menu-title">Notification</span>
+              <i class="mdi mdi-table menu-icon"></i>
+            </a>
+          </li>
          
           {% elif request.user.role == 'ST' %} 
           
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="/attendence">
               <span class="menu-title">Attendence</span>
               <i class="mdi mdi-recycle menu-icon"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="/performance">
               <span class="menu-title">Performance</span>
               <i class="mdi mdi-credit-card-scan menu-icon"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="/view-timetable">
               <span class="menu-title">Time Table</span>
               <i class="mdi mdi mdi-table  menu-icon"></i>
             </a>
@@ -161,7 +179,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="/student-fee">
               <span class="menu-title">Fees</span>
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
@@ -173,13 +191,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="/list-certificates">
               <span class="menu-title">Certificates</span>
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="/display-notification">
               <span class="menu-title">Notification</span>
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
@@ -222,7 +240,24 @@
               <i class="mdi mdi-recycle menu-icon"></i>
             </a>
           </li>
-          
+          <li class="nav-item">
+            <a class="nav-link" href="/display-complaint">
+              <span class="menu-title">Complaint Box</span>
+              <i class="mdi mdi-table menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/display-fee">
+              <span class="menu-title">Fees</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/display-notification">
+              <span class="menu-title">Notification</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
           
           {%endif%}
           {%if request.user.role == 'TR' and is_tutor %}
@@ -242,6 +277,24 @@
           <li class="nav-item">
             <a class="nav-link" href="/my-subjects">
               <span class="menu-title">My Subjects</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/display-complaint">
+              <span class="menu-title">Complaint Box</span>
+              <i class="mdi mdi-table menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/view-certificates">
+              <span class="menu-title">Certificates</span>
+              <i class="mdi mdi-lead-pencil menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/display-notification">
+              <span class="menu-title">Notification</span>
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>

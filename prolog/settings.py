@@ -46,7 +46,11 @@ INSTALLED_APPS = [
     'assignment.apps.AssignmentConfig',
     'attendence.apps.AttendenceConfig',
     'mark.apps.MarkConfig',
-    'notifications.apps.NotificationsConfig'
+    'notifications.apps.NotificationsConfig',
+    'fee.apps.FeeConfig',
+    'fees.apps.FeesConfig',
+    'certificates.apps.CertificatesConfig',
+    'sms.apps.SmsConfig',
 ]
 AUTH_USER_MODEL = 'member.User'
 MIDDLEWARE = [
@@ -74,6 +78,10 @@ TEMPLATES = [
             os.path.join(BASE_DIR,'attendence/templates'),
             os.path.join(BASE_DIR,'mark/templates'),
             os.path.join(BASE_DIR,'notifications/templates'),
+            os.path.join(BASE_DIR,'fee/templates'),
+            os.path.join(BASE_DIR,'fees/templates'),
+            os.path.join(BASE_DIR,'certificates/templates'),
+            os.path.join(BASE_DIR,'sms/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

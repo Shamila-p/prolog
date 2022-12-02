@@ -2,11 +2,15 @@
 {% load static %}
 {% block content %}
 <div class="row">
-<div class="col-md-9"></div>
+<div class="col-md-6"></div>
 <div class="col-md-3">
     <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/add-assignment" class="btn btn-primary" type="submit"> ADD ASSIGNMENT</a>
 </div>
+<div class="col-md-3">
+  <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/submitted-assignment" class="btn btn-primary" type="submit"> SUBMITTED ASSIGNMENT</a>
 </div>
+</div>
+
 <div class="table-responsive mt-5">
 <table class="table" id="assignment_details">
     <thead>

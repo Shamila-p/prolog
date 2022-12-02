@@ -3,8 +3,15 @@
 {% block content %}
 <form method="post" href="/edit-semester">
 {%csrf_token%}
+    <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Semester Name</label>
+    <input type="text" class="form-control" name="sem_name" value="{{semester.semname}}" required>
+    </div>
+    <div class="col-md-6">
+        <label  class="form-label">Order/label>
+        <input type="text" class="form-control" name="order" value="{{semester.order}}" required>
+        </div>
     
-    <input  type="text" name="sem_name" value="{{semester.semname}}" required>
     <button class="btn btn-primary">  EDIT</button>
    
 </form>

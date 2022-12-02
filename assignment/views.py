@@ -1,8 +1,9 @@
 import mimetypes
 import os
+from django.contrib import messages
 from django.shortcuts import render,redirect,HttpResponse
 from member.models import Student
-from assignment.models import Assignment,module
+from assignment.models import Assignment, AssignmentMark, SubmittedAssignment,module
 from course.models import Class, Subject
 
 # Create your views here.
@@ -104,3 +105,48 @@ def download_file(request):
     response = HttpResponse(path, content_type=mime_type)
     response['Content-Disposition'] = "attachment; filename=%s" % filename
     return response
+
+def upload_file(request,class_id,semester_id,subject_id,assignment_id):
+    assignment=Assignment.objects.get(id=assignment_id)
+    answer=request.FILES.get('answer')
+    print(answer)
+    SubmittedAssignment.objects.create(answer=answer,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=request.user.id,assignment_id=assignment.id)
+    messages.info(request,"File uploaded Succesfully")
+    return redirect('view_assignments')
+
+def view_mark(request,assignment_id):
+    if request.method == 'GET':
+        assignment=SubmittedAssignment.objects.get(assignment_id=assignment_id)
+        print(assignment)
+        mark=AssignmentMark.objects.get(assignment_id=assignment.id)
+        print(mark)
+        context={'assignment':assignment,'mark':mark}
+        return render(request,'view_assignment_mark.html',context)
+
+
+def submitted_assignment(request,class_id,semester_id,subject_id):
+    if request.method == 'GET':
+        assignments=SubmittedAssignment.objects.filter(subject_id=subject_id,class_belongs_id=class_id,semester_id=semester_id)
+        context={'assignments':assignments}
+        return render(request,'submitted_assignment.html',context)
+
+def assign_mark(request,class_id,semester_id,subject_id,student_id,assignment_id):
+    if request.method == 'GET':
+        print(class_id)
+        print(semester_id)
+        print(subject_id)
+        print(student_id)
+        print(assignment_id)
+        assignment=SubmittedAssignment.objects.get(id=assignment_id)
+        print(assignment)
+        context={'assignment':assignment,'class_id':class_id,'semester_id':semester_id,'subject_id':subject_id,'student_id':student_id,'submitted_assignment_id':assignment_id}
+        return render(request,'assign_mark.html',context)
+    if request.method == 'POST':
+        print('hg')
+        scored=request.POST.get('scored')
+        print(scored)
+        outof=request.POST.get('outof')
+        print(outof)
+
+        AssignmentMark.objects.create(scored=scored,outof=outof,assignment_id=assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id)
+        return redirect('submitted_assignment',class_id,semester_id,subject_id)

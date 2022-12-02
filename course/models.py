@@ -12,6 +12,7 @@ class Department(auditModel):
 
 class Semester(auditModel):
     semname = models.CharField(max_length=30)
+    order=models.CharField(max_length=10,null=True)
 
 
 class Class(auditModel):

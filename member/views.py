@@ -1,11 +1,13 @@
 from asyncio.windows_events import NULL
+import os
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from course.models import Class, Department, EditSubject, Semester,Subject
 from course.views import department
-from member.models import EditProfile, Student, User
+from member.models import EditProfile, Student, TimeTable, User
 from django.contrib import messages
 from django.db.models import Q
+import mimetypes
 
 
 @login_required
@@ -286,7 +288,7 @@ def list_students(request):
             if request.user.role==User.TEACHER and is_tutor:
                 tutor=User.objects.get(id=request.user.id)
                 class_students=Class.objects.get(tutor_id=tutor.id)
-                tutor_students=Student.objects.filter(batch_id=class_students.id)
+                tutor_students=Student.objects.filter(batch_id=class_students.id,semester_id=class_students.Semester_id)
                 context={'is_tutor':is_tutor,'tutor_students':tutor_students}
             # tutor_student_list=[]
             # for student in tutor_students:
@@ -301,17 +303,25 @@ def add_student(request):
         if request.method == 'GET':
             departments = Department.objects.all()
             semesters = Semester.objects.all()
-            if request.user.role == User.TEACHER:
+            is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
+
+            if request.user.role == User.TEACHER and request.user.position == User.HOD:
+                print(request.user.id)
                 logined_department=Department.objects.get(hod_id=request.user.id)
                 batches=Class.objects.filter(department_id=logined_department.id)
+                print(batches)
+                context={'batches': batches,'departments': departments,
+                        'semesters': semesters,'quota_list':Student.QUOTA_CHOICES}
             elif request.user.role == User.PRINCIPAL:
+                print('ggg')
                 batches=Class.objects.all()
-            is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
-            if request.user.role == User.TEACHER and is_tutor:
+                context={'batches': batches,'departments': departments,
+                        'semesters': semesters,'quota_list':Student.QUOTA_CHOICES}
+            elif request.user.role == User.TEACHER and is_tutor:
+                print('g')
                 student=Class.objects.get(tutor_id=request.user.id)
-                context={'student':student}
-            context = {'departments': departments,
-                       'batches': batches, 'semesters': semesters}
+                print(student)
+                context={'student':student,'departments': departments,'quota_list':Student.QUOTA_CHOICES}
             return render(request, 'add_student.html', context)
         if request.method == 'POST':
             name = request.POST.get('name')
@@ -319,6 +329,7 @@ def add_student(request):
             department = request.POST.get('department')
             semester = request.POST.get('semester')
             batch = request.POST.get('class')
+            quota = request.POST.get('quota')
             print(batch)
             email = request.POST.get('email')
             mobile = request.POST.get('mobile')
@@ -335,13 +346,13 @@ def add_student(request):
                                             phone=mobile,
                                             role=User.STUDENT, department_id=department, profile_image=profile_image)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
-                                   user_id=user.id, parent_mobile=p_mobile, batch_id=batch,semester_id=semester)
+                                   user_id=user.id, parent_mobile=p_mobile, batch_id=batch,semester_id=semester,quota=quota)
             if request.user.position == User.HOD:   
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                             phone=mobile,
                                             role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
-                                   user_id=user.id, parent_mobile=p_mobile, batch_id=batch,semester_id=semester)
+                                   user_id=user.id, parent_mobile=p_mobile, batch_id=batch,semester_id=semester,quota=quota)
             return redirect('list_students')
 
 
@@ -353,20 +364,26 @@ def edit_student(request, user_id):
         if request.method == 'GET':
             student = Student.objects.get(user_id=user_id)
             departments = Department.objects.all()
+            is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
             semesters = Semester.objects.all()
-            if request.user.role == User.TEACHER:
+            batches=0
+            if request.user.role == User.TEACHER and request.user.position == User.HOD:
                 logined_department=Department.objects.get(hod_id=request.user.id)
                 batches=Class.objects.filter(department_id=logined_department.id)
             elif request.user.role == User.PRINCIPAL:
                 batches=Class.objects.all()
+            elif request.user.role == User.TEACHER and is_tutor:
+                student=Class.objects.get(tutor_id=request.user.id)
             context = {'student': student, 'departments': departments,
-                       'batches': batches, 'semesters': semesters}
+                       'batches': batches, 'semesters': semesters,'quota_list': Student.QUOTA_CHOICES}
             return render(request, 'edit_student.html', context)
         if request.method == 'POST':
             name = request.POST.get('name')
             admsn_no = request.POST.get('admsn_no')
             department = request.POST.get('department')
             semester = request.POST.get('semester')
+            quota = request.POST.get('quota')
+            print(semester)
             batch = request.POST.get('batch')
             email = request.POST.get('email')
             mobile = request.POST.get('mobile')
@@ -381,12 +398,13 @@ def edit_student(request, user_id):
             student.admsn_no = admsn_no
             if request.user.position != User.HOD and request.user.role != User.TEACHER:
                 user.department_id = department
-            student.batch.Semester_id = semester
             student.batch_id = batch
             user.email = email
             user.phone = mobile
             student.parent_mobile = p_mobile
             student.parent_name = p_name
+            student.semester_id = semester
+            student.quota = quota
             user.save()
             student.save()
             return redirect('list_students')
@@ -422,7 +440,8 @@ def my_class(request):
     if request.method == 'GET':
         teacher=Class.objects.get(tutor_id=request.user.id)
         subject_details=Subject.objects.filter(tutor_id=request.user.id)
-        context={'teacher':teacher,'subject_details':subject_details}
+        timetable=TimeTable.objects.filter(batch_id=teacher.id,semester_id=teacher.Semester_id)
+        context={'teacher':teacher,'subject_details':subject_details,'timetable':timetable}
         return render(request,'my_class.html',context)
 
 def add_subject(request):
@@ -512,3 +531,29 @@ def student_details(request,class_id,subject_id,semester_id):
         students=Student.objects.filter(batch_id=class_id,semester_id=semester_id)
         context={'students':students,'subject':subject}
         return render(request,'student_details.html',context)
+
+
+def add_timetable(request,class_id,semester_id):
+    if request.method == 'POST':
+        timetable=request.FILES.get('timetable')
+        TimeTable.objects.create(time_table=timetable,batch_id=class_id,semester_id=semester_id)
+        messages.info(request,"File uploaded Succesfully")
+        return redirect('my_class')
+def view_timetable(request):
+    if request.method == 'GET':
+        student=Student.objects.get(user_id=request.user.id)
+        timetable=TimeTable.objects.filter(batch_id=student.batch_id,semester_id=student.semester_id)
+        context={'timetable':timetable}
+        return render(request,'view_table.html',context)
+
+
+
+def download_file(request):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    filename = 'test.txt'
+    filepath = BASE_DIR + '/downloadapp/Files/' + filename
+    path = open(filepath, 'r')
+    mime_type, _ = mimetypes.guess_type(filepath)
+    response = HttpResponse(path, content_type=mime_type)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    return response

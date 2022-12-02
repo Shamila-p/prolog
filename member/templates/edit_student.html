@@ -21,14 +21,16 @@
         </select>
       </div>
       {%endif%}
-      <div class="col-md-4">
-        <label for="inputState" class="form-label">Semester</label>
-        <select id="inputState" class="form-select" name="semester">
-        {%for semester in semesters %}
-          <option selected value="{{semester.id}}">{{semester.semname}}</option>
+      
+      <div class="col-md-6">
+        <label for="inputState" class="form-label">Quota</label>
+        <select id="inputState" class="form-select" name="quota">
+        {%for quota in quota_list %}
+          <option selected value="{{quota.0}}">{{quota.1}}</option>
         {%endfor%}
         </select>
       </div>
+      {%if not is_tutor%}
       <div class="col-md-4">
         <label for="inputState" class="form-label">Class</label>
         <select id="inputState" class="form-select" name="batch">
@@ -37,6 +39,25 @@
         {%endfor%}
         </select>
       </div>
+      <div class="col-md-4">
+        <label for="inputState" class="form-label">Semester</label>
+        <select id="inputState" class="form-select" name="semester">
+        {%for semester in semesters %}
+          <option selected value="{{semester.id}}">{{semester.semname}}</option>
+        {%endfor%}
+        </select>
+      </div>
+      {%endif%}
+      {%if is_tutor%}
+      <div class="col-md-6">
+        <label  class="form-label">Class</label>
+        <input type="text" class="form-control" name="class" value="{{student.classname}}" disabled>
+        </div>
+        <div class="col-md-6">
+          <label  class="form-label">Semester</label>
+          <input type="text" class="form-control" name="semester" value="{{student.Semester.semname}}" disabled>
+          </div>
+      {%endif%}
     <div class="col-md-6">
       <label for="inputPassword4" class="form-label">Email</label>
       <input type="email" class="form-control" name="email" value="{{student.user.email}}">

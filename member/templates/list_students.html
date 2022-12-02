@@ -21,12 +21,13 @@
         {%if not is_tutor%}
         <th scope="col">Class</th>
         <th scope="col">Semester</th>
+        <th scope="col">Quota</th>
         <th scope="col">Department</th>
-        <th scope="col">Status</th>
 
         {%endif%}
         <th scope="col">Mobile</th>
         <th scope="col">Email</th>
+        <th scope="col">Status</th>
         <th scope="col">Parent Name</th>
         <th scope="col">Parent Mobile</th>
         <th scope="col">Profile image</th>
@@ -45,7 +46,8 @@
         <td>{{student.admsn_no}}</td>
         {%if not is_tutor%}
         <td>{{student.batch.classname}}</td>
-        <td>{{student.batch.Semester.semname}}</td>
+        <td>{{student.semester.semname}}</td>
+        <td>{{student.quota_value}}</td>
         <td>{{student.user.department.dname}}</td>
         <td>
          
@@ -97,7 +99,8 @@
         <td>{{student.user.first_name}}</td>
         <td>{{student.admsn_no}}</td>
         <td>{{student.batch.classname}}</td>
-        <td>{{student.batch.Semester.semname}}</td>
+        <td>{{student.semester.semname}}</td>
+        <td>{{student.quota_value}}</td>
         <td>{{student.user.department.dname}}</td>
         <!-- <td>
          
@@ -147,8 +150,15 @@
       <td>{{student.user.first_name}}</td>
       <td>{{student.admsn_no}}</td>
       <td>{{student.user.phone}}</td>
-      <td></td>
       <td>{{student.user.email}}</td>
+      <td>
+        {%if student.user.is_active is True%}
+        <button class="btn btn-info" type="submit">Approved</button>
+        {%else%}
+        <button class="btn btn-danger" type="submit">Dispproved</button>
+        {%endif%}
+     
+      </td>
       <td>{{student.parent_name}}</td>
       <td>{{student.parent_mobile}}</td>
       <td><img src="{{student.user.profile_image_url}}" alt=""></td>

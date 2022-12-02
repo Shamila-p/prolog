@@ -1,15 +1,46 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form method="post" action="">
-    <div class="col-md-4">
+<div class="col-md-4 mx-auto ">
+
+<form method="post" action="/complaint">
+  {%csrf_token%}
+        {%for message in messages%}
+          <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+              <span> {{message}}</span>
+          </div>
+        {%endfor%}
+
         <label for="">Send To:</label>
         <select id="inputState" class="form-select" name="send_to">
-        {%for semester in semesters %}
-          <option selected value="{{semester.id}}">{{semester.semname}}</option>
+        {%for teacher in teachers %}
+        <option selected value="{{teacher}}">{{teacher}}</option>
+
         {%endfor%}
+
+
+        {%for position in sends %}
+        {%if position.0 != 'ST' and position.0 != 'TR' %}
+
+          <option selected value="{{position.0}}">{{position.1}}</option>
+        {%endif%}
+        {%endfor%}
+
+        {%for position in send_to %}
+        {%if position.0 != 'ASO' and position.0 != 'AST' %}
+
+          <option selected value="{{position.0}}">{{position.1}}</option>
+        {%endif%}
+        {%endfor%}
+
+
+
+
         </select>
-    </div>
-    <textarea rows="5" cols="33" name="complaint"></textarea>
+    <textarea rows="5" cols="33" name="complaint" class="mt-5"></textarea>
+  <button href="/complaint" class="btn btn-primary mt-5" type="submit">SEND</button>
+
 </form>
+</div>
+
 {%endblock%}

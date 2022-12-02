@@ -2,6 +2,15 @@
 {% load static %}
 {% block content %}
 <div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+        <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/edit-attendence" class="btn btn-primary" type="submit">EDIT ATTENDENCE</a>
+  </div>
+  <div class="col-md-4">
+    <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/view-attendence" class="btn btn-primary" type="submit">VIEW ATTENDENCE</a>
+</div>
+  </div>
+<div class="row">
     
     <div class="col-md-6">
         <label class="form-label">Choose Date</label>
@@ -32,14 +41,13 @@
       <td>
             <input type="checkbox" class="styled-checkbox" name="check" id="check"  >
       </td>
-      <td><a href="" class="btn btn-primary">Edit</a></td>
     </tr>
 {%endfor%}
   </tbody>
 </table>
 </div>
 <div class="row">
-  <button class=" my_button"  onclick="greet()">ADD</button>
+  <button class=" my_button btn btn-primary"  onclick="greet()">ADD</button>
 </div>
 
 <script>

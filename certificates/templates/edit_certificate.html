@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form method="post" href="/edit-assignment/{{certificate.id}}" enctype="multipart/form-data">
+{%csrf_token%}
+
+    <div class="row">
+        <div class="col-md-6">
+            <label  class="form-label">Activity Name</label>
+            <input type="text" class="form-control" name="activity" value="{{certificate.activity_name}}">
+          </div>
+          <div class="col-md-6">
+            <label  class="form-label">Level</label>
+            <select  class="form-select" name="level" value="certificate.level">
+                {%for level in levels%}
+                <option selected value="{{level.0}}">{{level.1}}</option>
+                {%endfor%}
+              </select>
+          </div>
+            <div class="col-md-6 mt-3">
+                <label  class="form-label">EDIT</label>
+                <input type="file" class="form-control" name="upload"  accept="file/*,application/pdf,image/*">
+            </div>
+          
+    </div>
+    <div class="row">
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary mt-5">ADD</button>
+      </div>
+    </div>
+</form>
+{%endblock%}

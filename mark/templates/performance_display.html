@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div>
+{%for message in messages%}
+                <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+                    <span> {{message}}</span>
+
+                </div>
+  {%endfor%}
+</div>
+<div class="row mt-5">
+<table class="table " id="mark" class="mark">
+  <thead>
+
+    <tr>
+      
+      <th scope="col">Subject Name</th>
+      <th scope="col">Mark Scored</th>
+      <th scope="col">Total Score</th>
+      
+    </tr>
+
+  </thead>
+  <tbody>
+    {%for mark in marks%}
+   <tr>
+      <td id="name">{{mark.subject.subjectname}}</td>
+    
+      <td id="name">{{mark.marked_score}}</td>
+      <td id="name">{{mark.total_score}}</td>
+    </tr>
+{%endfor%}
+
+
+  </tbody>
+</table>
+</div>
+{%endblock%}

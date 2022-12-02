@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="table-responsive mt-5">
+<table class="table" id="assignment_details">
+    <thead>
+      <tr>
+        <th scope="col">Student Name</th>
+        <th scope="col">Topic</th>
+        <th scope="col">Module</th>
+        <th scope="col">Category</th>
+        <th scope="col">Submitted Date</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for sassignment in assignments%}
+      <tr>
+        <td>{{sassignment.student.first_name}}</td>
+        <td>{{sassignment.assignment.topic}}</td>
+        <td>{{sassignment.assignment.module}}</td>
+        <td>{{sassignment.assignment.type_value}}</td>
+        <td>{{sassignment.submitted_date}}</td>
+        <td>
+            <a href="{{sassignment.answer.url}}" download="{{sassignment.answer.url}}" class="btn btn-primary" type="submit" >Download<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
+        </td> 
+        <td>
+            <a href="/class/{{sassignment.class_belongs_id}}/semester/{{sassignment.semester_id}}/subject/{{sassignment.subject_id}}/student/{{sassignment.student.id}}/submitted-assignment/{{sassignment.id}}/assign-mark"  class="btn btn-warning" type="submit" >Assign Mark</a>
+        </td>
+    </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#assignment_details").dataTable();
+    })
+</script>
+{%endblock%}

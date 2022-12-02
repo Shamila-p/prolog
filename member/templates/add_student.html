@@ -26,6 +26,7 @@
         </select>
       </div>
       {%endif%}
+      {%if not is_tutor%}
       <div class="col-md-6">
         <label for="inputState" class="form-label">Semester</label>
         <select id="inputState" class="form-select" name="semester">
@@ -34,14 +35,27 @@
         {%endfor%}
         </select>
       </div>
+      {%endif%}
+      <div class="col-md-6">
+        <label for="inputState" class="form-label">Quota</label>
+        <select id="inputState" class="form-select" name="quota">
+        {%for quota in quota_list %}
+          <option selected value="{{quota.0}}">{{quota.1}}</option>
+        {%endfor%}
+        </select>
+      </div>
       {%if is_tutor%}
       <div class="col-md-6">
         <label  class="form-label">Class</label>
-        <input type="text" class="form-control" name="class" value="CSE" disabled>
+        <input type="text" class="form-control" name="class" value="{{student.classname}}" disabled>
         </div>
+        <div class="col-md-6">
+          <label  class="form-label">Semester</label>
+          <input type="text" class="form-control" name="semester" value="{{student.Semester.semname}}" disabled>
+          </div>
         {%elif request.user.role == 'PR' or request.user.position == 'HD'%}
         <div class="col-md-6">
-          <label for="inputState" class="form-label">Semester</label>
+          <label for="inputState" class="form-label">Class</label>
           <select id="inputState" class="form-select" name="class">
           {%for class in batches %}
             <option selected value="{{class.id}}">{{class.classname}}</option>

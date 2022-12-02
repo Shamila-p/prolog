@@ -1,0 +1,68 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-9"></div>
+    <div class="col-md-3">
+        <a href="/add-certificate" class="btn btn-primary" type="submit"> ADD CERTIFICATE</a>
+    </div>
+    </div>
+    <div class="table-responsive mt-5">
+        <table class="table" id="certificate_details">
+            <thead>
+              <tr>
+                {%if request.user.role == 'TR'%}
+                <th scope="col">Student Name</th>
+                {%endif%}
+                <th scope="col">Activity Name</th>
+                <th scope="col">Level</th>
+                <th scope="col">Submitted Date</th>
+                {%if request.user.role == 'TR'%}
+                <th scope="col"></th>
+                {%endif%}
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+            {%if request.user.role == 'ST'%}
+              {%for certificate in certificates%}
+              <tr>
+                <td>{{certificate.activity_name}}</td>
+                <td>{{certificate.level_value}}</td>
+                <td>{{certificate.created_date}}</td>
+                <td><a href="/edit-certificate/{{certificate.id}}" class="btn btn-primary btn-sm">Edit</a></td>
+                <td>
+                    <form method="post" action="/remove-certificate/{{certificate.id}}">
+                      {%csrf_token%}<button class="btn btn-danger btn-sm" type="submit">Remove</form>
+                  </td>
+              </tr>
+              {%endfor%}
+            {%elif request.user.role == 'TR' and is_tutor%}
+            {%for students in list_certificates%}
+                {%for certificate in students%}
+
+              <tr>
+                <td>{{certificate.student.first_name}}</td>
+                <td>{{certificate.activity_name}}</td>
+                <td>{{certificate.level_value}}</td>
+                <td>{{certificate.created_date}}</td>
+                <td>
+                    <a href="{{certificate.certificate_file.url}}" download="{{certificate.certificate_file.url}}" class="btn btn-primary" type="submit">Download<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
+                </td>
+              </tr>
+              {%endfor%}
+              {%endfor%}
+
+            {%endif%}
+            </tbody>
+          </table>
+        </div>
+        {%endblock%}
+        {%block script%}
+        <script>
+            $(function () {
+                $("#certificate_details").dataTable();
+            })
+        </script>
+        {%endblock%}

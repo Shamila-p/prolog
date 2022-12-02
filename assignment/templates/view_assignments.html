@@ -4,9 +4,14 @@
 
 <div class="row">
     <div class="col-md-8"></div>
-    <div class="col-md-4"><a href="" class="btn btn-primary" type="submit">VIEW MARKS</a></div>
+    <div class="col-md-4"></div>
 </div>
+{%for message in messages%}
+<div class="alert alert-light text-center text-danger alert-dismissible fade show">
+    <span> {{message}}</span>
 
+</div>
+{%endfor%}
 <div class="table-responsive mt-5">
   <table class="table" id="view_assignments">
       <thead>
@@ -18,6 +23,7 @@
           <th scope="col">Submission Date</th>
           <th scope="col">Assignment Type</th>
           <th scope="col">Questions</th>
+          <th scope="col"></th>
           <th scope="col"></th>
         </tr>
       </thead>    
@@ -33,21 +39,39 @@
         <td>{{assignment.submission_date}}</td>
         <td>{{assignment.type_value}}</td>
         <td>
-            <a href="{{assignment.questions.url}}" download="{{assignment.questions.url}}" class="btn btn-primary" type="submit">Download<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
+          
+            <a href="{{assignment.questions.url}}" download="{{assignment.questions.url}}" class="btn btn-primary" type="submit" >Download<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
         </td>
         <td>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" name="myfile" >
-                <a href="upload-file/"  class="btn btn-warning" type="submit">Upload<i class="mdi mdi-arrow-up icon-sm align-middle"></i></a>
-              </form>
-        </td>
-        <td>
-            
-        </td>
-       
-       
-      </tr>  
+          <button  data-bs-toggle="modal" data-bs-target="#upload{{assignment.id}}" class="btn btn-warning" name="answer" type="file" >UPLOAD<i class="mdi mdi-arrow-up icon-sm align-middle"></i></button>
+      </td>
+      <td><a href="/view-assignments/view-mark/{{assignment.id}}" class="btn btn-dark" type="submit">VIEW MARK</a></td>
+        
+      </tr> 
+      <!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="upload{{assignment.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- <input type="file" class="btn btn-primary"> -->
+        <form method='post' action='/class/{{assignment.class_belongs_id}}/semester/{{assignment.semester_id}}/subject/{{assignment.subject_id}}/upload/{{assignment.id}}' enctype="multipart/form-data">
+          {%csrf_token%}
+          Select file : <input type='file' name='answer' id='file' class='form-control' ><br>
+         <button type="submit" class="btn btn-primary">UPLOAD</button>
+
+        </form>
+
+
+      </div>
+      
+    </div>
+  </div>
+</div>
       {%endfor%}
   
     </table>

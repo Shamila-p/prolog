@@ -1,0 +1,46 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<form method="get">
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label">Choose Date</label>
+            <input type="date" class="form-control" name="date" id="date" value="{{selected_date}}">
+        </div>
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">VIEW</button>
+          </div>
+        
+    </div>
+</form>
+
+<table class="table" id="list_classes">
+    <div>
+        {%for message in messages%}
+                        <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+                            <span> {{message}}</span>
+        
+                        </div>
+          {%endfor%}
+        </div>
+    <thead>
+      <tr>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        {%for student in attendences%}
+       <tr>
+        <td>
+            {%if student.is_present is True%}
+            <h6 style="color: green;">Present</h6>
+            {%else%}
+            <h6 style="color: red;">Absent</h6>
+            {%endif%}
+        </td>
+       </tr>
+       {%endfor%}
+    </tbody>
+  </table>
+  
+{%endblock%}

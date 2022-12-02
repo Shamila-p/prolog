@@ -1,0 +1,49 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row">
+  {%if request.user.role == 'PR'%}
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+          <a href="/add-fee" class="btn btn-primary" type="submit">ADD FEE
+            <i class="mdi mdi-plus icon-sm align-middle"></i></a>
+    </div>
+    {%endif%}
+</div>
+<div class="row mt-5">
+    <table class="table " id="mark" class="mark">
+      <thead>
+        <tr>
+          <th scope="col">Semester</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Last Date</th>
+          <th scope="col">status</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+       {%for fee in fee_list%}
+       
+        <tr>
+          <td id="name">{{fee.semester.semname}}</td>
+          <td id="name">{{fee.fees}}</td>
+          <td id="name">{{fee.last_date}}</td>
+          <td>
+
+          {%if fee.semester.semname not in payed_fee_semester_list%}
+          PENDING
+          <td><a href="/payment/{{fee.id}}" class="btn btn-primary" type="submit">PAY FEE</a></td>
+
+          {%else%}
+          COMPLETED
+          {%endif%}
+        </td>
+
+          
+    </tr>
+    {%endfor%}
+    
+      </tbody>
+    </table>
+    </div>
+{%endblock%}

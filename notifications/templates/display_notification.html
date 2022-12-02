@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div class="row">
+{%for notification in notifications%}
+
+    <div class="col-12">
+
+        <div class="card text-center">
+            <div class="card-body">
+
+              <p class="card-text">{{notification.message}}</p>
+
+            </div>
+          </div>
+    </div>
+    {%endfor%}
+
+</div>
+
+{%endblock%}

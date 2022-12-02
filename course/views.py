@@ -90,7 +90,8 @@ def add_semester(request):
             return render(request, 'add_semester.html')
         if request.method == 'POST':
             sem_name = request.POST.get('sem_name')
-            Semester.objects.create(semname=sem_name)
+            order = request.POST.get('order')
+            Semester.objects.create(semname=sem_name,order=order)
             return redirect('list_semester')
 
 
@@ -105,8 +106,10 @@ def edit_semester(request, id):
             return render(request, 'edit_semester.html', context)
         if request.method == 'POST':
             sem_name = request.POST.get('sem_name')
+            order = request.POST.get('order')
             semester = Semester.objects.get(id=id)
             semester.semname = sem_name
+            semester.order=order
             semester.save()
             return redirect('list_semester')
 

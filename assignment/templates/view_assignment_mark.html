@@ -1,0 +1,15 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+    <div class="card text-center ">
+        <div class="card-header">
+          <p>Topic: {{assignment.assignment.topic}}</p>
+          <p>Subject: {{assignment.subject.subjectname}}</p>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Mark: {{mark.scored}}</h5>
+          <p class="card-text">Out of: {{mark.outof}}</p>
+        </div>
+        
+      </div>
+{%endblock%}

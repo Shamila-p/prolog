@@ -65,6 +65,7 @@ def list_materials(request,subject_id):
     if request.method == 'GET':
         student=Student.objects.get(user_id=request.user.id)
         materials=Notes.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester_id,subject_id=subject_id)
+        print(materials)
         context={'materials':materials}
         return render(request,'list_materials.html',context)
 

@@ -32,6 +32,11 @@ urlpatterns = [
 
     path('my-subjects',views.my_subjects,name="my_subjects"),
     path('class/<int:class_id>/semester/<int:semester_id>/subject/<int:subject_id>/student-details',views.student_details,name="student_details"),
+
+    path('class/<int:class_id>/semester/<int:semester_id>/add-timetable',views.add_timetable,name="add_timetable"),
+    path('view-timetable',views.view_timetable,name="view_timetable"),
+     path('download/', views.download_file),
+
     
 
 

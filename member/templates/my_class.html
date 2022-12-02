@@ -47,6 +47,41 @@
       {%endfor%}
   
     </table>
-    <a href="/add-subject" class="btn btn-primary" type="submit">Create Time Table</a>
+    {%for message in messages%}
+    <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+        <span> {{message}}</span>
+
+    </div>
+    {%endfor%}
+    <!-- href="/class/{{teacher.id}}/semester/{{teacher.Semester_id}}/add-timetable" -->
+    <button data-bs-toggle="modal" data-bs-target="#upload"  class="btn btn-primary" type="submit">Add Time Table</button>
+    {%for time in timetable%}
+    <td>
+      <a href="{{time.time_table.url}}" download="{{time.time_table.url}}" class="btn btn-primary" type="submit" >VIEW TIMETABLE<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
+    </td> 
+    {%endfor%}
+
+    <!-- Modal -->
+<div class="modal fade" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- <input type="file" class="btn btn-primary"> -->
+        <form method='post' action='/class/{{teacher.id}}/semester/{{teacher.Semester_id}}/add-timetable' enctype="multipart/form-data">
+          {%csrf_token%}
+          Select file : <input type='file' name='timetable' id='file' class='form-control' ><br>
+         <button type="submit" class="btn btn-primary">UPLOAD</button>
+
+        </form>
+
+
+      </div>
+      
+    </div>
+  </div>
+</div>
   </div>
 {%endblock%}

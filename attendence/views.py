@@ -1,3 +1,6 @@
+from datetime import date
+from datetime import datetime
+
 import json
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render,redirect
@@ -15,6 +18,7 @@ def attendence(request,class_id,subject_id,semester_id):
         #     id=i
         # subject=Subject.objects.get(id=id.id)
         students=Student.objects.filter(batch_id=class_id,semester_id=semester_id)
+        print(students)
         context={'students':students,'class_id':class_id,'subject_id':subject_id,'semester_id':semester_id}
         return render(request,'attendence.html',context)
     
@@ -23,6 +27,7 @@ def add_attendence(request,class_id,subject_id,semester_id):
         date=request.POST['date']
         bb=request.POST['attendences']
         attendences=json.loads(bb)
+        print(attendences)
         for attendence in attendences:
             name=attendence["name"]
             is_present=attendence["is_present"]
@@ -34,9 +39,81 @@ def add_attendence(request,class_id,subject_id,semester_id):
             user=User.objects.get(first_name=name)
             student=Student.objects.get(user_id=user.id)
             Attendence.objects.create(date=date,subject_id=subject_id,is_present=is_present,teacher_id=request.user.id,student_id=student.id,semester_id=semester_id,class_belongs_id=class_id)
-            messages.info(request,"attendence added")
+        messages.info(request,"attendence added")
+        return JsonResponse({'status': 'success'})
+
+def edit_attendence(request,class_id,subject_id,semester_id):
+    if request.method == 'GET':
+        selected_date=request.GET.get('date')
+        print(selected_date)
+        if selected_date is None:
+            selected_date=datetime.today().strftime('%Y-%m-%d') 
+            print(selected_date)
+        attendences=Attendence.objects.filter(date=selected_date,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
+        context={'class_id':class_id,'subject_id':subject_id,'semester_id':semester_id,'attendences':attendences,'selected_date':selected_date}
+        return render(request,'edit_attendence.html',context)
+        # if selected_date is not None:
+        #     attendence=Attendence.objects.filter(date=selected_date,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
+        # else:
+        #     attendence=Attendence.objects.filter(date=date.today(),class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
+        # context={'class_id':class_id,'subject_id':subject_id,'semester_id':semester_id,'attendences':attendence,'selected_date':selected_date}
+        # return render(request,'edit_attendence.html',context)
+    if request.method == 'POST':
+        print('jhkh,gh')
+        selected_date=request.POST['selected_date']
+        print(selected_date)
+        bb=request.POST['attendences']
+        print(bb)
+        attendences=json.loads(bb)
+        for attendence in attendences:
+            name=attendence["name"]
+            is_present=attendence["is_present"]
+            current=Attendence.objects.filter(date=selected_date,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
+            for student in current:
+                 student.is_present=is_present
+                 student.save()
             return JsonResponse({'status': 'success'})
+        
 
+def view_attendence(request,class_id,subject_id,semester_id):
+    if request.method == 'GET':
+        selected_date=request.GET.get('date')
+        print(selected_date)
+        if selected_date is None:
+            selected_date=datetime.today().strftime('%Y-%m-%d') 
+            print(selected_date)
+        attendences=Attendence.objects.filter(date=selected_date,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
+        context={'class_id':class_id,'subject_id':subject_id,'semester_id':semester_id,'attendences':attendences,'selected_date':selected_date}
+        return render(request,'view_attendence.html',context)
+    
 
+        # if selected_date is not None:
+        #     attendences=Attendence.objects.filter(date=selected_date,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
+        #     if attendences is None:
+        #         messages.info(request,"no record")
+        # else:
+        #     attendences=Attendence.objects.filter(date=date.today(),class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
+        #     if attendences is None:
+        #          messages.info(request,"no record")
+        
+        # print(attendences)
+def student_attendence(request):
+    student=Student.objects.get(user_id=request.user.id)
+    subjects=Subject.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester)
+    context={'subjects':subjects}
+    return render(request,'student_attendence.html',context)
 
+def view_student_attendence(request,subject_id):
+    if request.method == 'GET':
+        return render(request,'view_student_attendence.html')
+
+#         selected_date=request.GET.get('date')
+#         print(selected_date)
+#         if selected_date is None:
+#             selected_date=datetime.today().strftime('%Y-%m-%d') 
+#             print(selected_date)
+#         attendences=Attendence.objects.filter(date=selected_date,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
+#         context={'class_id':class_id,'subject_id':subject_id,'semester_id':semester_id,'attendences':attendences,'selected_date':selected_date}
+#         return render(request,'view_attendence.html',context)
+    # student=Student.objects.get(user_id=request.user.id)
 

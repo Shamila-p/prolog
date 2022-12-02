@@ -39,3 +39,21 @@ class Assignment(auditModel):
 
 class module(auditModel):
     modulename=models.CharField(max_length=10)
+
+class SubmittedAssignment(auditModel):
+    answer=models.FileField(upload_to='files/', null=True)
+    student=models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    assignment=models.ForeignKey(Assignment, null=True, on_delete=models.CASCADE)
+    subject=models.ForeignKey(Subject, null=True, on_delete=models.CASCADE)
+    class_belongs=models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
+    semester=models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
+    submitted_date=models.DateTimeField(auto_now=True)
+
+class AssignmentMark(auditModel):
+    scored=models.CharField(max_length=4)
+    outof=models.CharField(max_length=4)
+    student=models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    assignment=models.ForeignKey(SubmittedAssignment, null=True, on_delete=models.CASCADE)
+    subject=models.ForeignKey(Subject, null=True, on_delete=models.CASCADE)
+    class_belongs=models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
+    semester=models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
