@@ -13,7 +13,7 @@
 
 <div class="row mt-5">
  
-    <table class="table " id="mark" class="mark">
+    <table class="table table-responsive" id="fee" class="fee">
       <thead>
         <tr>
           {%if request.user.role == 'PR'%}
@@ -22,6 +22,7 @@
           <th scope="col">Category</th>
           <th scope="col">Amount</th>
           <th scope="col">Last Date</th>
+          <th scope="col"></th>
           <th scope="col"></th>
           {%elif request.user.role == 'TR' and request.user.position == 'HD' %}
           <th scope="col">Semester</th>
@@ -62,4 +63,11 @@
       </tbody>
     </table>
     </div>
+{%endblock%}
+{%block script%}
+<script>
+    $(function () {
+        $("#fee").dataTable();
+    })
+</script>
 {%endblock%}

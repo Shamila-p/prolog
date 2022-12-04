@@ -73,7 +73,6 @@ def edit_attendence(request,class_id,subject_id,semester_id):
                  student.is_present=is_present
                  student.save()
             return JsonResponse({'status': 'success'})
-        
 
 def view_attendence(request,class_id,subject_id,semester_id):
     if request.method == 'GET':
@@ -97,15 +96,27 @@ def view_attendence(request,class_id,subject_id,semester_id):
         #          messages.info(request,"no record")
         
         # print(attendences)
-def student_attendence(request):
-    student=Student.objects.get(user_id=request.user.id)
-    subjects=Subject.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester)
-    context={'subjects':subjects}
-    return render(request,'student_attendence.html',context)
+# def student_attendence(request):
+#     student=Student.objects.get(user_id=request.user.id)
+#     subjects=Subject.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester)
+#     context={'subjects':subjects}
+#     return render(request,'student_attendence.html',context)
 
-def view_student_attendence(request,subject_id):
-    if request.method == 'GET':
-        return render(request,'view_student_attendence.html')
+# def view_student_attendence(request,subject_id):
+#     # if request.method == 'GET':
+#     #     print(subject_id)
+#     #     return render(request,'view_student_attendence.html')
+#         if request.method == 'GET':
+#             student=Student.objects.get(user_id=request.user.id)
+#             selected_date=request.GET.get('date')
+#             print(selected_date)
+#             if selected_date is None:
+#                 selected_date=datetime.today().strftime('%Y-%m-%d') 
+#                 print(selected_date)
+#             attendences=Attendence.objects.filter(date=selected_date,class_belongs_id=student.batch_id,subject_id=subject_id,semester_id=student.semester_id,student_id=student.id)
+#             print(attendences)
+#             context={'class_id':student.batch_id,'subject_id':subject_id,'semester_id':student.semester_id,'attendences':attendences,'selected_date':selected_date}
+#             return render(request,'view_student_attendence.html',context)
 
 #         selected_date=request.GET.get('date')
 #         print(selected_date)

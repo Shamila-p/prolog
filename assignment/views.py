@@ -118,7 +118,8 @@ def view_mark(request,assignment_id):
     if request.method == 'GET':
         assignment=SubmittedAssignment.objects.get(assignment_id=assignment_id)
         print(assignment)
-        mark=AssignmentMark.objects.get(assignment_id=assignment.id)
+        # assigned=AssignmentMark.objects.filter(student_id=request.user.id,assignment_id=assignment_id,class_belongs_id)
+        mark=AssignmentMark.objects.get(assignment_id=assignment_id)
         print(mark)
         context={'assignment':assignment,'mark':mark}
         return render(request,'view_assignment_mark.html',context)
@@ -138,8 +139,10 @@ def assign_mark(request,class_id,semester_id,subject_id,student_id,assignment_id
         print(student_id)
         print(assignment_id)
         assignment=SubmittedAssignment.objects.get(id=assignment_id)
-        print(assignment)
-        context={'assignment':assignment,'class_id':class_id,'semester_id':semester_id,'subject_id':subject_id,'student_id':student_id,'submitted_assignment_id':assignment_id}
+        submitted=0
+        if AssignmentMark.objects.filter(assignment_id=assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id).exists():
+            submitted=True
+        context={'assignment':assignment,'class_id':class_id,'semester_id':semester_id,'subject_id':subject_id,'student_id':student_id,'submitted_assignment_id':assignment_id,'submitted':submitted}
         return render(request,'assign_mark.html',context)
     if request.method == 'POST':
         print('hg')
@@ -147,6 +150,9 @@ def assign_mark(request,class_id,semester_id,subject_id,student_id,assignment_id
         print(scored)
         outof=request.POST.get('outof')
         print(outof)
-
-        AssignmentMark.objects.create(scored=scored,outof=outof,assignment_id=assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id)
+        assignment=SubmittedAssignment.objects.get(id=assignment_id)
+        # if AssignmentMark.objects.filter(assignment_id=assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id).exists():
+            
+        # else:
+        AssignmentMark.objects.create(scored=scored,outof=outof,assignment_id=assignment.assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id)
         return redirect('submitted_assignment',class_id,semester_id,subject_id)

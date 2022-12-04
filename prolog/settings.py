@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'fees.apps.FeesConfig',
     'certificates.apps.CertificatesConfig',
     'sms.apps.SmsConfig',
+    'dashboard.apps.DashboardConfig'
 ]
 AUTH_USER_MODEL = 'member.User'
 MIDDLEWARE = [
@@ -82,6 +83,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR,'fees/templates'),
             os.path.join(BASE_DIR,'certificates/templates'),
             os.path.join(BASE_DIR,'sms/templates'),
+            os.path.join(BASE_DIR,'dashboard/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

@@ -20,6 +20,7 @@
   <!-- End layout styles -->
   <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}" />
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+  <!-- chart -->
   
 </head>
 </head>
@@ -88,7 +89,14 @@
           </li>
 
          
-
+          {%if request.user.role == 'PR' %} 
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">
+              <span class="menu-title">Dashboard</span>
+              <i class="mdi mdi-recycle menu-icon"></i>
+            </a>
+          </li>
+          {%endif%}
           <li class="nav-item">
             <a class="nav-link" href="/profile">
               <span class="menu-title">Profile</span>
@@ -148,12 +156,12 @@
          
           {% elif request.user.role == 'ST' %} 
           
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="/attendence">
               <span class="menu-title">Attendence</span>
               <i class="mdi mdi-recycle menu-icon"></i>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a class="nav-link" href="/performance">
               <span class="menu-title">Performance</span>
@@ -342,7 +350,6 @@
     </div>
     <!-- page-body-wrapper ends -->
   </div>
-  
   <!-- container-scroller -->
   <!-- plugins:js -->
   <script src="{% static 'vendors/js/vendor.bundle.base.js'%}"></script>
@@ -350,8 +357,10 @@
   <!-- Plugin js for this page -->
   <script src="{% static 'vendors/chart.js/Chart.min.js'%}"></script>
  <script src="{% static 'js/jquery.cookie.js'%}" type="text/javascript"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
  
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
   <!-- End plugin js for this page -->
   <!-- inject:js -->
   <script src="{% static 'js/off-canvas.js'%}"></script>

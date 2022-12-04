@@ -24,9 +24,15 @@
         <td>
             <a href="{{sassignment.answer.url}}" download="{{sassignment.answer.url}}" class="btn btn-primary" type="submit" >Download<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
         </td> 
+        <!-- {%if submitted is True%}
         <td>
-            <a href="/class/{{sassignment.class_belongs_id}}/semester/{{sassignment.semester_id}}/subject/{{sassignment.subject_id}}/student/{{sassignment.student.id}}/submitted-assignment/{{sassignment.id}}/assign-mark"  class="btn btn-warning" type="submit" >Assign Mark</a>
+            <a href="/class/{{sassignment.class_belongs_id}}/semester/{{sassignment.semester_id}}/subject/{{sassignment.subject_id}}/student/{{sassignment.student.id}}/submitted-assignment/{{sassignment.id}}/edit-mark"  class="btn btn-warning" type="submit" >View And Edit Mark</a>
         </td>
+        {%else%} -->
+        <td>
+          <a href="/class/{{sassignment.class_belongs_id}}/semester/{{sassignment.semester_id}}/subject/{{sassignment.subject_id}}/student/{{sassignment.student.id}}/submitted-assignment/{{sassignment.id}}/assign-mark"  class="btn btn-warning" type="submit" >Assign Mark</a>
+      </td>
+      <!-- {%endif%} -->
     </tr>
       {%endfor%}
     </tbody>

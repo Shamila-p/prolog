@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
+    path('',include('dashboard.urls')),
     path('',include('sms.urls')),
     path('',include('certificates.urls')),
     path('',include('fees.urls')),

@@ -1,0 +1,96 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<section class="statistic statistic2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-lg-4">
+                <div class="statistic__item statistic__item--green">
+                    <h2 class="number">Total Students</h2>
+                    <span class="desc">{{students_count}}</span>
+                    <div class="icon">
+                        <i class="zmdi zmdi-account-o"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <div class="statistic__item statistic__item--orange">
+                    <h2 class="number">Total Staff</h2>
+                    <span class="desc">{{teachers_count}}</span>
+                    <div class="icon">
+                        <i class="zmdi zmdi-shopping-cart"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <div class="statistic__item statistic__item--blue">
+                    <h2 class="number">Total Department</h2>
+                    <span class="desc">{{deaprtments_count}}</span>
+                    <div class="icon">
+                        <i class="zmdi zmdi-calendar-note"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-6 col-lg-3">
+                <div class="statistic__item statistic__item--red">
+                    <h2 class="number">$1,060,386</h2>
+                    <span class="desc">total earnings</span>
+                    <div class="icon">
+                        <i class="zmdi zmdi-money"></i>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-md-6 h-50 bg-light rounded mt-4 p-4 " style="width:75%; height:200px;margin:auto">
+                <h5 class="mt-3 fw-bold ms-3">Department - Student Report</h5>
+                <hr>
+                        <canvas class="mt-3" id="myChart2" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+{%endblock%}
+{%block script%}
+                        <script>
+                            var ctx = document.getElementById('myChart2').getContext('2d');
+                            var myChart1 = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: [{% for department in departments %} '{{department.dname}}', {% endfor %}],
+                                datasets: [{
+                                label: 'No of Students',
+                                data: [{% for count in student_count_list %} '{{count}}', {% endfor %}],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                        borderWidth: 1
+                            }]
+                                },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                            });
+                        </script>
+                    
+         
+{%endblock%}
