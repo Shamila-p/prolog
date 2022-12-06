@@ -1,4 +1,3 @@
-from turtle import position
 from django.shortcuts import render, redirect,HttpResponse
 
 from member.models import User
