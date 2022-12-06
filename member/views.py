@@ -14,7 +14,6 @@ def profile(request):
     if request.method == 'GET':
         if request.user.role == User.STUDENT:
             student = Student.objects.get(user_id=request.user.id)
-            
             context = {'student': student, 'title': 'Profile'}
         elif request.user.role == User.TEACHER:
             teacher = User.objects.get(id=request.user.id)
@@ -365,7 +364,7 @@ def add_student(request):
 
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                                 phone=mobile,
-                                                role=User.STUDENT, department_id=department, profile_image=profile_image)
+                                                role=User.STUDENT, department_id=department, profile_image=profile_image,position=0)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
                                        user_id=user.id, parent_mobile=p_mobile, batch_id=batch_id.id, semester_id=batch_id.Semester_id, quota=quota)
             if request.user.position == User.HOD:
@@ -373,14 +372,14 @@ def add_student(request):
                 
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                                 phone=mobile,
-                                                role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image)
+                                                role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image,position=0)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
                                        user_id=user.id, parent_mobile=p_mobile, batch_id=batch_id.id, semester_id=batch_id.Semester_id, quota=quota)
             if request.user.role == User.TEACHER and is_tutor:
                 tutor=Class.objects.get(tutor_id=request.user.id)
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                                 phone=mobile,
-                                                role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image)
+                                                role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image,position=0)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
                                        user_id=user.id, parent_mobile=p_mobile, batch_id=tutor.id, semester_id=tutor.Semester_id, quota=quota)
             return redirect('list_students')

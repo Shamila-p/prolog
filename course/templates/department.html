@@ -26,7 +26,11 @@
         {%for department in departments%}
       <tr>
         <td>{{department.dname}}</td>
-        <td>{{department.hod.first_name}}</td>
+        <td>{%if department.hod.first_name is None%}
+          Unassigned
+          {%else%}
+          {{department.hod.first_name}}
+        {%endif%}</td>
         <!-- <td><a class="btn btn-light">Approved</a></td> -->
         <td><a href="/edit-department/{{department.id}}" class="btn btn-primary">Edit</a></td>
         

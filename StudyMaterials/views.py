@@ -72,10 +72,13 @@ def view_materials(request):
 def material_semester(request,semester_id):
     student=Student.objects.get(user_id=request.user.id)
     batches=Class.objects.filter(Semester_id=semester_id,classname=student.batch.classname)
+    batch_id_list=[]
     for batch in batches:
-        materials=Notes.objects.filter(class_belongs_id=batch.id,semester_id=semester_id)
-        print(materials)
-        context={'materials':materials}
+        batch_id_list.append(batch.id)
+    materials=Notes.objects.filter(class_belongs_id__in=batch_id_list,semester_id=semester_id)
+    if len(materials) == 0:
+        messages.info(request,"materials not added yet")
+    context={'material_list':materials}
     return render(request,'semester_materials.html',context)
 
 

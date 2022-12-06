@@ -12,27 +12,27 @@
               </div>
               {%endif%}
               <div class="row pt-1">
-                <div class="col-4 mb-3">
+                <div class="col-md-4 mb-3">
                   <h6>Name</h6>
                   <p class="text-muted">{{request.user.first_name}}</p>
                 </div>
-                <div class="col-4 mb-3">
+                <div class="col-md-4 mb-3">
                     <h6>Mobile</h6>
                     <p class="text-muted">{{request.user.phone}}</p>
                   </div>
-                  <div class="col-4 mb-3">
+                  <div class="col-md-4 mb-3">
                     <h6>Email</h6>
                     <p class="text-muted">{{request.user.email}}</p>
                   </div>
               </div>
                 {% if request.user.role == 'ST' %}
                 <div class="row pt-1">
-                <div class="col-6 mb-3">
+                <div class="col-md-6 mb-3">
                     <h6>Admission Number</h6>
                     <p class="text-muted">{{student.admsn_no}}</p>
                   </div>
              
-                <div class="col-6 mb-3">
+                <div class="col-md-6 mb-3">
                   <h6>Department</h6>
                   <p class="text-muted">{{request.user.department.dname}}</p>
                 </div>
@@ -81,17 +81,17 @@
         {%csrf_token%}
         {% if request.user.role == 'PR'  %}
        <div class="row">
-        <div class="form-group col-6">
+        <div class="form-group col-md-6">
           <label for="name">Name</label>
           <input type="text" class="form-control" name="name" value="{{principal.first_name}}">
         </div>
-        <div class="form-group col-6">
+        <div class="form-group col-md-6">
           <label for="email">Email</label>
           <input type="text" class="form-control"  name="email" value="{{principal.email}}">
         </div>
       </div>
       <div class="row">
-        <div class="form-group col-6">
+        <div class="form-group col-md-6">
           <label for="mobile">Mobile</label>
           <input type="text" class="form-control" name="phone" value="{{principal.phone}}">
         </div>
@@ -107,7 +107,7 @@
         <button type="submit" class="btn btn-primary profile-button">EDIT</button>
       </div>
         {% elif request.user.role == 'TR'%}
-        <div class="row">
+        <div class="row ">
           <div class="form-group col-6">
             <label for="name">Name</label>
             <input type="text" class="form-control" name="name" value="{{request.user.first_name}}">

@@ -32,7 +32,7 @@
         {%for quota in quota_list %}
         {%if quota.0 == student.quota%}
         
-        <option  value="{{student.quota.0}}" selected>{{student.quota_value}}</option>
+        <option  value="{{student.quota}}" selected>{{student.quota_value}}</option>
         {%else%}
         
         <option  value="{{quota.0}}" >{{quota.1}}</option>

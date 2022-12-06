@@ -1,24 +1,25 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
+
 <!-- Set up a container element for the button -->
 <div>
   <h2>Amount:{{fee.fees}}</h2>
   <h2>Quota:{{fee.fee_value}}</h2>
   <h2>{{data}}</h2>
 </div>
-<!-- <div id="paypal-button-container" ></div> -->
+<div id="paypal-button-container" ></div>
 
 <div class="  p-lr-40 p-t-20 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
-  <button type="button" class="btn btn-dark payWithRazorpay w-100 rounded-pill" 
+  <button type="button" class="btn btn-dark payWithRazorpay w-50 rounded-pill" 
    id="rzp-button1" style="height:45px;border-radius: 50px;font-weight:bold;font-size:19px;">
    <i>RazorPay</i>
   </button>
 </div>
   
-
-
-<!-- <script src="https://www.paypal.com/sdk/js?client-id=AfsGXxjdBcbME4FfGIn3n3HHTjQ7FuXhxi5_ZJCq7btpv9KFp_IHYd-scP0v4TGyso9zRz1ma6yqgSX8&currency=USD"></script>
+{%endblock%}
+{%block script%}
+<script src="https://www.paypal.com/sdk/js?client-id=AfsGXxjdBcbME4FfGIn3n3HHTjQ7FuXhxi5_ZJCq7btpv9KFp_IHYd-scP0v4TGyso9zRz1ma6yqgSX8&currency=USD"></script>
 <script>
   
 
@@ -69,7 +70,7 @@
       });
     }
   }).render('#paypal-button-container');
-</script> -->
+</script>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -83,17 +84,17 @@
       e.preventDefault();
       $.ajax({
             type: "GET",
-            url: "/payment",
+            url: "/payment/{{fee.id}}",
             success: function (response) {
               
                 var options={
                     "key": "rzp_test_JeIuBXxwdG9tNG", // Enter the Key ID generated from the Dashboard
                     //"amount": response.total*100,//response.total, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-                    "amount":'{{fee.fees}}',
+                    "amount":'{{fee.fees}}'*100,
                     "currency": "INR",
                     "name": "cart",
                     "description": "Thank you for shopping with us",
-                     "image": "https://example.com/your_logo", 
+                     "image": "https://example.com/{{fee.student.user.profile_image}}", 
                     // "order_id": response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                     "handler": function (response){
                         // alert(response.razorpay_payment_id);
@@ -107,7 +108,7 @@
                         }
                         $.ajax({
                             type: "POST",
-                            url: "/payment",
+                            url: "/payment/{{fee.id}}",
                             data: data,
                             success: function(response) {
                               console.log(response)
@@ -120,7 +121,6 @@
                                 }).then(function() {
                                   window.location.href = "/";
                                 });
-                             
                               }
                         });
                     },
@@ -139,14 +139,9 @@
                 var rzp1 = new Razorpay(options);
                 rzp1.open();
             }
-          
         });
-      
-    
     });
   });
-
-
 </script>
 
 

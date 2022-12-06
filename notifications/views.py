@@ -33,6 +33,8 @@ def complaint(request):
 
 def display_complaint(request):
     if request.method == 'GET':
+        context={}  
+
         if request.user.role == 'PR':
             if Complaint.objects.filter(send_to=User.PRINCIPAL).exists():
                complaints=Complaint.objects.filter(send_to=User.PRINCIPAL)
@@ -47,6 +49,7 @@ def display_complaint(request):
                 messages.info(request,"No complaints yet")
                 return redirect('no_complaint')
         is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
+
         if request.user.role == 'TR' and not request.user.position== User.HOD:
             complaints=Complaint.objects.filter(send_to=request.user.first_name,department_id=request.user.department_id)
             print(complaints)
@@ -54,7 +57,6 @@ def display_complaint(request):
         # if request.user.role == 'TR' and not is_tutor:
         #     complaints=Complaint.objects.filter(send_to=request.user.first_name,department_id=request.user.department_id)
         #     context={'complaints':complaints}
-            
         return render(request,'display_complaint.html',context)
 
 def no_complaint(request):

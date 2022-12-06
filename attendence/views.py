@@ -37,12 +37,17 @@ def add_attendence(request,class_id,subject_id,semester_id):
             # subject=Subject.objects.get(id=id.id)
             user=User.objects.get(first_name=name)
             student=Student.objects.get(user_id=user.id)
-            Attendence.objects.create(date=date,subject_id=subject_id,is_present=is_present,teacher_id=request.user.id,student_id=student.id,semester_id=semester_id,class_belongs_id=class_id)
-        messages.info(request,"attendence added")
+            if Attendence.objects.filter(date=date,subject_id=subject_id,teacher_id=request.user.id,student_id=student.id,semester_id=semester_id,class_belongs_id=class_id).exists():
+                is_exist=True
+            else:
+                is_exist=False
+                Attendence.objects.create(date=date,subject_id=subject_id,is_present=is_present,teacher_id=request.user.id,student_id=student.id,semester_id=semester_id,class_belongs_id=class_id)
+        if is_exist:
+            messages.info(request,"attendence alreday added")
+        else:
+            messages.info(request,"attendence added")
         return JsonResponse({'status': 'success'})
-        # if Attendence.objects.filter(subject_id=subject_id,is_present=is_present,teacher_id=request.user.id,student_id=student.id,semester_id=semester_id,class_belongs_id=class_id).exists():
-        #         messages.info(request,"attendence alreday added")
-        #     else:
+       
 
 def edit_attendence(request,class_id,subject_id,semester_id):
     if request.method == 'GET':
