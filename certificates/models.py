@@ -1,6 +1,5 @@
 from django.db import models
 from common.models import auditModel
-from asyncio.windows_events import NULL
 
 
 
@@ -22,7 +21,7 @@ class Certificate(auditModel):
     activity_name=models.CharField(max_length=500)
     created_date=models.DateTimeField(auto_now=True)
     level=models.CharField(
-        max_length=2, choices=CERTIFICATE_CHOICES, null=False,default=NULL)
+        max_length=2, choices=CERTIFICATE_CHOICES, null=False,default=None)
     certificate_file=models.FileField(upload_to='files/', null=True)
     student=models.ForeignKey("member.User", null=True, on_delete=models.CASCADE)
 

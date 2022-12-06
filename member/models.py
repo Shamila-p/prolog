@@ -1,5 +1,3 @@
-from asyncio.windows_events import NULL
-from email.policy import default
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from common.models import auditModel
@@ -40,7 +38,7 @@ class User(AbstractUser, auditModel):
         max_length=2, choices=ROLES_CHOICES, null=False)
     department = models.ForeignKey(Department, null=True, on_delete=models.CASCADE)
     position = models.CharField(
-        max_length=3, choices=POSITION_CHOICES, null=False,default=NULL)
+        max_length=3, choices=POSITION_CHOICES, null=False,default=None)
     
     
     @property
@@ -81,7 +79,7 @@ class Student(auditModel):
     admsn_no=models.CharField(max_length=6,null=True)
     parent_name = models.CharField(max_length=30)
     parent_mobile = models.CharField(max_length=15)
-    quota=models.CharField(max_length=2,choices=QUOTA_CHOICES,null=False,default=NULL)
+    quota=models.CharField(max_length=2,choices=QUOTA_CHOICES,null=False,default=None)
    
     @property
     def quota_value(self):

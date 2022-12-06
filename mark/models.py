@@ -1,7 +1,6 @@
 from django.db import models
 
 from common.models import auditModel
-from asyncio.windows_events import NULL
 from member.models import Student,User
 from course.models import Class, Semester, Subject
 
@@ -19,7 +18,7 @@ class Mark(auditModel):
     ]
 
     exam_type=models.CharField(
-        max_length=3, choices=EXAM_CHOICES, null=False,default=NULL)
+        max_length=3, choices=EXAM_CHOICES, null=False,default=None)
     total_score=models.CharField(max_length=50)
     marked_score=models.CharField(max_length=50)
     subject=models.ForeignKey(Subject, null=True, on_delete=models.CASCADE)
