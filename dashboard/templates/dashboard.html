@@ -25,7 +25,7 @@
             <div class="col-md-4 col-lg-4">
                 <div class="statistic__item statistic__item--blue">
                     <h2 class="number">Total Department</h2>
-                    <span class="desc">{{deaprtments_count}}</span>
+                    <span class="desc">{{departments_count}}</span>
                     <div class="icon">
                         <i class="zmdi zmdi-calendar-note"></i>
                     </div>
@@ -41,19 +41,28 @@
                 </div>
             </div> -->
         </div>
+      
         <div class="row">
-            <div class="col-md-6 h-50 bg-light rounded mt-4 p-4 " style="width:75%; height:200px;margin:auto">
+            <div class="col-md-6 h-50 bg-light rounded mt-4 p-4 " style="width:50%; height:200px;margin:auto">
                 <h5 class="mt-3 fw-bold ms-3">Department - Student Report</h5>
                 <hr>
-                        <canvas class="mt-3" id="myChart2" width="400" height="200"></canvas>
+                        <canvas class="mt-3" id="myChart1" width="400" height="200"></canvas>
                     </div>
                 </div>
             </div>
+            <div class="col-md-6 h-50 bg-light rounded mt-4 p-4 " style="width:50%; height:200px;margin:auto">
+                <h5 class="mt-3 fw-bold ms-3">Department - Staff Report</h5>
+                <hr>
+                        <canvas class="mt-3" id="myChart2" width="200px" height="200px"></canvas>
+                    </div>
+                </div>
+            </div>
+            
         </section>
 {%endblock%}
 {%block script%}
                         <script>
-                            var ctx = document.getElementById('myChart2').getContext('2d');
+                            var ctx = document.getElementById('myChart1').getContext('2d');
                             var myChart1 = new Chart(ctx, {
                                 type: 'bar',
                                 data: {
@@ -61,6 +70,45 @@
                                 datasets: [{
                                 label: 'No of Students',
                                 data: [{% for count in student_count_list %} '{{count}}', {% endfor %}],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                        borderWidth: 1
+                            }]
+                                },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                            });
+                        </script>
+                        <script>
+                            var ctx = document.getElementById('myChart2').getContext('2d');
+                            var myChart1 = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: [{% for department in departments %} '{{department.dname}}', {% endfor %}],
+                                datasets: [{
+                                label: 'No of Staffs',
+                                data: [{% for count in staff_count_list %} '{{count}}', {% endfor %}],
                                 backgroundColor: [
                                     'rgba(255, 99, 132, 1)',
                                     'rgba(54, 162, 235, 1)',

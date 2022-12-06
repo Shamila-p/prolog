@@ -9,7 +9,8 @@ urlpatterns = [
     path('class/<int:class_id>/semester/<int:semester_id>/subject/<int:subject_id>/study-materials/<str:module_name>/material/<int:material_id>/remove-material',views.remove_materials,name="remove_materials"),
 
     path('view-materials',views.view_materials,name="view_materials"),
-    path('subject/<int:subject_id>/list-materials',views.list_materials,name="list_materials"),
+    path('view-materials/semester/<int:semester_id>',views.material_semester,name="material_semester"),
+    path('view-materials/semester/<int:semester_id>/subject/<int:subject_id>/list-materials',views.list_materials,name="list_materials"),
 
 
 ]

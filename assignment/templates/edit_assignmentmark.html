@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<h6>Name: {{submitted.student.first_name}} </h6>
+<h6>Category: {{assignment.type_value}}</h6>
+<h6>Scored Mark: {{submitted.scored}}</h6>
+<h6>Out of: {{submitted.outof}}</h6>
+
+<form method="post" href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/student/{{student_id}}/submitted-assignment/{{submitted_assignment_id}}/assign-mark" >
+    {%for message in messages%}
+<div class="alert alert-light text-center text-danger alert-dismissible fade show">
+    <span> {{message}}</span>
+</div>
+{%endfor%}
+    {%csrf_token%}
+    
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <label  class="form-label">Scored</label>
+                <input type="text" class="form-control" name="scored" value="{{submitted.scored}}">
+            </div>
+            <div class="col-md-6">
+                <label  class="form-label">Out of</label>
+                <input type="text" class="form-control" name="outof" value="{{submitted.outof}}">
+            </div>
+              
+        </div>
+        <div class="row">
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary mt-5">EDIT</button>
+        </div>
+        </div>
+    </form>
+
+{%endblock%}

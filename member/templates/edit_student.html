@@ -16,7 +16,11 @@
         <label for="inputState" class="form-label">Department</label>
         <select id="inputState" class="form-select" name="department">
         {%for department in departments %}
-          <option selected value="{{department.id}}">{{department.dname}}</option>
+        {%if department.dname == student.user.department.dname%}
+          <option  value="{{student.user.department_id}}" selected>{{student.user.department.dname}}</option>
+          {%else%}
+          <option  value="{{department.id}}" >{{department.dname}}</option>
+          {%endif%}
         {%endfor%}
         </select>
       </div>
@@ -26,7 +30,13 @@
         <label for="inputState" class="form-label">Quota</label>
         <select id="inputState" class="form-select" name="quota">
         {%for quota in quota_list %}
-          <option selected value="{{quota.0}}">{{quota.1}}</option>
+        {%if quota.0 == student.quota%}
+        
+        <option  value="{{student.quota.0}}" selected>{{student.quota_value}}</option>
+        {%else%}
+        
+        <option  value="{{quota.0}}" >{{quota.1}}</option>
+        {%endif%}
         {%endfor%}
         </select>
       </div>
@@ -34,19 +44,28 @@
       <div class="col-md-4">
         <label for="inputState" class="form-label">Class</label>
         <select id="inputState" class="form-select" name="batch">
+         
         {%for batch in batches %}
-          <option selected value="{{batch.id}}">{{batch.classname}}</option>
+        {%if batch.classname == student.batch.classname%}
+        <option  value="{{student.batch_id}}" selected>{{student.batch.Semester.semname}}-{{student.batch.classname}}</option>
+        {%else%}
+        <option  value="{{batch.id}}" >{{batch.Semester.semname}}-{{batch.classname}}</option>
+        {%endif%}
         {%endfor%}
         </select>
       </div>
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <label for="inputState" class="form-label">Semester</label>
         <select id="inputState" class="form-select" name="semester">
         {%for semester in semesters %}
-          <option selected value="{{semester.id}}">{{semester.semname}}</option>
+        {%if semester.semname == student.semester.semname%}
+        <option  value="{{student.semester_id}}" selected>{{student.semester.semname}}</option>
+        {%else%}
+        <option  value="{{semester.id}}" >{{semester.semname}}</option>
+        {%endif%}
         {%endfor%}
         </select>
-      </div>
+      </div> -->
       {%endif%}
       {%if is_tutor%}
       <div class="col-md-6">

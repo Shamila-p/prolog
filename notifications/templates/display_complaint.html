@@ -22,7 +22,7 @@
         <th scope="col">Semester</th>
         <th scope="col">Class</th>
         <th scope="col">Complaint</th>
-        {% elif request.user.role == 'TR' and is_tutor%}
+        {% elif request.user.role == 'TR' %}
         <th scope="col">Student Name</th>
         <th scope="col">Complaint</th>
         {%endif%}
@@ -50,7 +50,7 @@
         <td>{{complaint.message}}</td>
         {%endfor%}
 
-        {% elif request.user.role == 'TR' and is_tutor%}
+        {% elif request.user.role == 'TR' %}
         {%for complaint in complaints%}
 
         <td>{{complaint.student.user.first_name}}</td>

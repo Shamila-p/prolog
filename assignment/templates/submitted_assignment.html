@@ -3,6 +3,11 @@
 {% block content %}
 <div class="table-responsive mt-5">
 <table class="table" id="assignment_details">
+  {%for message in messages%}
+          <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+              <span> {{message}}</span>
+          </div>
+        {%endfor%}
     <thead>
       <tr>
         <th scope="col">Student Name</th>
@@ -11,10 +16,12 @@
         <th scope="col">Category</th>
         <th scope="col">Submitted Date</th>
         <th scope="col"></th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
       {%for sassignment in assignments%}
+
       <tr>
         <td>{{sassignment.student.first_name}}</td>
         <td>{{sassignment.assignment.topic}}</td>
@@ -30,10 +37,19 @@
         </td>
         {%else%} -->
         <td>
+          {%for mark in student_marks%}
+       
+          <a href="/class/{{sassignment.class_belongs_id}}/semester/{{sassignment.semester_id}}/subject/{{sassignment.subject_id}}/student/{{sassignment.student.id}}/submitted-assignment/{{sassignment.id}}/edit-mark/{{mark.id}}"  class="btn btn-warning" type="submit" >view and Edit Mark</a>
+          {%endfor%}
+
+        </td>
+<td>
           <a href="/class/{{sassignment.class_belongs_id}}/semester/{{sassignment.semester_id}}/subject/{{sassignment.subject_id}}/student/{{sassignment.student.id}}/submitted-assignment/{{sassignment.id}}/assign-mark"  class="btn btn-warning" type="submit" >Assign Mark</a>
+     
       </td>
       <!-- {%endif%} -->
     </tr>
+
       {%endfor%}
     </tbody>
   </table>

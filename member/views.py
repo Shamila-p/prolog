@@ -15,6 +15,7 @@ def profile(request):
     if request.method == 'GET':
         if request.user.role == User.STUDENT:
             student = Student.objects.get(user_id=request.user.id)
+            
             context = {'student': student, 'title': 'Profile'}
         elif request.user.role == User.TEACHER:
             teacher = User.objects.get(id=request.user.id)
@@ -295,12 +296,15 @@ def list_students(request):
             is_tutor = Class.objects.filter(tutor_id=request.user.id).exists()
 
             if request.user.role == User.TEACHER and is_tutor:
-                tutor = User.objects.get(id=request.user.id)
-                class_students = Class.objects.get(tutor_id=tutor.id)
+                # tutor = User.objects.get(id=request.user.id)
+                class_students = Class.objects.get(tutor_id=request.user.id)
+                print(class_students)
                 tutor_students = Student.objects.filter(
                     batch_id=class_students.id, semester_id=class_students.Semester_id)
+                print(tutor_students)
                 context = {'is_tutor': is_tutor,
                            'tutor_students': tutor_students}
+
             # tutor_student_list=[]
             # for student in tutor_students:
             #     tutor_student_list.append(student.id)
@@ -342,7 +346,7 @@ def add_student(request):
             name = request.POST.get('name')
             admsn_no = request.POST.get('admsn_no')
             department = request.POST.get('department')
-            semester = request.POST.get('semester')
+            # semester = request.POST.get('semester')
             batch = request.POST.get('class')
             quota = request.POST.get('quota')
             print(batch)
@@ -357,19 +361,22 @@ def add_student(request):
             profile_image = request.FILES['profile_image']
             hod = User.objects.get(id=request.user.id)
             is_tutor = Class.objects.filter(tutor_id=request.user.id).exists()
-
             if request.user.role == User.PRINCIPAL:
+                batch_id=Class.objects.get(id=batch)
+
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                                 phone=mobile,
                                                 role=User.STUDENT, department_id=department, profile_image=profile_image)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
-                                       user_id=user.id, parent_mobile=p_mobile, batch_id=batch, semester_id=semester, quota=quota)
+                                       user_id=user.id, parent_mobile=p_mobile, batch_id=batch_id.id, semester_id=batch_id.Semester_id, quota=quota)
             if request.user.position == User.HOD:
+                batch_id=Class.objects.get(id=batch)
+                
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                                 phone=mobile,
                                                 role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
-                                       user_id=user.id, parent_mobile=p_mobile, batch_id=batch, semester_id=semester, quota=quota)
+                                       user_id=user.id, parent_mobile=p_mobile, batch_id=batch_id.id, semester_id=batch_id.Semester_id, quota=quota)
             if request.user.role == User.TEACHER and is_tutor:
                 tutor=Class.objects.get(tutor_id=request.user.id)
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
@@ -408,9 +415,9 @@ def edit_student(request, user_id):
             name = request.POST.get('name')
             admsn_no = request.POST.get('admsn_no')
             department = request.POST.get('department')
-            semester = request.POST.get('semester')
+            # semester = request.POST.get('semester')
             quota = request.POST.get('quota')
-            print(semester)
+            print(quota)
             batch = request.POST.get('batch')
             email = request.POST.get('email')
             mobile = request.POST.get('mobile')
@@ -418,6 +425,7 @@ def edit_student(request, user_id):
             p_mobile = request.POST.get('p_mobile')
             profile_image = request.FILES.get('profile_image')
             student = Student.objects.get(user_id=user_id)
+            print(student)
             user = student.user
             if profile_image is not None:
                 user.profile_image = profile_image
@@ -425,13 +433,19 @@ def edit_student(request, user_id):
             student.admsn_no = admsn_no
             if request.user.position != User.HOD and request.user.role != User.TEACHER:
                 user.department_id = department
+            # if request.user.role == User.PRINCIPAL and request.user.position==User.HOD:
+            batche=Class.objects.get(id=batch)
+            print(batche)
+            print(batche.Semester_id)
+            student.semester_id=batche.Semester_id
             student.batch_id = batch
             user.email = email
             user.phone = mobile
             student.parent_mobile = p_mobile
             student.parent_name = p_name
-            student.semester_id = semester
-            student.quota = quota
+            # student.semester_id = semester
+            if quota is not None:
+                student.quota = quota
             user.save()
             student.save()
             return redirect('list_students')
@@ -493,7 +507,8 @@ def add_subject(request):
 
         assigned = request.POST.get('assigned')
         teacher = Class.objects.get(tutor_id=request.user.id)
-
+        print(teacher)
+        print(teacher.Semester_id)
         class_belongs = Class.objects.get(tutor_id=request.user.id)
         print(class_belongs)
         batches = Class.objects.filter(
@@ -553,7 +568,7 @@ def approve_request(request, subject_id):
     if request.method == 'POST':
         edit = EditSubject.objects.get(id=subject_id)
         Subject.objects.create(subjectname=edit.subjectname, subjectcode=edit.subjectcode, tutor_id=edit.tutor_id,
-                               assigned_to_id=edit.assigned_to_id, class_belongs_id=edit.class_belongs_id)
+                               assigned_to_id=edit.assigned_to_id, class_belongs_id=edit.class_belongs_id,semester_id=edit.semester_id)
         edit.delete()
         return redirect('subject_request')
 
@@ -561,6 +576,7 @@ def approve_request(request, subject_id):
 def my_subjects(request):
     if request.method == 'GET':
         classes = Subject.objects.filter(assigned_to_id=request.user.id)
+        print(classes)
         context = {'classes': classes}
         return render(request, 'my_subjects.html', context)
 

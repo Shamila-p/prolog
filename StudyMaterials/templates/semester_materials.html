@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row mt-2">
+    {%for material in materials%}
+    <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title mx-auto">{{material.subject.subjectname}}</h5>
+              <a href="/view-materials/semester/{{material.semester_id}}/subject/{{material.subject.id}}/list-materials" class="btn btn-primary">SELECT</a>
+            </div>
+          </div>
+    </div>
+    {%endfor%}
+</div>
+{%endblock%}

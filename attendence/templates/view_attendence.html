@@ -1,6 +1,15 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+        <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/edit-attendence" class="btn btn-primary" type="submit">EDIT ATTENDENCE</a>
+  </div>
+  <div class="col-md-4">
+    <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/attendence" class="btn btn-primary" type="submit">ADD ATTENDENCE</a>
+</div>
+  </div>
 <form method="get">
     <div class="row">
         <div class="col-md-6">

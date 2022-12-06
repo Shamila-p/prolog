@@ -2,9 +2,9 @@ from django.shortcuts import render,redirect
 from course.models import Department, Semester
 from fees.models import Fee, FeePaid
 from member.models import Student, User
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.contrib import messages
-
+import zerosms
 # Create your views here.
 def display_fee(request):
     if request.method == 'GET':
@@ -126,3 +126,13 @@ def payment(request,payment_id):
         # fee_details=json.loads(fees)
         # print(fee_details)
         return JsonResponse({'status': 'success'})
+
+
+def sms(request):
+    if request.method == 'GET':
+        return render(request,'sms.html')
+    if request.method == 'POST':
+        msg=request.POST['msg']
+        phone=request.POST['phone']
+        zerosms.sms(phno=request.user.username,passwd=request.user.password,receivernum=phone,message=msg)
+        return HttpResponse("send")

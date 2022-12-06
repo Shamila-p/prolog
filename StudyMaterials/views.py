@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
-
+from django.contrib import messages
 from StudyMaterials.models import Notes
+from course.models import Class, Semester
 from member.models import Student
 
 
@@ -56,17 +57,38 @@ def remove_materials(request,material_id,class_id,subject_id,semester_id,module_
 
 def view_materials(request):
     if request.method == 'GET':
-        student=Student.objects.get(user_id=request.user.id)
-        materials=Notes.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester_id)
-        context={'materials':materials}
+        semesters=Semester.objects.all()
+        context={'semesters':semesters}
+        # student=Student.objects.get(user_id=request.user.id)
+        # materials=Notes.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester_id)
+        # context={'materials':materials}
         return render(request,'view_materials.html',context)
+    if request.method == 'POST':
+        semester=request.POST.get('semester')
+        print(semester)
+        # student=Student
+        return redirect(material_semester,semester_id=semester)
 
-def list_materials(request,subject_id):
-    if request.method == 'GET':
-        student=Student.objects.get(user_id=request.user.id)
-        materials=Notes.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester_id,subject_id=subject_id)
+def material_semester(request,semester_id):
+    student=Student.objects.get(user_id=request.user.id)
+    batches=Class.objects.filter(Semester_id=semester_id,classname=student.batch.classname)
+    for batch in batches:
+        materials=Notes.objects.filter(class_belongs_id=batch.id,semester_id=semester_id)
         print(materials)
         context={'materials':materials}
-        return render(request,'list_materials.html',context)
+    return render(request,'semester_materials.html',context)
+
+
+def list_materials(request,semester_id,subject_id):
+    if request.method == 'GET':
+        student=Student.objects.get(user_id=request.user.id)
+        batches=Class.objects.filter(Semester_id=semester_id,classname=student.batch.classname)
+        for batch in batches:
+            if not Notes.objects.filter(class_belongs_id=batch.id,semester_id=semester_id,subject_id=subject_id).exists:
+                messages.info("No materials available")
+            materials=Notes.objects.filter(class_belongs_id=batch.id,semester_id=semester_id,subject_id=subject_id)
+            print(materials)
+            context={'materials':materials}
+            return render(request,'list_materials.html',context)
 
 

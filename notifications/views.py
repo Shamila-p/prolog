@@ -47,10 +47,13 @@ def display_complaint(request):
                 messages.info(request,"No complaints yet")
                 return redirect('no_complaint')
         is_tutor=Class.objects.filter(tutor_id=request.user.id).exists()
-        if request.user.role == 'TR' and is_tutor:
+        if request.user.role == 'TR' and not request.user.position== User.HOD:
             complaints=Complaint.objects.filter(send_to=request.user.first_name,department_id=request.user.department_id)
             print(complaints)
             context={'complaints':complaints}
+        # if request.user.role == 'TR' and not is_tutor:
+        #     complaints=Complaint.objects.filter(send_to=request.user.first_name,department_id=request.user.department_id)
+        #     context={'complaints':complaints}
             
         return render(request,'display_complaint.html',context)
 

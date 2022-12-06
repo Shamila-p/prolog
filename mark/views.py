@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from mark.models import Mark
 from member.models import Student
-from course.models import Class, Subject
+from course.models import Class, Semester, Subject
 from django.contrib import messages
 
 # Create your views here.
@@ -74,15 +74,50 @@ def edit_mark(request,class_id,subject_id,student_id,semester_id):
 
 def performance(request):
     if request.method == 'GET':
-        context={'exam_types':Mark.EXAM_CHOICES}
+        semesters=Semester.objects.all()
+        context={'semesters':semesters}
         print(context)
         return render(request,'performance.html',context)
+    if request.method == 'POST':
+        semester=request.POST.get('semester')
+        print(semester)
+        # student=Student.objects.get(user_id=request.user.id)
+        # batches=Class.objects.filter(Semester_id=semester,department_id=student.user.department_id,classname=student.batch.classname).exists()
+        # print(batches)
+        # global id
+        # if batches is True:
+        #     batches=Class.objects.filter(Semester_id=semester,department_id=student.user.department_id,classname=student.batch.classname)
+        #     for batch in batches:
+        #        id=batch.id
         
-def performance_display(request,exam_type):
+        # print(student.batch_id)
+        # print(semester)
+        # print(id)
+        # sem=Semester.objects.get(id=semester)
+        return redirect(performance_semester,semester_id=semester)
+
+def performance_semester(request,semester_id):
+    if request.method == 'GET':
+        context={'exam_types':Mark.EXAM_CHOICES,'semester_id':semester_id}
+        return render(request,'performance_semesterwise.html',context)
+
+        
+def performance_display(request,semester_id,exam_type):
     if request.method == 'GET':
         student=Student.objects.get(user_id=request.user.id)
-        subjects=Subject.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester_id)
-        marks=Mark.objects.filter(student_id=student.id,class_belongs_id=student.batch_id,semester_id=student.semester_id,exam_type=exam_type)
+        # subjects=Subject.objects.filter(class_belongs_id=student.batch_id,semester_id=semester_id)
+        # print(subjects)
+        print(student.id)
+        print(student.batch_id)
+        print(semester_id)
+        print(exam_type)
+        global class_id
+        batches=Class.objects.filter(Semester_id=semester_id,department_id=student.user.department_id,classname=student.batch.classname)
+        print(batches)
+        for batch in batches:
+            class_id=batch.id
+        print(class_id)
+        marks=Mark.objects.filter(student_id=student.id,class_belongs_id=class_id,semester_id=semester_id,exam_type=exam_type)
         print(marks)
         # print(subjects)
         # scored_marks=[]

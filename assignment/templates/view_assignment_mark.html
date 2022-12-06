@@ -1,15 +1,21 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-    <div class="card text-center ">
+{%for message in messages%}
+<div class="alert alert-light text-center text-danger alert-dismissible fade show">
+    <span> {{message}}</span>
+</div>
+{%endfor%}
+    <div class="card text-center w-50 m-auto  text-left">
         <div class="card-header">
-          <p>Topic: {{assignment.assignment.topic}}</p>
           <p>Subject: {{assignment.subject.subjectname}}</p>
+          <p>Assigned By: {{assignment.subject.assigned_to.first_name}}</p>
+          <p>Topic: {{assignment.assignment.topic}}</p>
         </div>
         <div class="card-body">
+          
           <h5 class="card-title">Mark: {{mark.scored}}</h5>
-          <p class="card-text">Out of: {{mark.outof}}</p>
+          <h6 class="card-text">Out of: {{mark.outof}}</h6>
         </div>
-        
-      </div>
+    </div>
 {%endblock%}

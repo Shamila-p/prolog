@@ -30,7 +30,7 @@
           <td id="name">{{fee.last_date}}</td>
           <td>
 
-          {%if fee.semester not in payed_fee_semester_list%}
+          {%if fee.semester.semname not in payed_fee_semester_list%}
           PENDING
           <td><a href="/payment/{{fee.id}}" class="btn btn-primary" type="submit">PAY FEE</a></td>
 

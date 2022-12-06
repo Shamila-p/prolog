@@ -1,16 +1,28 @@
+
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<div class="row mt-2">
-    {%for material in materials%}
-    <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-              <h5 class="card-title mx-auto">{{material.subject.subjectname}}</h5>
-              <a href="/subject/{{material.subject.id}}/list-materials" class="btn btn-primary">SELECT</a>
-            </div>
-          </div>
+ <form action="" method="post">
+  {%csrf_token%}
+  <div class="row">
+    <div class="col-md-6">
+      <label for="inputState" class="form-label">Choose Semester</label>
+      <select id="inputState" class="form-select" name="semester">
+      {%for semester in semesters %}
+        <option selected value="{{semester.id}}">{{semester.semname}}</option>
+      {%endfor%}
+      </select>
     </div>
-    {%endfor%}
-</div>
+  </div>
+    <div class="row">
+    <button class="btn btn-primary btn-md">Submit</button>
+  
+  </div>
+ </form>
+ 
+
+
+
 {%endblock%}
+
+

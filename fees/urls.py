@@ -11,4 +11,6 @@ urlpatterns = [
      path('student-fee',views.student_fee,name="student_fee"),
     path('payment/<int:payment_id>',views.payment,name="student_fee"),
 
+    path('sms',views.sms,name="sms"),
+
 ]

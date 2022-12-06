@@ -26,7 +26,7 @@
         </select>
       </div>
       {%endif%}
-      {%if not is_tutor%}
+      <!-- {%if not is_tutor%}
       <div class="col-md-6">
         <label for="inputState" class="form-label">Semester</label>
         <select id="inputState" class="form-select" name="semester">
@@ -35,7 +35,7 @@
         {%endfor%}
         </select>
       </div>
-      {%endif%}
+      {%endif%} -->
       <div class="col-md-6">
         <label for="inputState" class="form-label">Quota</label>
         <select id="inputState" class="form-select" name="quota">
@@ -52,13 +52,13 @@
         <div class="col-md-6">
           <label  class="form-label">Semester</label>
           <input type="text" class="form-control" name="semester" value="{{student.Semester.semname}}" disabled>
-          </div>
+        </div>
         {%elif request.user.role == 'PR' or request.user.position == 'HD'%}
         <div class="col-md-6">
           <label for="inputState" class="form-label">Class</label>
           <select id="inputState" class="form-select" name="class">
           {%for class in batches %}
-            <option selected value="{{class.id}}">{{class.classname}}</option>
+            <option selected value="{{class.id}}">{{class.Semester.semname}}-{{class.classname}}</option>
           {%endfor%}
           </select>
         </div>

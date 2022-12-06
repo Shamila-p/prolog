@@ -118,9 +118,13 @@ def view_mark(request,assignment_id):
     if request.method == 'GET':
         assignment=SubmittedAssignment.objects.get(assignment_id=assignment_id)
         print(assignment)
+        print(assignment_id)
         # assigned=AssignmentMark.objects.filter(student_id=request.user.id,assignment_id=assignment_id,class_belongs_id)
-        mark=AssignmentMark.objects.get(assignment_id=assignment_id)
+        mark=AssignmentMark.objects.filter(assignment_id=assignment_id,student_id=request.user.id,semester_id=assignment.semester_id,subject_id=assignment.subject_id,class_belongs_id=assignment.class_belongs_id).exists()
         print(mark)
+        if mark is not True:
+            messages.info(request,"Mark not assigned yet!!")
+        
         context={'assignment':assignment,'mark':mark}
         return render(request,'view_assignment_mark.html',context)
 
@@ -128,7 +132,18 @@ def view_mark(request,assignment_id):
 def submitted_assignment(request,class_id,semester_id,subject_id):
     if request.method == 'GET':
         assignments=SubmittedAssignment.objects.filter(subject_id=subject_id,class_belongs_id=class_id,semester_id=semester_id)
-        context={'assignments':assignments}
+        print(class_id)
+        print(semester_id)
+        print(subject_id)
+        # print(assignments)
+        # is_submitted=[]
+        # for assignment in assignments:
+        #     submitted=AssignmentMark.objects.filter(assignment_id=assignment.assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=assignment.student_id).exists()
+        #     is_submitted.append(submitted)
+        # print(is_submitted)
+        student_marks=AssignmentMark.objects.filter(class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id)
+        print(student_marks)
+        context={'assignments':assignments,'student_marks':student_marks}
         return render(request,'submitted_assignment.html',context)
 
 def assign_mark(request,class_id,semester_id,subject_id,student_id,assignment_id):
@@ -138,11 +153,16 @@ def assign_mark(request,class_id,semester_id,subject_id,student_id,assignment_id
         print(subject_id)
         print(student_id)
         print(assignment_id)
+        student=Student.objects.get(user_id=student_id)
         assignment=SubmittedAssignment.objects.get(id=assignment_id)
-        submitted=0
-        if AssignmentMark.objects.filter(assignment_id=assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id).exists():
-            submitted=True
-        context={'assignment':assignment,'class_id':class_id,'semester_id':semester_id,'subject_id':subject_id,'student_id':student_id,'submitted_assignment_id':assignment_id,'submitted':submitted}
+        # is_submitted=AssignmentMark.objects.filter(assignment_id=assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id).exists()
+        # print(is_submitted)
+        # if is_submitted is True:
+        #     messages.info(request,"Mark already added. If you want to edit please go for edit option")
+
+        # is_assigned=SubmittedAssignment.objects.filter(id=assignment_id,).exists()
+        # submitted=0
+        context={'assignment':assignment,'class_id':class_id,'semester_id':semester_id,'subject_id':subject_id,'student_id':student_id,'submitted_assignment_id':assignment_id,'student':student}
         return render(request,'assign_mark.html',context)
     if request.method == 'POST':
         print('hg')
@@ -151,8 +171,37 @@ def assign_mark(request,class_id,semester_id,subject_id,student_id,assignment_id
         outof=request.POST.get('outof')
         print(outof)
         assignment=SubmittedAssignment.objects.get(id=assignment_id)
-        # if AssignmentMark.objects.filter(assignment_id=assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id).exists():
+        print(assignment_id)
+        print(class_id)
+        print(subject_id)
+        print(semester_id)
+        print(student_id)
+        is_submitted=AssignmentMark.objects.filter(assignment_id=assignment.assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id).exists()
+        print(is_submitted)
+        if is_submitted is True:
+            messages.info(request,"Mark already added. If you want to edit please go for edit option")
             
-        # else:
-        AssignmentMark.objects.create(scored=scored,outof=outof,assignment_id=assignment.assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id)
+        else:
+            AssignmentMark.objects.create(scored=scored,outof=outof,assignment_id=assignment.assignment_id,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,student_id=student_id)
         return redirect('submitted_assignment',class_id,semester_id,subject_id)
+
+
+def edit_mark(request,class_id,semester_id,subject_id,student_id,assignment_id,mark_id):
+    if request.method == 'GET':
+        submitted=AssignmentMark.objects.get(id=mark_id)
+        if submitted is None:
+            messages.info(request,"Mark not assigned yet")
+            
+        assignment=Assignment.objects.get(id=submitted.id)
+        print(submitted.assignment_id)
+        context={'submitted':submitted,'assignment':assignment}
+        return render(request,'edit_assignmentmark.html',context)
+    if request.method== 'POST':
+        scored=request.POST.get('scored')
+        outof=request.POST.get('outof')
+        submitted=AssignmentMark.objects.get(id=mark_id)
+        submitted.scored=scored
+        submitted.outof=outof
+        submitted.save()
+        return redirect('submitted_assignment',class_id,semester_id,subject_id)
+
