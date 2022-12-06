@@ -38,7 +38,7 @@ class User(AbstractUser, auditModel):
         max_length=2, choices=ROLES_CHOICES, null=False)
     department = models.ForeignKey(Department, null=True, on_delete=models.CASCADE)
     position = models.CharField(
-        max_length=3, choices=POSITION_CHOICES, null=False,default=None)
+        max_length=3, choices=POSITION_CHOICES, null=False)
     
     
     @property
