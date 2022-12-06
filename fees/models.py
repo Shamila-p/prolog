@@ -37,7 +37,7 @@ class Fee(auditModel):
 class FeePaid(auditModel):
     department=models.ForeignKey(Department, null=True, on_delete=models.CASCADE)
     fee_category=models.CharField(max_length=12,null=False)
-    fees=models.IntegerField(null=False,default=NULL)
+    fees=models.IntegerField(null=False,default=None)
     payed_date=models.DateTimeField(auto_now=True)
     semester=models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
     student=models.ForeignKey(User, null=True, on_delete=models.CASCADE)
