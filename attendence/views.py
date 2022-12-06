@@ -1,8 +1,7 @@
-from datetime import date
 from datetime import datetime
 
 import json
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from course.models import Class, Subject
 from .models import Attendence
