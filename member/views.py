@@ -417,6 +417,7 @@ def edit_student(request, user_id):
             quota = request.POST.get('quota')
             print(quota)
             batch = request.POST.get('batch')
+            print(batch)
             email = request.POST.get('email')
             mobile = request.POST.get('mobile')
             p_name = request.POST.get('p_name')
