@@ -11,13 +11,14 @@
     {%endif%}
 </div>
 <div class="row mt-5">
-    <table class="table " id="student_fee" class="mark">
+    <table class="table table-responsive" id="student_fee" class="mark">
       <thead>
         <tr>
           <th scope="col">Semester</th>
           <th scope="col">Amount</th>
           <th scope="col">Last Date</th>
           <th scope="col">status</th>
+          <th scope="col"></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -36,6 +37,12 @@
 
           {%else%}
           COMPLETED
+          {% for pfee in payed_fees%}
+          {%if pfee.semester.semname == fee.semester.semname%}
+          <td  ><h6 style="color: green;">paid</h6></td>
+          <td><a href="/invoice-generate/{{pfee.id}}"  class="btn btn-primary" type="submit" target="_blank">Download Receipt</a></td>
+          {%endif%}
+          {%endfor%}
           {%endif%}
         </td>
 

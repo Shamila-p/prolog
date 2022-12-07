@@ -2,14 +2,7 @@
 {% load static %}
 {% block content %}
 <form method="post" href="/add-fee">
-  <div>
-    {%for message in messages%}
-    <div class="alert alert-light text-center text-danger alert-dismissible fade show">
-        <span> {{message}}</span>
-    
-    </div>
-    {%endfor%}
-  </div>
+ 
 {%csrf_token%}
     <div class="row">
         

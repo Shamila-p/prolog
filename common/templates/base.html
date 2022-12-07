@@ -20,6 +20,7 @@
   <!-- End layout styles -->
   <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}" />
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+
   <!-- chart -->
   
 </head>
@@ -270,7 +271,7 @@
           
           {%endif%}
           {%if request.user.role == 'TR' and is_tutor %}
-          {%if not request.user.role == 'HD' %}
+          {%if not request.user.position == 'HD' %}
           <li class="nav-item">
             <a class="nav-link" href="/my-class">
               <span class="menu-title">My class</span>
@@ -311,6 +312,7 @@
           {%endif%}
           
           {%if request.user.role == 'TR' and not is_tutor %}
+          {%if not request.user.position == 'HD' %}
           
           <li class="nav-item">
             <a class="nav-link" href="/my-subjects">
@@ -330,6 +332,7 @@
               <i class="mdi mdi-lead-pencil menu-icon"></i>
             </a>
           </li>
+          {%endif%}
           {%endif%}
 
          

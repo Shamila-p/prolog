@@ -4,10 +4,10 @@
 
 <div>
 {%for message in messages%}
-                <div class="alert alert-light text-center text-danger alert-dismissible fade show">
-                    <span> {{message}}</span>
+    <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+        <span> {{message}}</span>
 
-                </div>
+    </div>
   {%endfor%}
 </div>
 <div class="row mt-5">
@@ -25,6 +25,7 @@
   </thead>
   <tbody>
     {%for mark in marks%}
+    
    <tr>
       <td id="name">{{mark.subject.subjectname}}</td>
     

@@ -8,8 +8,9 @@ urlpatterns = [
     path('remove-fee/<int:fee_id>',views.remove_fee,name="remove_fee"),
 
 
-     path('student-fee',views.student_fee,name="student_fee"),
+    path('student-fee',views.student_fee,name="student_fee"),
     path('payment/<int:payment_id>',views.payment,name="student_fee"),
+    path('invoice-generate/<int:id>',views.invoice_generate,name="invoice_generate"),
 
     path('sms',views.sms,name="sms"),
 

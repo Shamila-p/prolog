@@ -16,29 +16,48 @@
         <th scope="col">Department</th>
         <th scope="col">Semester</th>
         <th scope="col">Class</th>
-        <th scope="col">Complaint</th>
+        <th scope="col"></th>
         {% elif request.user.position == 'HD'%}
         <th scope="col">Student Name</th>
         <th scope="col">Semester</th>
         <th scope="col">Class</th>
-        <th scope="col">Complaint</th>
+        <th scope="col"></th>
         {% elif request.user.role == 'TR' %}
         <th scope="col">Student Name</th>
-        <th scope="col">Complaint</th>
+        <th scope="col"></th>
         {%endif%}
       </tr>
     </thead>
     <tbody>
       
-        
+      {%if request.user.role == 'PR'%}
+      {%for complaint in complaints%}
       <tr>
-        {%if request.user.role == 'PR'%}
-        {%for complaint in complaints%}
+        
         <td>{{complaint.student.user.first_name}}</td>
         <td>{{complaint.department.dname}}</td>
         <td>{{complaint.semester.semname}}</td>
         <td>{{complaint.batch.classname}}</td>
-        <td>{{complaint.message}}</td>
+        <td><a href="" data-bs-toggle="modal" data-bs-target="#blockModal{{complaint.id}}" class="btn btn-danger"> <small>View Complaint</small></a></td>
+        <div class="modal fade" id="blockModal{{complaint.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <p class="modal-title text-danger" id="exampleModalLabel">Complaints</p>
+              </div>
+              <div class="modal-body ">
+                  <div>{{complaint.message}}</div>
+                  <!-- <div>Order id -  {{orderitem.order.id}}</div>
+                  <div>Quantity - {{orderitem.quantity}}</div> -->
+          
+              </div>
+              <div class="modal-footer ">
+              <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-bs-dismiss="modal">Close</button>
+              
+              </div>
+          </div>
+          </div>
+      </div>
         {%endfor%}
 
         {% elif request.user.position == 'HD'%}
@@ -47,7 +66,26 @@
         <td>{{complaint.student.user.first_name}}</td>
         <td>{{complaint.semester.semname}}</td>
         <td>{{complaint.batch.classname}}</td>
-        <td>{{complaint.message}}</td>
+        <td><a href="" data-bs-toggle="modal" data-bs-target="#blockModal{{complaint.id}}" class="btn btn-danger"> <small>View Complaint</small></a></td>
+        <div class="modal fade" id="blockModal{{complaint.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <p class="modal-title text-danger" id="exampleModalLabel">Complaints</p>
+              </div>
+              <div class="modal-body ">
+                  <div>{{complaint.message}}</div>
+                  <!-- <div>Order id -  {{orderitem.order.id}}</div>
+                  <div>Quantity - {{orderitem.quantity}}</div> -->
+          
+              </div>
+              <div class="modal-footer ">
+              <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-bs-dismiss="modal">Close</button>
+              
+              </div>
+          </div>
+          </div>
+      </div>
         {%endfor%}
 
         {% elif request.user.role == 'TR' %}
@@ -55,13 +93,33 @@
 
         <td>{{complaint.student.user.first_name}}</td>
         
-        <td>{{complaint.message}}</td>
-        {%endfor%}
-
-        {%endif%}
+        <td><a href="" data-bs-toggle="modal" data-bs-target="#blockModal{{complaint.id}}" class="btn btn-danger"> <small>View Complaint</small></a></td>
+        <div class="modal fade" id="blockModal{{complaint.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <p class="modal-title text-danger" id="exampleModalLabel">Complaints</p>
+              </div>
+              <div class="modal-body ">
+                  <div>{{complaint.message}}</div>
+                  <!-- <div>Order id -  {{orderitem.order.id}}</div>
+                  <div>Quantity - {{orderitem.quantity}}</div> -->
+          
+              </div>
+              <div class="modal-footer ">
+              <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-bs-dismiss="modal">Close</button>
+              
+              </div>
+          </div>
+          </div>
+      </div>
+        
 
 
       </tr>
+      {%endfor%}
+
+        {%endif%}
     </tbody>
   </table>
 </div>

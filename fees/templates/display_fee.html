@@ -12,6 +12,14 @@
 </div>
 
 <div class="row mt-5">
+  <div>
+    {%for message in messages%}
+    <div class="alert alert-light text-center text-danger alert-dismissible fade show">
+        <span> {{message}}</span>
+    
+    </div>
+    {%endfor%}
+  </div>
  
     <table class="table table-responsive" id="fee" class="fee">
       <thead>

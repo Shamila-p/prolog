@@ -103,7 +103,7 @@
                         <script>
                             var ctx = document.getElementById('myChart2').getContext('2d');
                             var myChart1 = new Chart(ctx, {
-                                type: 'line',
+                                type: 'pie',
                                 data: {
                                     labels: [{% for department in departments %} '{{department.dname}}', {% endfor %}],
                                 datasets: [{

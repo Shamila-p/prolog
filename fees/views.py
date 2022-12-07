@@ -5,6 +5,9 @@ from member.models import Student, User
 from django.http import JsonResponse,HttpResponse
 from django.contrib import messages
 import zerosms
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.http import FileResponse
 # Create your views here.
 def display_fee(request):
     if request.method == 'GET':
@@ -92,7 +95,7 @@ def student_fee(request):
         print(payed_fees)
         for paid_fee in payed_fees:
             payed_fee_list.append(paid_fee.semester.semname)
-
+           
         context={'fees':fees,'payed_fee_semester_list':payed_fee_list,'fee_list':fee_list,'payed_fees':payed_fees}
         return render(request,'student_fee.html',context)
 
@@ -136,3 +139,27 @@ def sms(request):
         phone=request.POST['phone']
         zerosms.sms(phno=request.user.username,passwd=request.user.password,receivernum=phone,message=msg)
         return HttpResponse("send")
+
+def invoice_generate(request,id):
+        paid=FeePaid.objects.get(id=id)
+        user=request.user
+        template_path='invoice.html'
+        
+        context = {'paid': paid,'user': user}
+
+        response = HttpResponse(content_type='application/pdf')
+
+        response['Content-Disposition'] = 'filename="invoice.pdf"'
+
+        template = get_template(template_path)
+
+        html = template.render(context)
+
+        # create a pdf
+        pisa_status = pisa.CreatePDF(
+        html, dest=response)
+        # if error then show some funy view
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response
+    

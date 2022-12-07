@@ -19,6 +19,8 @@
   
 {%endblock%}
 {%block script%}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script src="https://www.paypal.com/sdk/js?client-id=AfsGXxjdBcbME4FfGIn3n3HHTjQ7FuXhxi5_ZJCq7btpv9KFp_IHYd-scP0v4TGyso9zRz1ma6yqgSX8&currency=USD"></script>
 <script>
   
@@ -58,11 +60,19 @@
           data: fee_detail,
           dataType: 'json',
           success: function (data) {
-            window.location.replace('/student-fee')
+
+            swal({
+              title: "Payment Successful",
+              text: "Your payment is successful",
+              icon: "success",
+              button: "OK",
+            }).then(function() {
+              window.location.replace('/student-fee')
+
+            });
 
           }
       })
-        alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
         // When ready to go live, remove the alert and show a success message within this page. For example:
         // const element = document.getElementById('paypal-button-container');
         // element.innerHTML = '<h3>Thank you for your payment!</h3>';
@@ -74,7 +84,7 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-<script>
+<!-- <script>
 
   $(document).ready(function() {
     $('#rzp-button1').click(function (e) { 
@@ -88,7 +98,7 @@
             success: function (response) {
               
                 var options={
-                    "key": "rzp_test_JeIuBXxwdG9tNG", // Enter the Key ID generated from the Dashboard
+                    "key": "rzp_test_TynxV62z0YcrgS", // Enter the Key ID generated from the Dashboard
                     //"amount": response.total*100,//response.total, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                     "amount":'{{fee.fees}}'*100,
                     "currency": "INR",
@@ -142,9 +152,87 @@
         });
     });
   });
+</script> -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+  
+  $(document).ready(function() {
+    $('#rzp-button1').click(function (e) { 
+      
+      
+      var payment = "Razorpay"
+      e.preventDefault();
+      $.ajax({
+            type: "GET",
+            url: "/payment/{{fee.id}}",
+            success: function (response) {
+                var options={
+                    "key": "rzp_test_8UtkyIfgZsBIFt", // Enter the Key ID generated from the Dashboard
+                    //"amount": response.total*100,//response.total, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                    "amount":'{{fee.fees}}'*100,
+                    "currency": "INR",
+                    "name": "cart",
+                    "description": "Thank you for shopping with us",
+                    // "order_id": response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                    "handler": function (response){
+                        // alert(response.razorpay_payment_id);
+                        console.log('data')
+                        data = {
+                           
+                            "id": response.razorpay_payment_id,
+                            'fee':'{{fee.fees}}',
+                            'semester_id':'{{fee.semester_id}}',
+                            'department_id':'{{fee.department_id}}',
+                            'fee_category':'{{fee.fee_value}}',
+                            'date':'{{fee.last_date}}',
+                            "csrfmiddlewaretoken": '{{csrf_token}}'
+
+
+                        }
+                        console.log('ajax')
+                        $.ajax({
+                            type: "POST",
+                            url: "/payment/{{fee.id}}",
+                            data: data,
+                            success: function(response) {
+                              console.log(response)
+                              
+                                swal({
+                                  title: "Payment Successful",
+                                  text: "Your payment is successful",
+                                  icon: "success",
+                                  button: "OK",
+                                }).then(function() {
+                                  window.location.replace('/student-fee')
+
+                                });
+                             
+                            }
+                        });
+                    },
+                    "prefill": {
+                        "name": "Shamila",
+                        "email": "",
+                        "contact": "987654321",
+                    },
+                    "notes": {
+                        "address": "Razorpay Corporate Office"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    },
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            }
+          
+        });
+      
+    });
+});
+
 </script>
-
-
 
 
 {%endblock%}

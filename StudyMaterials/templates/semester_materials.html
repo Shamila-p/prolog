@@ -2,6 +2,16 @@
 {% load static %}
 {% block content %}
 <div class="row mt-2">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+{% for message in messages%}
+<script>
+  swal({title:'{{message}}'}).then(function() {
+    window.location.replace('/view-materials')
+
+  });
+</script>
+{%endfor%}
     {%for material in material_list%}
     <div class="col-md-4">
         <div class="card" style="width: 18rem;">

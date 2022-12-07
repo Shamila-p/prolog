@@ -111,13 +111,16 @@ def performance_display(request,semester_id,exam_type):
         print(student.batch_id)
         print(semester_id)
         print(exam_type)
-        global class_id
+        class_id_list=[]
         batches=Class.objects.filter(Semester_id=semester_id,department_id=student.user.department_id,classname=student.batch.classname)
         print(batches)
         for batch in batches:
-            class_id=batch.id
-        print(class_id)
-        marks=Mark.objects.filter(student_id=student.id,class_belongs_id=class_id,semester_id=semester_id,exam_type=exam_type)
+            class_id_list.append(batch.id)
+        # mark=Mark.objects.filter(student_id=student.id,class_belongs_id__in=class_id_list,semester_id=semester_id,exam_type=exam_type).exists()
+        # if mark :
+
+        marks=Mark.objects.filter(student_id=student.id,class_belongs_id__in=class_id_list,semester_id=semester_id,exam_type=exam_type)
+
         print(marks)
         # print(subjects)
         # scored_marks=[]

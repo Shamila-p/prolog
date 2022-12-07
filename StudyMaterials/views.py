@@ -77,7 +77,7 @@ def material_semester(request,semester_id):
         batch_id_list.append(batch.id)
     materials=Notes.objects.filter(class_belongs_id__in=batch_id_list,semester_id=semester_id)
     if len(materials) == 0:
-        messages.info(request,"materials not added yet")
+        messages.info(request,"materials not available")
     context={'material_list':materials}
     return render(request,'semester_materials.html',context)
 
