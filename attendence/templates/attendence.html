@@ -17,13 +17,14 @@
         <input type="date" class="form-control" name="date" id="date">
     </div>
 </div>
-<div>
-  {%for message in messages%}
-    <div class="alert alert-light text-center text-danger alert-dismissible fade show">
-        <span> {{message}}</span>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    </div>
-    {%endfor%}
+<div>
+          {% for message in messages%}
+          <script>
+            swal('{{message}}')
+          </script>
+				  {%endfor%}
   </div>
 <div class="row mt-5">
 <table class="table " id="attendence" class="attendence">

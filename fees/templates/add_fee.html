@@ -1,7 +1,12 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form method="post" href="/add-fee">
+<style>
+  .error{
+      color: red;
+  }
+</style>
+<form method="post" href="/add-fee" id="add_fee">
  
 {%csrf_token%}
     <div class="row">
@@ -53,4 +58,25 @@
       </div>
     </div>
 </form>
+{%endblock%}
+{%block script%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+$(document).ready(function () {
+  $("#add_fee").validate({
+    rules: {
+      amount: {
+        required: true,
+        number: "Please enter a valid number",
+      },
+      pdate: {
+        required: true,
+       
+
+      },
+    },
+  });
+});
+</script>
 {%endblock%}

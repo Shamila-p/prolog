@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form class="row g-3" method="post" href="/add-class">
+<form class="row g-3" method="post" href="/add-class" id="add_class">
     {%csrf_token%}
     <div class="col-md-6">
       <label for="inputEmail4" class="form-label">Class name</label>
@@ -45,4 +45,19 @@
       <button type="submit" class="btn btn-primary">ADD</button>
     </div>
   </form>
+{%endblock%}
+{%block script%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+$(document).ready(function () {
+  $("#add_class").validate({
+    rules: {
+      name: {
+        required: true,
+      },
+    },
+  });
+});
+</script>
 {%endblock%}

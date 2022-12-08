@@ -89,7 +89,7 @@
     </div>
     <div class="col-6">
       <label for="inputAddress" class="form-label">Parent Mobile</label>
-      <input type="text" class="form-control" name="p_mobile" id="phone">
+      <input type="text" class="form-control" name="p_mobile" id="p_mobile">
     </div>
     <div class="col-md-6 mt-3">
       <label class="labels">Upload Profile image</label>
@@ -122,13 +122,19 @@ $(document).ready(function () {
         minlength: 10,
         maxlength: 10,
       },
+      p_mobile: {
+        required: true,
+        number: true,
+        minlength: 10,
+        maxlength: 10,
+      },
       email: {
         required: true,
         email: true,
       },
       password: {
         required: true,
-        minlength: 8,
+        minlength: 3,
         maxlength: 15,
       },
     },

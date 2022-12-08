@@ -1,7 +1,12 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form method="post" href="/add-notes" enctype="multipart/form-data">
+<style>
+  .error{
+      color: red;
+  }
+</style>
+<form method="post" href="/add-notes" enctype="multipart/form-data" id="add_material">
 {%csrf_token%}
 
     <div class="row">
@@ -10,7 +15,7 @@
             <input type="text" class="form-control" name="filename">
           </div>
           <div class="col-md-6">
-            <label  class="form-label">Category</label>
+            <label  class="form-label" >Category</label>
             <select  class="form-select" name="category">
                 {%for material in materials%}
                 <option selected value="{{material.0}}">{{material.1}}</option>
@@ -20,7 +25,11 @@
          
           <div class="col-md-6 mt-3">
             <label  class="form-label">Upload Note</label>
-            <input type="file" class="form-control" name="upload"  accept="file/*,audio/*,video/*,image/*,application/pdf">
+            <!-- {%if material == 'NO'%}
+            <input type="file" class="form-control" name="upload"  accept="file/*,image/*,application/pdf">
+            {%else%} -->
+            <input type="file" class="form-control" name="upload"  accept="file/*,image/*,video/*,audio/*,application/pdf">
+            <!-- {%endif%} -->
           </div>
           
     </div>
@@ -30,4 +39,22 @@
       </div>
     </div>
 </form>
+{%endblock%}
+{%block script%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+$(document).ready(function () {
+  $("#add_material").validate({
+    rules: {
+      filename: {
+        required: true,
+      },
+      upload: {
+        required: true,
+      },
+    },
+  });
+});
+</script>
 {%endblock%}

@@ -29,6 +29,7 @@ urlpatterns = [
     path('remove-subject/<int:subject_id>', views.remove_subject, name="remove_subject"),
     path('subject-request',views.subject_request,name="subject_request"),
     path('approve-request/<int:subject_id>',views.approve_request,name="approve_request"),
+    path('deny-request/<int:subject_id>',views.deny_request,name="deny_request"),
 
     path('my-subjects',views.my_subjects,name="my_subjects"),
     path('class/<int:class_id>/semester/<int:semester_id>/subject/<int:subject_id>/student-details',views.student_details,name="student_details"),

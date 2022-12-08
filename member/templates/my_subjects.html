@@ -1,6 +1,16 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
+{% for message in messages%}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <script>
+          swal({title:'{{message}}'}).then(function() {
+            window.location.replace('/profile')
+        
+          });
+        </script>
+{%endfor%}
 <div class="container">
 
     <div class="row">

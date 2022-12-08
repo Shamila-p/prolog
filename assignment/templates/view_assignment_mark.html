@@ -9,13 +9,16 @@
     <div class="card text-center w-50 m-auto  text-left">
         <div class="card-header">
           <p>Subject: {{assignment.subject.subjectname}}</p>
+          <p>Class: {{assignment.class_belongs.classname}}</p>
+          <p>Semester: {{assignment.semester.semname}}</p>
           <p>Assigned By: {{assignment.subject.assigned_to.first_name}}</p>
           <p>Topic: {{assignment.assignment.topic}}</p>
         </div>
         <div class="card-body">
-          
+          {%for mark in marks%}
           <h5 class="card-title">Mark: {{mark.scored}}</h5>
           <h6 class="card-text">Out of: {{mark.outof}}</h6>
+          {%endfor%}
         </div>
     </div>
 {%endblock%}

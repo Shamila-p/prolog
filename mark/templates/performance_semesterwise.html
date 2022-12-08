@@ -2,6 +2,17 @@
 {% load static %}
 {% block content %}
 <div class="row mt-5 mb-5">
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  
+{% for message in messages%}
+          <script>
+            swal({title:'{{message}}'}).then(function() {
+              window.location.replace('/performance')
+          
+            });
+          </script>
+{%endfor%}
     {%for exam in exam_types%}
   
       <div class="col-md-4 mt-5">

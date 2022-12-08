@@ -1,7 +1,12 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form method="post" href="/add-semester">
+<style>
+  .error{
+      color: red;
+  }
+</style>
+<form method="post" href="/add-semester" id="add_semester">
 {%csrf_token%}
 <div class="col-md-6">
     <label for="inputEmail4" class="form-label">Semester Name</label>
@@ -15,4 +20,23 @@
     <button class="btn btn-primary mt-5">  ADD</button>
 
 </form>
+{%endblock%}
+{%block script%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+$(document).ready(function () {
+  $("#add_semester").validate({
+    rules: {
+      sem_name: {
+        required: true,
+      },
+      tmark: {
+        required: true,
+        number: "Please enter a valid number",
+      },
+    },
+  });
+});
+</script>
 {%endblock%}

@@ -360,26 +360,26 @@ def add_student(request):
             hod = User.objects.get(id=request.user.id)
             is_tutor = Class.objects.filter(tutor_id=request.user.id).exists()
             if request.user.role == User.PRINCIPAL:
-                batch_id=Class.objects.get(id=batch)
+                batch_id = Class.objects.get(id=batch)
 
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                                 phone=mobile,
-                                                role=User.STUDENT, department_id=department, profile_image=profile_image,position=0)
+                                                role=User.STUDENT, department_id=department, profile_image=profile_image, position=0)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
                                        user_id=user.id, parent_mobile=p_mobile, batch_id=batch_id.id, semester_id=batch_id.Semester_id, quota=quota)
             if request.user.position == User.HOD:
-                batch_id=Class.objects.get(id=batch)
-                
+                batch_id = Class.objects.get(id=batch)
+
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                                 phone=mobile,
-                                                role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image,position=0)
+                                                role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image, position=0)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
                                        user_id=user.id, parent_mobile=p_mobile, batch_id=batch_id.id, semester_id=batch_id.Semester_id, quota=quota)
             if request.user.role == User.TEACHER and is_tutor:
-                tutor=Class.objects.get(tutor_id=request.user.id)
+                tutor = Class.objects.get(tutor_id=request.user.id)
                 user = User.objects.create_user(first_name=name, password=password, username=email, email=email,
                                                 phone=mobile,
-                                                role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image,position=0)
+                                                role=User.STUDENT, department_id=hod.department_id, profile_image=profile_image, position=0)
                 Student.objects.create(parent_name=p_name, admsn_no=admsn_no,
                                        user_id=user.id, parent_mobile=p_mobile, batch_id=tutor.id, semester_id=tutor.Semester_id, quota=quota)
             return redirect('list_students')
@@ -396,7 +396,7 @@ def edit_student(request, user_id):
             is_tutor = Class.objects.filter(tutor_id=request.user.id).exists()
             semesters = Semester.objects.all()
             batches = 0
-            batch=0
+            batch = 0
             if request.user.role == User.TEACHER and request.user.position == User.HOD:
                 logined_department = Department.objects.get(
                     hod_id=request.user.id)
@@ -407,9 +407,11 @@ def edit_student(request, user_id):
             elif request.user.role == User.TEACHER and is_tutor:
                 batch = Class.objects.get(tutor_id=request.user.id)
             context = {'student': student, 'departments': departments,
-                       'batches': batches, 'semesters': semesters, 'quota_list': Student.QUOTA_CHOICES,'batch':batch}
+                       'batches': batches, 'semesters': semesters, 'quota_list': Student.QUOTA_CHOICES, 'batch': batch}
             return render(request, 'edit_student.html', context)
         if request.method == 'POST':
+            is_tutor = Class.objects.filter(tutor_id=request.user.id).exists()
+
             name = request.POST.get('name')
             admsn_no = request.POST.get('admsn_no')
             department = request.POST.get('department')
@@ -432,12 +434,13 @@ def edit_student(request, user_id):
             student.admsn_no = admsn_no
             if request.user.position != User.HOD and request.user.role != User.TEACHER:
                 user.department_id = department
-            # if request.user.role == User.PRINCIPAL and request.user.position==User.HOD:
-            batche=Class.objects.get(id=batch)
-            print(batche)
-            print(batche.Semester_id)
-            student.semester_id=batche.Semester_id
-            student.batch_id = batch
+            if not is_tutor:
+                batche = Class.objects.get(id=batch)
+                print(batche)
+                print(batche.Semester_id)
+                student.batch_id = batch
+
+                student.semester_id = batche.Semester_id
             user.email = email
             user.phone = mobile
             student.parent_mobile = p_mobile
@@ -475,6 +478,7 @@ def remove_student(request, user_id):
             return redirect('list_students')
 
 
+@login_required
 def my_class(request):
     if request.method == 'GET':
         teacher = Class.objects.get(tutor_id=request.user.id)
@@ -483,13 +487,15 @@ def my_class(request):
         subject_details = Subject.objects.filter(tutor_id=request.user.id)
         timetable = TimeTable.objects.filter(
             batch_id=teacher.id, semester_id=teacher.Semester_id)
-        is_uploaded=TimeTable.objects.filter(batch_id=teacher.id, semester_id=teacher.Semester_id).exists()
+        is_uploaded = TimeTable.objects.filter(
+            batch_id=teacher.id, semester_id=teacher.Semester_id).exists()
         print(is_uploaded)
         context = {'teacher': teacher,
-                   'subject_details': subject_details, 'timetable': timetable,'is_uploaded':is_uploaded}
+                   'subject_details': subject_details, 'timetable': timetable, 'is_uploaded': is_uploaded}
         return render(request, 'my_class.html', context)
 
 
+@login_required
 def add_subject(request):
     if request.method == 'GET':
         teacher = User.objects.get(id=request.user.id)
@@ -519,6 +525,7 @@ def add_subject(request):
         return redirect('my_class')
 
 
+@login_required
 def edit_subject(request, subject_id):
     if request.method == 'GET':
         subject = Subject.objects.get(id=subject_id)
@@ -539,6 +546,7 @@ def edit_subject(request, subject_id):
         return redirect('my_class')
 
 
+@login_required
 def remove_subject(request, subject_id):
     if request.method == 'POST':
         edit = Subject.objects.get(id=subject_id)
@@ -546,40 +554,60 @@ def remove_subject(request, subject_id):
         return redirect('my_class')
 
 
+@login_required
 def subject_request(request):
     if request.method == 'GET':
         subjects = EditSubject.objects.all()
-        # hod=User.objects.get(id=request.user.id)
-        # is_tutor=Class.objects.filter(department_id=hod.department_id)
-        # for tutor in is_tutor:
-        #     tutors=EditSubject.objects.all()
-        #     print(tutors)
-        #     if tutor.tutor_id in tutors.tutor_id:
-        #         t=tutor
-        #         print(t)
-        # tutor=User.objects.filter(department_id=hod.department_id,role=User.TEACHER)
+        if len(subjects) == 0:
+
+            # hod=User.objects.get(id=request.user.id)
+            # is_tutor=Class.objects.filter(department_id=hod.department_id)
+            # for tutor in is_tutor:
+            #     tutors=EditSubject.objects.all()
+            #     print(tutors)
+            #     if tutor.tutor_id in tutors.tutor_id:
+            #         t=tutor
+            #         print(t)
+            # tutor=User.objects.filter(department_id=hod.department_id,role=User.TEACHER)
+            messages.info(request, "No new subject requests")
 
         context = {'subjects': subjects}
         return render(request, 'subject_request.html', context)
 
 
+@login_required
 def approve_request(request, subject_id):
     if request.method == 'POST':
+        print(subject_id)
+
         edit = EditSubject.objects.get(id=subject_id)
         Subject.objects.create(subjectname=edit.subjectname, subjectcode=edit.subjectcode, tutor_id=edit.tutor_id,
-                               assigned_to_id=edit.assigned_to_id, class_belongs_id=edit.class_belongs_id,semester_id=edit.semester_id)
+                               assigned_to_id=edit.assigned_to_id, class_belongs_id=edit.class_belongs_id, semester_id=edit.semester_id)
         edit.delete()
         return redirect('subject_request')
 
 
+@login_required
+def deny_request(request, subject_id):
+    if request.method == 'POST':
+        edit = EditSubject.objects.get(id=subject_id)
+        print(edit)
+        edit.delete()
+        return redirect('subject_request')
+
+
+@login_required
 def my_subjects(request):
     if request.method == 'GET':
         classes = Subject.objects.filter(assigned_to_id=request.user.id)
         print(classes)
+        if len(classes) == 0:
+            messages.info(request, "No subjects assigned yet")
         context = {'classes': classes}
         return render(request, 'my_subjects.html', context)
 
 
+@login_required
 def student_details(request, class_id, subject_id, semester_id):
     print(subject_id)
     print(semester_id)
@@ -592,22 +620,26 @@ def student_details(request, class_id, subject_id, semester_id):
         return render(request, 'student_details.html', context)
 
 
+@login_required
 def add_timetable(request, class_id, semester_id):
     if request.method == 'POST':
         timetable = request.FILES.get('timetable')
         print(class_id)
         print(semester_id)
-        is_uploaded=TimeTable.objects.filter(batch_id=class_id, semester_id=semester_id).exists()
+        is_uploaded = TimeTable.objects.filter(
+            batch_id=class_id, semester_id=semester_id).exists()
         print(is_uploaded)
         if is_uploaded is not True:
             TimeTable.objects.create(time_table=timetable,
-                                 batch_id=class_id, semester_id=semester_id)
+                                     batch_id=class_id, semester_id=semester_id)
             messages.info(request, "File uploaded Succesfully")
         else:
-            messages.info(request, "Timetable already uploaded. If you are looking for editing please choose the edit option")
+            messages.info(
+                request, "Timetable already uploaded. If you are looking for editing please choose the edit option")
         return redirect('my_class')
 
 
+@login_required
 def view_timetable(request):
     if request.method == 'GET':
         student = Student.objects.get(user_id=request.user.id)
@@ -617,6 +649,7 @@ def view_timetable(request):
         return render(request, 'view_table.html', context)
 
 
+@login_required
 def download_file(request):
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     filename = 'test.txt'

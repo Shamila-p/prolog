@@ -24,14 +24,15 @@
 </form>
 
 <table class="table" id="list_classes">
-    <div>
-        {%for message in messages%}
-                        <div class="alert alert-light text-center text-danger alert-dismissible fade show">
-                            <span> {{message}}</span>
-        
-                        </div>
-          {%endfor%}
-        </div>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <div>
+            {% for message in messages%}
+            <script>
+              swal('{{message}}')
+            </script>
+            {%endfor%}
+    </div>
     <thead>
       <tr>
         <th scope="col">Student name</th>

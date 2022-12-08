@@ -1,13 +1,18 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<div class="table-responsive">
-    {%for message in messages%}
-                <div class="alert alert-light text-center text-danger alert-dismissible fade show">
-                    <span> {{message}}</span>
+{% for message in messages%}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-                </div>
-    {%endfor%}
+        <script>
+          swal({title:'{{message}}'}).then(function() {
+            window.location.replace('/profile')
+        
+          });
+        </script>
+{%endfor%}
+<div class="table-responsive">
+
 <table class="table" id="complaints">
     <thead>
       <tr>
@@ -89,6 +94,7 @@
         {%endfor%}
 
         {% elif request.user.role == 'TR' %}
+     
         {%for complaint in complaints%}
 
         <td>{{complaint.student.user.first_name}}</td>

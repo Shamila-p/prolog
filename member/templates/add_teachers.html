@@ -1,7 +1,12 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<form class="row g-3" method="post" href="/add-teachers" enctype="multipart/form-data">
+<style>
+  .error{
+      color: red;
+  }
+</style>
+<form class="row g-3" method="post" href="/add-teachers" enctype="multipart/form-data" id="add_teacher">
     {%csrf_token%}
     <div class="col-md-6">
       <label class="form-label">Name</label>
@@ -10,12 +15,12 @@
     {%if request.user.position == 'HD' %}
     <div class="col-md-6">
     <label  class="form-label">Department</label>
-    <input type="text" class="form-control" name="name" value="{{request.user.department.dname}}" disabled>
+    <input type="text" class="form-control" name="dname" value="{{request.user.department.dname}}" disabled>
     </div>
     {%else%}
     <div class="col-md-6">
         <label for="inputState" class="form-label">Department</label>
-        <select id="inputState" class="form-select" name="department">
+        <select id="inputState" class="form-select" name="department" id="department">
         {%for department in departments %}
           <option selected value="{{department.id}}">{{department.dname}}</option>
         {%endfor%}
@@ -47,11 +52,49 @@
     <div class="col-md-6 mt-3">
       <label class="labels">Upload Profile image</label>
       <input type="file" class="form-control" accept="image/*" name="profile_image"
-              required>
+              >
     </div>
    
     <div class="col-12 text-center">
       <button type="submit" class="btn btn-primary">ADD</button>
     </div>
   </form>
+{%endblock%}
+{%block script%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+$(document).ready(function () {
+  $("#add_teacher").validate({
+    rules: {
+      name: {
+        required: true,
+        minlength: 2,
+      },
+      mobile: {
+        required: true,
+        number: true,
+        minlength: 10,
+        maxlength: 10,
+      },
+      email: {
+        required: true,
+        email: true,
+      },
+      password: {
+        required: true,
+        minlength: 3,
+        maxlength: 15,
+      },
+      profile_image:{
+        required:true,
+      },
+      department:{
+        required:true,
+
+      }
+    },
+  });
+});
+</script>
 {%endblock%}

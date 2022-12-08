@@ -8,10 +8,16 @@
       <label for="inputEmail4" class="form-label">Class name</label>
       <input type="text" class="form-control" name="name" value="{{batch.classname}}">
     </div>
+    
     <div class="col-md-6">
       <label for="inputState" class="form-label">Semester</label>
       <select id="inputState" class="form-select" name="semester">
-          {%for semester in semesters%}
+          <!-- {%for semester in semesters%}
+          {%if semester.semname == student.batch.Semester.semname%}
+          <option  value="{{student.semester_id}}" selected>{{student.semester.semname}}</option>
+          {%else%}
+          <option  value="{{semester.id}}" >{{semester.semname}}</option>
+          {%endif%} -->
         <option selected value="{{semester.id}}">{{semester.semname}}</option>
         {%endfor%}
       </select>
