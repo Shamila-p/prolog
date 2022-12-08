@@ -45,9 +45,11 @@ def display_complaint(request):
         if request.user.role == 'PR':
             if Complaint.objects.filter(send_to=User.PRINCIPAL).exists():
                 complaints = Complaint.objects.filter(send_to=User.PRINCIPAL)
-                if len(complaints) == 0:
-                    messages.info(request, "No complaints yet")
                 context = {'complaints': complaints}
+
+            else:
+                    messages.info(request, "No complaints yet")
+                    return redirect('no_complaint')
         if request.user.role == 'TR' and request.user.position == User.HOD:
             hod = User.objects.get(id=request.user.id)
             if Complaint.objects.filter(send_to=User.HOD, department_id=hod.department_id).exists():
