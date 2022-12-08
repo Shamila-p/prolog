@@ -28,7 +28,7 @@ def add_department(request):
         if request.method == 'GET':
             teachers=User.objects.filter(position=User.HOD)
             print(teachers)
-            context={'teachers':teachers}
+            context={'teachers':teachers,'title': 'Add Department'}
             return render(request, 'add_department.html',context)
         if request.method == 'POST':
             dept_name = request.POST.get("dept_name")
@@ -46,7 +46,7 @@ def edit_department(request, id):
         if request.method == 'GET':
             department = Department.objects.get(id=id)
             teachers=User.objects.filter(position=User.HOD)
-            context = {'department': department,'teachers':teachers}
+            context = {'department': department,'teachers':teachers,'title': 'Edit Department'}
             return render(request, 'edit_department.html', context)
         if request.method == 'POST':
             dept_name = request.POST.get('dept_name')
@@ -76,7 +76,7 @@ def list_semester(request):
     else:
         if request.method == 'GET':
             semesters = Semester.objects.all()
-            context = {'semesters': semesters}
+            context = {'semesters': semesters,'title': 'List Semesters'}
             return render(request, 'list_semester.html', context)
 
 
@@ -86,7 +86,8 @@ def add_semester(request):
         return HttpResponse('Unauthorized', status=401)
     else:
         if request.method == 'GET':
-            return render(request, 'add_semester.html')
+            context={'title':'Add Semester'}
+            return render(request, 'add_semester.html',context)
         if request.method == 'POST':
             sem_name = request.POST.get('sem_name')
             order = request.POST.get('order')
@@ -101,7 +102,7 @@ def edit_semester(request, id):
     else:
         if request.method == 'GET':
             semester = Semester.objects.get(id=id)
-            context = {'semester': semester}
+            context = {'semester': semester,'title': 'Edit Semester'}
             return render(request, 'edit_semester.html', context)
         if request.method == 'POST':
             sem_name = request.POST.get('sem_name')
@@ -133,7 +134,7 @@ def list_classes(request):
             batches = Class.objects.all()
             hod=User.objects.get(id=request.user.id)
             classes=Class.objects.filter(department_id=hod.department_id)
-            context = {'batches': batches,'classes':classes,'hod':hod}
+            context = {'batches': batches,'classes':classes,'hod':hod,'title': 'List Class'}
             return render(request, 'list_classes.html', context)
 
 
@@ -148,7 +149,7 @@ def add_class(request):
             hod=User.objects.get(id=request.user.id)
 
             teachers=User.objects.filter(department_id=hod.department_id,role=User.TEACHER).exclude(position=User.HOD)
-            context = {'departments': departments, 'semesters': semesters,'teachers':teachers}
+            context = {'departments': departments, 'semesters': semesters,'teachers':teachers,'title': 'Add Class'}
             return render(request, 'add_class.html', context)
         if request.method == 'POST':
             class_name = request.POST.get('name')
@@ -181,7 +182,7 @@ def edit_class(request, id):
             teachers=User.objects.filter(department_id=hod.department_id,role=User.TEACHER).exclude(position=User.HOD)
                 # context={}
             context = {'batch': batch, 'departments': departments,
-                    'semesters': semesters,'teachers':teachers}
+                    'semesters': semesters,'teachers':teachers,'title': 'Edit Class'}
             return render(request, 'edit_class.html', context)
         if request.method == 'POST':
             class_name = request.POST.get('name')

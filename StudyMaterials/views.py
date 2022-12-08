@@ -11,7 +11,7 @@ from django.views.decorators.cache import never_cache
 def study_materials(request, class_id, semester_id, subject_id):
     if request.method == 'GET':
         context = {'class_id': class_id,
-                   'subject_id': subject_id, 'semester_id': semester_id}
+                   'subject_id': subject_id, 'semester_id': semester_id,'title': 'Study Materials'}
         return render(request, 'study_materials.html', context)
 
 @never_cache
@@ -31,7 +31,7 @@ def module(request, class_id, subject_id, semester_id, module_name):
 def add_materials(request, class_id, subject_id, semester_id, module_name):
     if request.method == 'GET':
         context = {'materials': Notes.MATERIAL_CHOICES, 'class': class_id,
-                   'subject': subject_id, 'module_name': module_name, 'semester_id': semester_id}
+                   'subject': subject_id, 'module_name': module_name, 'semester_id': semester_id,'title': 'Add Material'}
         return render(request, 'add_materials.html', context)
     if request.method == 'POST':
         filename = request.POST.get('filename')
@@ -48,7 +48,7 @@ def edit_materials(request, class_id, subject_id, module_name, material_id, seme
     if request.method == 'GET':
         material = Notes.objects.get(id=material_id)
         context = {'material': material, 'categories': Notes.MATERIAL_CHOICES, 'class_id': class_id,
-                   'subject_id': subject_id, 'module_name': module_name, 'semester_id': semester_id}
+                   'subject_id': subject_id, 'module_name': module_name, 'semester_id': semester_id,'title': 'Edit Material'}
         return render(request, 'edit_material.html', context)
     if request.method == 'POST':
         filename = request.POST.get('filename')
@@ -77,7 +77,7 @@ def remove_materials(request, material_id, class_id, subject_id, semester_id, mo
 def view_materials(request):
     if request.method == 'GET':
         semesters = Semester.objects.all()
-        context = {'semesters': semesters}
+        context = {'semesters': semesters,'title': 'View Materials'}
         # student=Student.objects.get(user_id=request.user.id)
         # materials=Notes.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester_id)
         # context={'materials':materials}
@@ -119,5 +119,5 @@ def list_materials(request, semester_id, subject_id):
             materials = Notes.objects.filter(
                 class_belongs_id=batch.id, semester_id=semester_id, subject_id=subject_id)
             print(materials)
-            context = {'materials': materials}
+            context = {'materials': materials,'title': 'List Materials'}
             return render(request, 'list_materials.html', context)

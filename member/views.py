@@ -91,10 +91,10 @@ def edit_profile_request(request, user_id):
         edit = EditProfile.objects.get(user_id=user_id)
         if user.role == User.STUDENT:
             student = Student.objects.get(user_id=user_id)
-            context = {'student': student, 'edit': edit, 'user': user, }
+            context = {'student': student, 'edit': edit, 'user': user, 'title': 'Edit Requests'}
         elif user.role == User.TEACHER:
             teacher = User.objects.get(id=user_id)
-            context = {'teacher': teacher, 'edit': edit, 'user': user, }
+            context = {'teacher': teacher, 'edit': edit, 'user': user,'title': 'Edit Requests' }
         return render(request, 'requests.html', context)
 
 
@@ -182,7 +182,7 @@ def list_teachers(request):
             print(teacher_belongs)
             edits = EditProfile.objects.all()
             context = {'title': 'Teachers', 'teachers': teachers,
-                       'edits': edits, 'teacher_belongs': teacher_belongs}
+                       'edits': edits, 'teacher_belongs': teacher_belongs,'title': 'List Teachers'}
             return render(request, 'list_teachers.html', context)
 
 
@@ -194,7 +194,7 @@ def add_teachers(request):
         if request.method == 'GET':
             departments = Department.objects.all()
             context = {'departments': departments,
-                       'positions': User.POSITION_CHOICES}
+                       'positions': User.POSITION_CHOICES,'title': 'Add Teacher'}
             return render(request, 'add_teachers.html', context)
         if request.method == 'POST':
             name = request.POST.get('name')
@@ -226,7 +226,7 @@ def edit_teacher(request, user_id):
             teacher = User.objects.get(id=user_id)
             departments = Department.objects.all()
             context = {'teacher': teacher, 'departments': departments,
-                       'positions': User.POSITION_CHOICES}
+                       'positions': User.POSITION_CHOICES,'title': 'Edit Teacher'}
             return render(request, 'edit_teacher.html', context)
         if request.method == 'POST':
             name = request.POST.get('name')
@@ -290,7 +290,7 @@ def list_students(request):
                     student_list.append(student.id)
                 studentslist = Student.objects.filter(user_id__in=student_list)
                 context = {'students': students, 'edits': edits,
-                           'student_belongs': student_belongs, 'studentslist': studentslist}
+                           'student_belongs': student_belongs, 'studentslist': studentslist,'title': 'List Student'}
             is_tutor = Class.objects.filter(tutor_id=request.user.id).exists()
 
             if request.user.role == User.TEACHER and is_tutor:
@@ -301,7 +301,7 @@ def list_students(request):
                     batch_id=class_students.id, semester_id=class_students.Semester_id)
                 print(tutor_students)
                 context = {'is_tutor': is_tutor,
-                           'tutor_students': tutor_students}
+                           'tutor_students': tutor_students,'title': 'List Student'}
 
             # tutor_student_list=[]
             # for student in tutor_students:
@@ -327,18 +327,18 @@ def add_student(request):
                     department_id=logined_department.id)
                 print(batches)
                 context = {'batches': batches, 'departments': departments,
-                           'semesters': semesters, 'quota_list': Student.QUOTA_CHOICES}
+                           'semesters': semesters, 'quota_list': Student.QUOTA_CHOICES,'title': 'Add Student'}
             elif request.user.role == User.PRINCIPAL:
                 print('ggg')
                 batches = Class.objects.all()
                 context = {'batches': batches, 'departments': departments,
-                           'semesters': semesters, 'quota_list': Student.QUOTA_CHOICES}
+                           'semesters': semesters, 'quota_list': Student.QUOTA_CHOICES,'title': 'Add Student'}
             elif request.user.role == User.TEACHER and is_tutor:
                 print('g')
                 student = Class.objects.get(tutor_id=request.user.id)
                 print(student)
                 context = {'student': student, 'departments': departments,
-                           'quota_list': Student.QUOTA_CHOICES}
+                           'quota_list': Student.QUOTA_CHOICES,'title': 'Add Student'}
             return render(request, 'add_student.html', context)
         if request.method == 'POST':
             name = request.POST.get('name')
@@ -407,7 +407,7 @@ def edit_student(request, user_id):
             elif request.user.role == User.TEACHER and is_tutor:
                 batch = Class.objects.get(tutor_id=request.user.id)
             context = {'student': student, 'departments': departments,
-                       'batches': batches, 'semesters': semesters, 'quota_list': Student.QUOTA_CHOICES, 'batch': batch}
+                       'batches': batches, 'semesters': semesters, 'quota_list': Student.QUOTA_CHOICES, 'batch': batch,'title': 'Edit Student'}
             return render(request, 'edit_student.html', context)
         if request.method == 'POST':
             is_tutor = Class.objects.filter(tutor_id=request.user.id).exists()
@@ -491,7 +491,7 @@ def my_class(request):
             batch_id=teacher.id, semester_id=teacher.Semester_id).exists()
         print(is_uploaded)
         context = {'teacher': teacher,
-                   'subject_details': subject_details, 'timetable': timetable, 'is_uploaded': is_uploaded}
+                   'subject_details': subject_details, 'timetable': timetable, 'is_uploaded': is_uploaded,'title': 'My Class'}
         return render(request, 'my_class.html', context)
 
 
@@ -503,7 +503,7 @@ def add_subject(request):
         # |Q(id=teacher.id)
         teachers = User.objects.filter(
             department_id=teacher.department_id, role=User.TEACHER).exclude(position=User.HOD)
-        context = {'teachers': teachers, 'class_belongs_to': class_belongs_to}
+        context = {'teachers': teachers, 'class_belongs_to': class_belongs_to,'title': 'Add Subject'}
         return render(request, 'add_subject.html', context)
     if request.method == 'POST':
         subject_name = request.POST.get('subject_name')
@@ -532,7 +532,7 @@ def edit_subject(request, subject_id):
         teacher = User.objects.get(id=request.user.id)
         teachers = User.objects.filter(department_id=teacher.department_id, role=User.TEACHER).exclude(
             Q(position=User.HOD) | Q(id=teacher.id))
-        context = {'subject': subject, 'teachers': teachers}
+        context = {'subject': subject, 'teachers': teachers,'title': 'Edit Subject'}
         return render(request, 'edit_subject.html', context)
     if request.method == 'POST':
         subject_name = request.POST.get('subject_name')
@@ -571,7 +571,7 @@ def subject_request(request):
             # tutor=User.objects.filter(department_id=hod.department_id,role=User.TEACHER)
             messages.info(request, "No new subject requests")
 
-        context = {'subjects': subjects}
+        context = {'subjects': subjects,'title': 'Subject Requests'}
         return render(request, 'subject_request.html', context)
 
 
@@ -603,7 +603,7 @@ def my_subjects(request):
         print(classes)
         if len(classes) == 0:
             messages.info(request, "No subjects assigned yet")
-        context = {'classes': classes}
+        context = {'classes': classes,'title': 'Subjects'}
         return render(request, 'my_subjects.html', context)
 
 
@@ -616,7 +616,7 @@ def student_details(request, class_id, subject_id, semester_id):
         subject = Subject.objects.get(id=subject_id)
         students = Student.objects.filter(
             batch_id=class_id, semester_id=semester_id)
-        context = {'students': students, 'subject': subject}
+        context = {'students': students, 'subject': subject,'title': 'Student Details'}
         return render(request, 'student_details.html', context)
 
 

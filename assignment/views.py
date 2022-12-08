@@ -16,7 +16,7 @@ def assignment(request, class_id, semester_id, subject_id):
         assignments = Assignment.objects.filter(
             teacher_id=request.user.id, subject_id=subject_id, class_belongs_id=class_id, semester_id=semester_id)
         context = {'assignments': assignments, 'subject_id': subject_id,
-                   'class_id': class_id, 'semester_id': semester_id}
+                   'class_id': class_id, 'semester_id': semester_id,'title': 'Assignments'}
         return render(request, 'assignment.html', context)
 
 @login_required
@@ -24,7 +24,7 @@ def add_assignment(request, class_id, semester_id, subject_id):
     if request.method == 'GET':
         module_list = module.objects.all()
         context = {'types': Assignment.ASSIGNMENT_CHOICES,
-                   'modules': module_list}
+                   'modules': module_list,'title': 'Add Assignment'}
         return render(request, 'add-assignment.html', context)
     if request.method == 'POST':
         topic = request.POST.get('topic')
@@ -49,7 +49,7 @@ def edit_assignment(request, class_id, semester_id, subject_id, assignment_id):
         assignment = Assignment.objects.get(id=assignment_id)
         modules = module.objects.all()
         context = {'assignment': assignment,
-                   'types': Assignment.ASSIGNMENT_CHOICES, 'modules': modules}
+                   'types': Assignment.ASSIGNMENT_CHOICES, 'modules': modules,'title': 'Edit Assignment'}
         return render(request, 'edit_assignment.html', context)
     if request.method == 'POST':
         topic = request.POST.get('topic')
@@ -80,13 +80,14 @@ def list_module(request):
     if request.method == 'GET':
         # context={'types':Assignment.ASSIGNMENT_CHOICES}
         modules = module.objects.all()
-        context = {'modules': modules}
+        context = {'modules': modules,'title': 'List Module'}
         return render(request, 'list_module.html', context)
 
 @login_required
 def add_module(request):
     if request.method == 'GET':
-        return render(request, 'add_module.html')
+        context={'title': 'Add Module'}
+        return render(request, 'add_module.html',context)
     if request.method == 'POST':
         modulename = request.POST.get('modulename')
         module.objects.create(modulename=modulename)
@@ -104,7 +105,7 @@ def view_assignments(request):
         student = Student.objects.get(user_id=request.user.id)
         assignments = Assignment.objects.filter(
             class_belongs_id=student.batch_id, semester_id=student.semester_id)
-        context = {'assignments': assignments}
+        context = {'assignments': assignments,'title': 'View Assignments'}
         return render(request, 'view_assignments.html', context)
 
 @login_required
@@ -145,7 +146,7 @@ def view_mark(request, assignment_id):
             marks = AssignmentMark.objects.filter(assignment_id=assignment_id, student_id=request.user.id,
                                                   semester_id=assignment.semester_id, subject_id=assignment.subject_id, class_belongs_id=assignment.class_belongs_id)
             print(marks)
-            context = {'assignment': assignment, 'marks': marks}
+            context = {'assignment': assignment, 'marks': marks,'title': 'View Mark'}
 
         else:
             messages.info(request, "Mark not assigned yet!!")
@@ -169,7 +170,7 @@ def submitted_assignment(request, class_id, semester_id, subject_id):
         student_marks = AssignmentMark.objects.filter(
             class_belongs_id=class_id, subject_id=subject_id, semester_id=semester_id)
         print(student_marks)
-        context = {'assignments': assignments, 'student_marks': student_marks}
+        context = {'assignments': assignments, 'student_marks': student_marks,'title': 'Submitted Assignments'}
         return render(request, 'submitted_assignment.html', context)
 
 @login_required
@@ -190,7 +191,7 @@ def assign_mark(request, class_id, semester_id, subject_id, student_id, assignme
         # is_assigned=SubmittedAssignment.objects.filter(id=assignment_id,).exists()
         # submitted=0
         context = {'assignment': assignment, 'class_id': class_id, 'semester_id': semester_id, 'subject_id': subject_id,
-                   'student_id': student_id, 'submitted_assignment_id': assignment_id, 'student': student}
+                   'student_id': student_id, 'submitted_assignment_id': assignment_id, 'student': student,'title': 'Add Mark'}
         return render(request, 'assign_mark.html', context)
     if request.method == 'POST':
         print('hg')
@@ -225,7 +226,7 @@ def edit_mark(request, class_id, semester_id, subject_id, student_id, assignment
 
         assignment = Assignment.objects.get(id=submitted.id)
         print(submitted.assignment_id)
-        context = {'submitted': submitted, 'assignment': assignment}
+        context = {'submitted': submitted, 'assignment': assignment,'title': 'Edit Mark'}
         return render(request, 'edit_assignmentmark.html', context)
     if request.method == 'POST':
         scored = request.POST.get('scored')

@@ -1,4 +1,6 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,16 +37,28 @@
     <div class="row">
         <div class="col-xs-12">
     		<div class="invoice-title">
-    			<h2>Invoice</h2><h3 class="pull-right"></h3>
+				<h1 style="font-size: 20px;">
+				<img src="media/files/logocollege.jpg" style="height: 100px; width:100px;" alt="">
+    			
+					MES COLLEGE OF ENGINEERING KUTTIPPURAM</h1>
     		</div>
     		<hr>
+			<div class="row" style="margin-top:30px;">
+    			<div class="col-xs-6" >
+    				<address>
+    				<strong>Details:</strong><br>
+    					Principal: {{principal.first_name}}<br>
+    					Email: {{principal.email}}<br>
+    					Contact: {{user.phone}}<br>
+    				</address>
+    			</div>
     		<div class="row" style="margin-top:30px;">
     			<div class="col-xs-6" >
     				<address>
     				<strong>Paid by:</strong><br>
     					{{user.first_name}}<br>
     					{{user.email}}<br>
-    					{{user.phone_number}}<br>
+    					{{user.phone}}<br>
     				</address>
     			</div>
     			<!-- <div class="col-xs-6 text-right" >
@@ -95,7 +109,23 @@
     								<td class="text-center">{{paid.department.dname}}</td>
     								<td class="text-right">{{paid.fees}}</td>
     							</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td class="text-right"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+                                <tr>
+									<td></td>
+									<td></td>
+									<td class="text-right"><img src="media/files/signature.png" style="height: 80px; width:150px;" alt=""></td>
+								</tr>
                                 
+								
                                 
     						</tbody>
     					</table>

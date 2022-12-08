@@ -10,13 +10,13 @@ from member.models import Student
 def list_certificates(request):
     if request.method == 'GET':
         certificates = Certificate.objects.filter(student_id=request.user.id)
-        context = {'certificates': certificates}
+        context = {'certificates': certificates,'title': 'List Certificates'}
         return render(request, 'list_certificates.html', context)
 
 @login_required
 def add_certificate(request):
     if request.method == 'GET':
-        context = {'levels': Certificate.CERTIFICATE_CHOICES}
+        context = {'levels': Certificate.CERTIFICATE_CHOICES,'title': 'Add Certificate'}
         return render(request, 'add_certificate.html', context)
     if request.method == 'POST':
         activity = request.POST.get("activity")
@@ -33,7 +33,7 @@ def edit_certificate(request, certificate_id):
     if request.method == 'GET':
         certificate = Certificate.objects.get(id=certificate_id)
         context = {'levels': Certificate.CERTIFICATE_CHOICES,
-                   'certificate': certificate}
+                   'certificate': certificate,'title': 'Edit Certificate'}
         return render(request, 'edit_certificate.html', context)
     if request.method == 'POST':
         activity = request.POST.get("activity")
@@ -68,6 +68,6 @@ def view_certificates(request):
             # for student in list_students:
         certificates = Certificate.objects.filter(student_id__in=list_students)
         # list_certificates.append(certificates)
-        context = {'certificates': certificates}
+        context = {'certificates': certificates,'title': 'view Certificates'}
         print(context)
         return render(request, 'list_certificates.html', context)

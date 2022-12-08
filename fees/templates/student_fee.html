@@ -40,7 +40,7 @@
           {% for pfee in payed_fees%}
           {%if pfee.semester.semname == fee.semester.semname%}
           <td  ><h6 style="color: green;">paid</h6></td>
-          <td><a href="/invoice-generate/{{pfee.id}}"  class="btn btn-primary" type="submit" target="_blank">Download Receipt</a></td>
+          <td><a href="/invoice-generate/{{pfee.id}}"  class="btn btn-primary" type="submit" target="_blank">View Receipt</a></td>
           {%endif%}
           {%endfor%}
           {%endif%}

@@ -16,13 +16,13 @@ def display_fee(request):
     if request.method == 'GET':
         if request.user.role == User.PRINCIPAL:
             fees = Fee.objects.all()
-            context = {'fees': fees}
+            context = {'fees': fees,'title': 'Fees'}
         if request.user.role == User.TEACHER or request.user.position == User.HOD:
             hod = User.objects.get(id=request.user.id)
             print(hod)
             fees = Fee.objects.filter(department_id=hod.department_id)
             print(fees)
-            context = {'fees': fees}
+            context = {'fees': fees,'title': 'Display Fee'}
         return render(request, 'display_fee.html', context)
 
 @login_required
@@ -31,7 +31,7 @@ def add_fee(request):
         departments = Department.objects.all()
         semesters = Semester.objects.all()
         context = {'departments': departments,
-                   'fee_categories': Fee.FEE_CHOICES, 'semesters': semesters}
+                   'fee_categories': Fee.FEE_CHOICES, 'semesters': semesters,'title': 'Add Fee'}
         return render(request, 'add_fee.html', context)
     if request.method == 'POST':
         department = request.POST.get('department')
@@ -59,7 +59,7 @@ def edit_fee(request, fee_id):
         semesters = Semester.objects.all()
         departments = Department.objects.all()
         context = {'fee': fee, 'departments': departments,
-                   'fee_categories': Fee.FEE_CHOICES, 'semesters': semesters}
+                   'fee_categories': Fee.FEE_CHOICES, 'semesters': semesters,'title': 'Edit Fee'}
         return render(request, 'edit_fee.html', context)
     if request.method == 'POST':
         fee = Fee.objects.get(id=fee_id)
@@ -108,14 +108,14 @@ def student_fee(request):
             payed_fee_list.append(paid_fee.semester.semname)
 
         context = {'fees': fees, 'payed_fee_semester_list': payed_fee_list,
-                   'fee_list': fee_list, 'payed_fees': payed_fees}
+                   'fee_list': fee_list, 'payed_fees': payed_fees,'title': 'Fees'}
         return render(request, 'student_fee.html', context)
 
 @login_required
 def payment(request, payment_id):
     if request.method == 'GET':
         fee = Fee.objects.get(id=payment_id)
-        context = {'fee': fee}
+        context = {'fee': fee,'title': 'Pay Fee'}
         return render(request, 'payment.html', context)
     if request.method == 'POST':
         print('hgfg')
@@ -158,9 +158,10 @@ def sms(request):
 def invoice_generate(request, id):
     paid = FeePaid.objects.get(id=id)
     user = request.user
+    principal=User.objects.get(role=User.PRINCIPAL)
     template_path = 'invoice.html'
 
-    context = {'paid': paid, 'user': user}
+    context = {'paid': paid, 'user': user,'principal':principal}
 
     response = HttpResponse(content_type='application/pdf')
 

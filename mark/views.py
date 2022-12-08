@@ -21,7 +21,7 @@ def mark(request, class_id, subject_id, semester_id):
             batch_id=class_id, semester_id=semester_id)
 
         context = {'students': students, 'class_id': class_id,
-                   'subject_id': subject_id, 'semester_id': semester_id}
+                   'subject_id': subject_id, 'semester_id': semester_id,'title': ' Exam Marks'}
         return render(request, 'mark.html', context)
 
 @login_required
@@ -31,7 +31,7 @@ def view_marks(request, class_id, subject_id, semester_id):
                                     teacher_id=request.user.id, semester_id=semester_id)
         print(marks)
         context = {'marks': marks, 'class_id': class_id,
-                   'subject_id': subject_id, 'semester_id': semester_id}
+                   'subject_id': subject_id, 'semester_id': semester_id,'title': 'View Marks'}
         return render(request, 'view_marks.html', context)
 
 @login_required
@@ -39,7 +39,7 @@ def add_mark(request, class_id, subject_id, student_id, semester_id):
     if request.method == 'GET':
         print(student_id)
         context = {'exams': Mark.EXAM_CHOICES, 'class_id': class_id,
-                   'subject_id': subject_id, 'student_id': student_id, 'semester_id': semester_id}
+                   'subject_id': subject_id, 'student_id': student_id, 'semester_id': semester_id,'title': 'Add Mark'}
         return render(request, 'add_mark.html', context)
     if request.method == 'POST':
         total_score = request.POST.get('tmark')
@@ -72,7 +72,7 @@ def edit_mark(request, class_id, subject_id, student_id, semester_id):
             mark = Mark.objects.filter(student_id=student_id, class_belongs_id=class_id,
                                        subject_id=subject_id, teacher_id=request.user.id, semester_id=semester_id)
             print(mark)
-            context = {'exams': Mark.EXAM_CHOICES, 'mark': mark}
+            context = {'exams': Mark.EXAM_CHOICES, 'mark': mark,'title': 'EDit Mark'}
             return render(request, 'edit_mark.html', context)
         if request.method == 'POST':
             total_score = request.POST.get('tmark')
@@ -91,7 +91,8 @@ def edit_mark(request, class_id, subject_id, student_id, semester_id):
 def performance(request):
     if request.method == 'GET':
         semesters = Semester.objects.all()
-        context = {'semesters': semesters}
+        print(semesters)
+        context = {'semesters': semesters,'title': 'Performance'}
         # print(context)
         return render(request, 'performance.html', context)
     if request.method == 'POST':

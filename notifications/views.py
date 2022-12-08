@@ -23,7 +23,7 @@ def complaint(request):
                 teachers.append(subject.assigned_to.first_name)
             print(teachers)
         context = {'teachers': teachers, 'sends': User.ROLES_CHOICES,
-                   'send_to': User.POSITION_CHOICES}
+                   'send_to': User.POSITION_CHOICES,'title': 'Complaints'}
         return render(request, 'complaint.html', context)
     if request.method == 'POST':
         print('hgjmj')
@@ -45,7 +45,7 @@ def display_complaint(request):
         if request.user.role == 'PR':
             if Complaint.objects.filter(send_to=User.PRINCIPAL).exists():
                 complaints = Complaint.objects.filter(send_to=User.PRINCIPAL)
-                context = {'complaints': complaints}
+                context = {'complaints': complaints,'title': 'List Complaints'}
 
             else:
                     messages.info(request, "No complaints yet")
@@ -69,7 +69,7 @@ def display_complaint(request):
                 messages.info(request, "No complaints yet")
 
             print(complaints)
-            context = {'complaints': complaints}
+            context = {'complaints': complaints,'title': 'Complaints '}
         # if request.user.role == 'TR' and not is_tutor:
         #     complaints=Complaint.objects.filter(send_to=request.user.first_name,department_id=request.user.department_id)
         #     context={'complaints':complaints}
@@ -84,7 +84,7 @@ def no_complaint(request):
 def notification(request):
     if request.method == 'GET':
         context = {'sends': User.ROLES_CHOICES,
-                   'send_to': User.POSITION_CHOICES}
+                   'send_to': User.POSITION_CHOICES,'title': 'Notificatons'}
         # context={'student':User.STUDENT,'hod':User.HOD,'teacher':User.TEACHER}
         return render(request, 'notification.html', context)
     if request.method == 'POST':
@@ -113,5 +113,5 @@ def display_notification(request):
             notifications = Notification.objects.filter(send_to=User.STUDENT)
             notification_list.append(notifications)
         print(notification_list)
-        context = {'notification_list': notification_list}
+        context = {'notification_list': notification_list,'title': 'Display Notifications'}
         return render(request, 'display_notification.html', context)

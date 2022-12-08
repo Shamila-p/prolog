@@ -27,5 +27,5 @@ def dashboard(request):
                 staff_count_list.append(teacher.count())
 
             context = {'students_count': students_count, 'teachers_count': teachers_count, 'departments_count': deaprtments_count,
-                    'departments': departments, 'student_count_list': student_count_list, 'staff_count_list': staff_count_list}
+                    'departments': departments, 'student_count_list': student_count_list, 'staff_count_list': staff_count_list,'title': 'Dashboard'}
             return render(request, 'dashboard.html', context)

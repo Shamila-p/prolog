@@ -22,7 +22,7 @@ def attendence(request, class_id, subject_id, semester_id):
             batch_id=class_id, semester_id=semester_id)
         print(students)
         context = {'students': students, 'class_id': class_id,
-                   'subject_id': subject_id, 'semester_id': semester_id}
+                   'subject_id': subject_id, 'semester_id': semester_id,'title': ' Add Attendence'}
         return render(request, 'attendence.html', context)
 
 @login_required
@@ -66,7 +66,7 @@ def edit_attendence(request, class_id, subject_id, semester_id):
         attendences = Attendence.objects.filter(
             date=selected_date, class_belongs_id=class_id, subject_id=subject_id, semester_id=semester_id, teacher_id=request.user.id)
         context = {'class_id': class_id, 'subject_id': subject_id, 'semester_id': semester_id,
-                   'attendences': attendences, 'selected_date': selected_date}
+                   'attendences': attendences, 'selected_date': selected_date,'title': 'Edit Attendence'}
         return render(request, 'edit_attendence.html', context)
         # if selected_date is not None:
         #     attendence=Attendence.objects.filter(date=selected_date,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
