@@ -3,7 +3,7 @@ from django.contrib import messages
 from course.models import Class, Subject
 from member.models import User, Student
 from notifications.models import Complaint, Notification
-from django.db.models import Q
+# from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -45,6 +45,8 @@ def display_complaint(request):
         if request.user.role == 'PR':
             if Complaint.objects.filter(send_to=User.PRINCIPAL).exists():
                 complaints = Complaint.objects.filter(send_to=User.PRINCIPAL)
+                if len(complaints) == 0:
+                    messages.info(request, "No complaints yet")
                 context = {'complaints': complaints}
         if request.user.role == 'TR' and request.user.position == User.HOD:
             hod = User.objects.get(id=request.user.id)
@@ -95,15 +97,19 @@ def notification(request):
 @login_required
 def display_notification(request):
     if request.method == 'GET':
+        notification_list=[]
         if request.user.position == User.HOD:
-            notifications = Notification.objects.filter(
-                Q(send_to=User.HOD) | Q(send_to=User.TEACHER))
-            print(notifications)
-            context = {'notifications': notifications}
+            # notifications = Notification.objects.filter(
+            #     Q(send_to=User.HOD) | Q(send_to=User.TEACHER))
+            notifications = Notification.objects.filter(send_to=User.HOD)
+            notification_list.append(notifications)
         if request.user.role == User.TEACHER:
             notifications = Notification.objects.filter(send_to=User.TEACHER)
-            context = {'notifications': notifications}
+            notification_list.append(notifications)
+
         if request.user.role == User.STUDENT:
             notifications = Notification.objects.filter(send_to=User.STUDENT)
-            context = {'notifications': notifications}
+            notification_list.append(notifications)
+        print(notification_list)
+        context = {'notification_list': notification_list}
         return render(request, 'display_notification.html', context)

@@ -4,6 +4,8 @@ from mark.models import Mark
 from member.models import Student
 from course.models import Class, Semester, Subject
 from django.contrib import messages
+from django.http import JsonResponse
+
 
 @login_required
 def mark(request, class_id, subject_id, semester_id):
@@ -58,7 +60,8 @@ def add_mark(request, class_id, subject_id, student_id, semester_id):
         else:
             Mark.objects.create(exam_type=exam_type, total_score=total_score, marked_score=scored_mark, subject_id=subject_id,
                                 teacher_id=request.user.id, student_id=student.id, class_belongs_id=class_id, semester_id=semester_id)
-        return redirect('view_marks', class_id=class_id, subject_id=subject_id, semester_id=semester_id)
+        return JsonResponse({'status': 'success'})
+        # return redirect('view_marks', class_id=class_id, subject_id=subject_id, semester_id=semester_id)
 
 @login_required
 def edit_mark(request, class_id, subject_id, student_id, semester_id):

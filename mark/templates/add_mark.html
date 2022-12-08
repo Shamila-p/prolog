@@ -13,31 +13,34 @@
         
           <div class="col-md-6">
             <label  class="form-label">Exam Type</label>
-            <select  class="form-select" name="type">
+            <select  class="form-select" name="type" id="type">
                 {%for exam in exams%}
-                <option selected value="{{exam.0}}">{{exam.1}}</option>
+                <option selected id="examType" value="{{exam.0}}">{{exam.1}}</option>
                 {%endfor%}
               </select>
           </div>
             <div class="col-md-6 mt-3">
                 <label  class="form-label">Total Mark</label>
-                <input type="text" class="form-control" name="tmark"  >
+                <input type="text" class="form-control" name="tmark"  id="tmark">
             </div>
             <div class="col-md-6 mt-3">
                 <label  class="form-label"> Scored Mark</label>
-                <input type="text" class="form-control" name="smark"  >
+                <input type="text" class="form-control" name="smark"  id="smark">
             </div>
           
     </div>
     <div class="row">
     <div class="col-12 text-center">
-        <button type="submit" class="btn btn-primary mt-5">ADD</button>
+        <button type="button" class="btn btn-primary mt-5" onclick="greet()">ADD</button>
       </div>
     </div>
 </form>
 {%endblock%}
 {%block script%}
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 $(document).ready(function () {
@@ -55,5 +58,41 @@ $(document).ready(function () {
     },
   });
 });
+</script>
+<script>
+  function greet() {
+  var scored=document.getElementById('smark').value
+  var total=document.getElementById('tmark').value
+  var type=document.getElementById('examType').value
+  
+  
+
+  if (total>scored){
+    $.ajax({
+      type: 'POST',
+      url: '/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/mark/student/{{student_id}}/add-mark',
+      data:{
+        smark: scored,
+        tmark: total,
+        type: type,
+        'csrfmiddlewaretoken':'{{csrf_token}}'
+      },
+      
+      success: function (data) {
+        
+          window.location.replace('/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/view-marks')
+      
+      }
+      
+      });
+  }
+else{
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'Total marks should be greater!',
+  })
+}
+  }
 </script>
 {%endblock%}

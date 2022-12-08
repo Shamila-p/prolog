@@ -4,16 +4,17 @@ from StudyMaterials.models import Notes
 from course.models import Class, Semester
 from member.models import Student
 from django.contrib.auth.decorators import login_required
-
+from django.views.decorators.cache import never_cache
 
 @login_required
+@never_cache
 def study_materials(request, class_id, semester_id, subject_id):
     if request.method == 'GET':
         context = {'class_id': class_id,
                    'subject_id': subject_id, 'semester_id': semester_id}
         return render(request, 'study_materials.html', context)
 
-
+@never_cache
 @login_required
 def module(request, class_id, subject_id, semester_id, module_name):
     print(semester_id)
@@ -26,6 +27,7 @@ def module(request, class_id, subject_id, semester_id, module_name):
 
 
 @login_required
+@never_cache
 def add_materials(request, class_id, subject_id, semester_id, module_name):
     if request.method == 'GET':
         context = {'materials': Notes.MATERIAL_CHOICES, 'class': class_id,
@@ -41,6 +43,7 @@ def add_materials(request, class_id, subject_id, semester_id, module_name):
 
 
 @login_required
+@never_cache
 def edit_materials(request, class_id, subject_id, module_name, material_id, semester_id):
     if request.method == 'GET':
         material = Notes.objects.get(id=material_id)
@@ -61,6 +64,7 @@ def edit_materials(request, class_id, subject_id, module_name, material_id, seme
 
 
 @login_required
+@never_cache
 def remove_materials(request, material_id, class_id, subject_id, semester_id, module_name):
     if request.method == 'POST':
         material = Notes.objects.get(id=material_id)
@@ -69,6 +73,7 @@ def remove_materials(request, material_id, class_id, subject_id, semester_id, mo
 
 
 @login_required
+@never_cache
 def view_materials(request):
     if request.method == 'GET':
         semesters = Semester.objects.all()
@@ -85,6 +90,7 @@ def view_materials(request):
 
 
 @login_required
+@never_cache
 def material_semester(request, semester_id):
     student = Student.objects.get(user_id=request.user.id)
     batches = Class.objects.filter(
@@ -101,6 +107,7 @@ def material_semester(request, semester_id):
 
 
 @login_required
+@never_cache
 def list_materials(request, semester_id, subject_id):
     if request.method == 'GET':
         student = Student.objects.get(user_id=request.user.id)

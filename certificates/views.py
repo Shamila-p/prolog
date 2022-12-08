@@ -59,13 +59,15 @@ def view_certificates(request):
     if request.method == 'GET':
         batch = Class.objects.get(tutor_id=request.user.id)
         students = Student.objects.filter(batch_id=batch.id)
+        print(students)
         list_students = []
-        list_certificates = []
+        # list_certificates = []
         for student in students:
             list_students.append(student.user_id)
-            for student in list_students:
-                certificates = Certificate.objects.filter(student_id=student)
-                list_certificates.append(certificates)
-        context = {'list_certificates': list_certificates}
+            # print(list_students)
+            # for student in list_students:
+        certificates = Certificate.objects.filter(student_id__in=list_students)
+        # list_certificates.append(certificates)
+        context = {'certificates': certificates}
         print(context)
         return render(request, 'list_certificates.html', context)

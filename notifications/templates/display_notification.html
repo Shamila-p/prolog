@@ -3,17 +3,18 @@
 {% block content %}
 
 <div class="row ">
-{%for notification in notifications%}
-
+{%for notification in notification_list%}
+  {%for notify in notification%}
     <div class="col-12 mb-5 w-50 mx-md-auto mx-lg-auto">
 
         <div class="card text-center">
             <div class="card-body">
 
-              <h6 class="card-text">{{notification.message}}</h6>
+              <h6 class="card-text">{{notify.message}}</h6>
             </div>
           </div>
     </div>
+    {%endfor%}
     {%endfor%}
 
 </div>

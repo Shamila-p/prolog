@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def dashboard(request):
-    if not (request.user.role == User.TEACHER or request.user.role == User.STUDENT):
+    if not (request.user.role == User.PRINCIPAL):
         return HttpResponse('Unauthorized', status=401)
     else:
         if request.method == 'GET':
