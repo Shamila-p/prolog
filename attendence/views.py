@@ -7,6 +7,9 @@ from course.models import Class, Subject
 from .models import Attendence
 from member.models import Student, User
 from django.contrib import messages
+from twilio.rest import Client
+from decouple import config
+
 
 # Create your views here.
 
@@ -35,6 +38,18 @@ def add_attendence(request, class_id, subject_id, semester_id):
         for attendence in attendences:
             name = attendence["name"]
             is_present = attendence["is_present"]
+            if is_present is False:
+                account_sid = config('account_sid')
+                auth_token = config('auth_token')
+                client = Client(account_sid, auth_token)
+
+                message = client.messages.create(
+                                            body=f'student is absent',
+                                            from_='+18055904816',
+                                            to='+918590426660'
+                                        )
+
+                print(message.sid)
             # class_belongs=Class.objects.get(tutor_id=request.user.id)
             # subjects=Subject.objects.filter(assigned_to_id=request.user.id ,class_belongs_id=class_id,semester_id=semester_id,subject_id=subject_id)
             # for i in subjects:
@@ -48,6 +63,7 @@ def add_attendence(request, class_id, subject_id, semester_id):
                 is_exist = False
                 Attendence.objects.create(date=date, subject_id=subject_id, is_present=is_present, teacher_id=request.user.id,
                                           student_id=student.id, semester_id=semester_id, class_belongs_id=class_id)
+                
         if is_exist:
             messages.info(
                 request, "Attendence alreday added. If you want to edit please choose edit option")

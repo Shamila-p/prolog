@@ -132,24 +132,35 @@ def upload_file(request, class_id, semester_id, subject_id, assignment_id):
 @login_required
 def view_mark(request, assignment_id):
     if request.method == 'GET':
-        assignment = SubmittedAssignment.objects.get(
-            assignment_id=assignment_id)
-        print(assignment)
-        print(assignment_id)
-        # assigned=AssignmentMark.objects.filter(student_id=request.user.id,assignment_id=assignment_id,class_belongs_id)
-        if AssignmentMark.objects.filter(assignment_id=assignment_id, student_id=request.user.id, semester_id=assignment.semester_id, subject_id=assignment.subject_id, class_belongs_id=assignment.class_belongs_id).exists():
+        assignments = SubmittedAssignment.objects.filter(
+            assignment_id=assignment_id).exists()
+        if assignments:
             mark = True
         else:
-            mark = False
+            mark=False
+        print(assignments)
+        print(assignment_id)
+        # assigned=AssignmentMark.objects.filter(student_id=request.user.id,assignment_id=assignment_id,class_belongs_id)
+        # if AssignmentMark.objects.filter(assignment_id=assignment_id, student_id=request.user.id, semester_id=assignment.semester_id, subject_id=assignment.subject_id, class_belongs_id=assignment.class_belongs_id).exists():
+        #     mark = True
+        # else:
+        #     mark = False
         if mark:
             print('djv')
+            assignment = SubmittedAssignment.objects.get(
+            assignment_id=assignment_id)
+            submitted_assignments = SubmittedAssignment.objects.filter(
+            assignment_id=assignment_id)
             marks = AssignmentMark.objects.filter(assignment_id=assignment_id, student_id=request.user.id,
                                                   semester_id=assignment.semester_id, subject_id=assignment.subject_id, class_belongs_id=assignment.class_belongs_id)
             print(marks)
-            context = {'assignment': assignment, 'marks': marks,'title': 'View Mark'}
 
         else:
             messages.info(request, "Mark not assigned yet!!")
+            marks=""
+        print(assignments)
+        print(marks)
+        context = {'submitted_assignments': submitted_assignments, 'marks': marks,'title': 'View Mark'}
 
         return render(request, 'view_assignment_mark.html', context)
 

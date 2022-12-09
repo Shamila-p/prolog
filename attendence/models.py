@@ -16,6 +16,7 @@ class Attendence(auditModel):
     is_present=models.BooleanField(default=False)
 
     # def save(self,*args,**kwargs):
+    #     print('ytr')
     #     if self.is_present is False:
 
     #         account_sid = 'AC58bbdc3cc418d9b6ff26b59f21453d82'

@@ -2,18 +2,27 @@
 {% load static %}
 {% block content %}
 
-<div class="row ">
+<div class="row">
 {%for notification in notification_list%}
   {%for notify in notification%}
-    <div class="col-12 mb-5 w-50 mx-md-auto mx-lg-auto">
+    <div class="col-md-6 col-12 ">
 
-        <div class="card text-center">
+        <div class="card mt-4" >
             <div class="card-body">
-
               <h6 class="card-text">{{notify.message}}</h6>
             </div>
           </div>
     </div>
+
+    <!-- <div class="col-md-6 col-sm-12 mb-5 w-50 mx-md-auto mx-lg-auto">
+
+      <div class="card" >
+          <div class="card-body col-md-6 col-12">
+
+            <h6 class="card-text">{{notify.message}}</h6>
+          </div>
+        </div>
+  </div> -->
     {%endfor%}
     {%endfor%}
 

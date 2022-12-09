@@ -1,9 +1,8 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<h1>{{teacher.classname}}</h1>
-<h3>{{teacher.Semester.semname}}</h3>
-<h2>Allocated Subjects</h2>
+<h3>{{teacher.Semester.semname}} {{teacher.classname}}</h3>
+<h3>Allocated Subjects</h3>
 <a href="/add-subject" class="btn btn-primary" type="submit">ADD SUBJECT
     <i class="mdi mdi-plus icon-sm align-middle"></i></a>
 <div class="row">
@@ -54,18 +53,26 @@
     </div>
     {%endfor%}
     <!-- href="/class/{{teacher.id}}/semester/{{teacher.Semester_id}}/add-timetable" -->
-
+    <div class="row">
+      <div class="col-md-3 col-sm-3 mb-3">
     <button data-bs-toggle="modal" data-bs-target="#upload"  class="btn btn-primary" type="submit">Add Time Table</button>
-    {%for time in timetable%}
+
+      </div>
+      <div class="col-md-3 col-sm-3 mb-3">
+        {%for time in timetable%}
     <td>
       <a href="{{time.time_table.url}}" download="{{time.time_table.url}}" class="btn btn-primary" type="submit" >VIEW TIMETABLE<i class="mdi mdi-arrow-down icon-sm align-middle"></i></a>
     </td> 
     {%endfor%}
-    {%if is_uploaded is  True%}
-    <button data-bs-toggle="modal" data-bs-target="#upload"  class="btn btn-primary" type="submit">Edit Time Table</button>
-
-
-    {%endif%}
+      </div>
+      <div class="col-md-3 col-sm-3 mb-3">
+ 
+        {%if is_uploaded is  True%}
+        <button data-bs-toggle="modal" data-bs-target="#upload"  class="btn btn-primary" type="submit">Edit Time Table</button>
+        {%endif%}
+      </div>
+    </div>
+   
 
     <!-- Modal -->
 <div class="modal fade" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

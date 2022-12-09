@@ -2,16 +2,16 @@
 {% load static %}
 {% block content %}
 <div class="row mb-5">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-3">
         <a href="/class/{{subject.class_belongs_id}}/semester/{{subject.semester_id}}/subject/{{subject.id}}/view-attendence" class="btn btn-primary" type="submit">ATTENDENCE</a>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3  mb-3">
           <a href="/class/{{subject.class_belongs_id}}/semester/{{subject.semester_id}}/subject/{{subject.id}}/study-materials" class="btn btn-primary" type="submit">STUDY MATERIALS</a>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 mb-3">
         <a href="/class/{{subject.class_belongs_id}}/semester/{{subject.semester_id}}/subject/{{subject.id}}/mark" class="btn btn-primary" type="submit">MARKS</a>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 mb-3">
     <a href="/class/{{subject.class_belongs_id}}/semester/{{subject.semester_id}}/subject/{{subject.id}}/assignment" class="btn btn-primary" type="submit">ASSIGNMENTS</a>
 </div>
 </div>
