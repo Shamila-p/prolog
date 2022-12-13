@@ -15,6 +15,7 @@ urlpatterns = [
     path('remove-module/<int:module_id>',views.remove_module,name="remove_module"),
 
     path('view-assignments',views.view_assignments,name="view_assignments"),
+    path('view-assignments/semester/<int:semester_id>',views.view_assignment_semester,name="view_assignments"),
     path('view-assignments/view-mark/<int:assignment_id>',views.view_mark,name="view_mark"),
     path('download/', views.download_file),
     path('class/<int:class_id>/semester/<int:semester_id>/subject/<int:subject_id>/upload/<int:assignment_id>', views.upload_file,name="upload_file")

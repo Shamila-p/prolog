@@ -25,13 +25,15 @@ def attendence(request, class_id, subject_id, semester_id):
             batch_id=class_id, semester_id=semester_id)
         print(students)
         context = {'students': students, 'class_id': class_id,
-                   'subject_id': subject_id, 'semester_id': semester_id,'title': ' Add Attendence'}
+                   'subject_id': subject_id, 'semester_id': semester_id,'title': ' Add Attendence','hours':Attendence.HOUR_CHOICES}
         return render(request, 'attendence.html', context)
 
 @login_required
 def add_attendence(request, class_id, subject_id, semester_id):
     if request.method == 'POST':
         date = request.POST['date']
+        hour=request.POST['hour']
+        print(hour)
         bb = request.POST['attendences']
         attendences = json.loads(bb)
         print(attendences)
@@ -49,7 +51,7 @@ def add_attendence(request, class_id, subject_id, semester_id):
                                             to='+918590426660'
                                         )
 
-                print(message.sid)
+                # print(message.sid)
             # class_belongs=Class.objects.get(tutor_id=request.user.id)
             # subjects=Subject.objects.filter(assigned_to_id=request.user.id ,class_belongs_id=class_id,semester_id=semester_id,subject_id=subject_id)
             # for i in subjects:
@@ -57,11 +59,11 @@ def add_attendence(request, class_id, subject_id, semester_id):
             # subject=Subject.objects.get(id=id.id)
             user = User.objects.get(first_name=name)
             student = Student.objects.get(user_id=user.id)
-            if Attendence.objects.filter(date=date, subject_id=subject_id, teacher_id=request.user.id, student_id=student.id, semester_id=semester_id, class_belongs_id=class_id).exists():
+            if Attendence.objects.filter(date=date,hour=hour, subject_id=subject_id, teacher_id=request.user.id, student_id=student.id, semester_id=semester_id, class_belongs_id=class_id).exists():
                 is_exist = True
             else:
                 is_exist = False
-                Attendence.objects.create(date=date, subject_id=subject_id, is_present=is_present, teacher_id=request.user.id,
+                Attendence.objects.create(date=date,hour=hour,subject_id=subject_id, is_present=is_present, teacher_id=request.user.id,
                                           student_id=student.id, semester_id=semester_id, class_belongs_id=class_id)
                 
         if is_exist:
@@ -75,14 +77,15 @@ def add_attendence(request, class_id, subject_id, semester_id):
 def edit_attendence(request, class_id, subject_id, semester_id):
     if request.method == 'GET':
         selected_date = request.GET.get('date')
+        selected_hour = request.GET.get('hour')
         print(selected_date)
         if selected_date is None:
             selected_date = datetime.today().strftime('%Y-%m-%d')
             print(selected_date)
         attendences = Attendence.objects.filter(
-            date=selected_date, class_belongs_id=class_id, subject_id=subject_id, semester_id=semester_id, teacher_id=request.user.id)
+            date=selected_date, hour=selected_hour,class_belongs_id=class_id, subject_id=subject_id, semester_id=semester_id, teacher_id=request.user.id)
         context = {'class_id': class_id, 'subject_id': subject_id, 'semester_id': semester_id,
-                   'attendences': attendences, 'selected_date': selected_date,'title': 'Edit Attendence'}
+                   'attendences': attendences, 'selected_date': selected_date,'title': 'Edit Attendence','hours':Attendence.HOUR_CHOICES}
         return render(request, 'edit_attendence.html', context)
         # if selected_date is not None:
         #     attendence=Attendence.objects.filter(date=selected_date,class_belongs_id=class_id,subject_id=subject_id,semester_id=semester_id,teacher_id=request.user.id)
@@ -93,6 +96,7 @@ def edit_attendence(request, class_id, subject_id, semester_id):
     if request.method == 'POST':
         print('jhkh,gh')
         selected_date = request.POST['selected_date']
+        selected_hour = request.POST['selected_hour']
         print(selected_date)
         bb = request.POST['attendences']
         print(bb)
@@ -109,7 +113,7 @@ def edit_attendence(request, class_id, subject_id, semester_id):
                 print(stu)
             print(studentname)
             is_present = attendence["is_present"]
-            current = Attendence.objects.filter(date=selected_date, class_belongs_id=class_id,
+            current = Attendence.objects.filter(date=selected_date,hour=selected_hour, class_belongs_id=class_id,
                                                 subject_id=subject_id, semester_id=semester_id, teacher_id=request.user.id, student_id=stu)
             print(current)
             for student in current:
@@ -154,15 +158,16 @@ def edit_attendence(request, class_id, subject_id, semester_id):
 def view_attendence(request, class_id, subject_id, semester_id):
     if request.method == 'GET':
         selected_date = request.GET.get('date')
+        selected_hour = request.GET.get('hour')
         print(selected_date)
         if selected_date is None:
             selected_date = datetime.today().strftime('%Y-%m-%d')
             print(selected_date)
         attendences = Attendence.objects.filter(
-            date=selected_date, class_belongs_id=class_id, subject_id=subject_id, semester_id=semester_id, teacher_id=request.user.id)
+            date=selected_date,hour=selected_hour, class_belongs_id=class_id, subject_id=subject_id, semester_id=semester_id, teacher_id=request.user.id)
         print(attendences)
         context = {'class_id': class_id, 'subject_id': subject_id, 'semester_id': semester_id,
-                   'attendences': attendences, 'selected_date': selected_date}
+                   'attendences': attendences, 'selected_date': selected_date,'hours':Attendence.HOUR_CHOICES}
         return render(request, 'view_attendence.html', context)
 
         # if selected_date is not None:

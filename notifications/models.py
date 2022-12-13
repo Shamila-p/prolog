@@ -14,3 +14,4 @@ class Complaint(auditModel):
 class Notification(auditModel):
     message=models.CharField(max_length=500)
     send_to= models.CharField(max_length=10)
+    created_date=models.DateTimeField(auto_now=True,null=True)

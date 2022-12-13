@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, HttpResponse
 from member.models import Student
 from assignment.models import Assignment, AssignmentMark, SubmittedAssignment, module
-from course.models import Class, Subject
+from course.models import Class, Semester, Subject
 
 # Create your views here.
 
@@ -102,11 +102,33 @@ def remove_module(request, module_id):
 @login_required
 def view_assignments(request):
     if request.method == 'GET':
+        student=Student.objects.get(user_id=request.user.id)
+        current_semester=student.semester.order
+        print(current_semester)
+        semester_list=[]
+        semesters = Semester.objects.all()
+        for semester in semesters:
+            if semester.order<=current_semester:
+                semester_list.append(semester)
+        # semesters = Semester.objects.all()
+        # print(semesters)
+        context = {'semester_list': semester_list,'title': 'Performance'}
+        return render(request, 'view_assignment_semester.html', context)
+
+def view_assignment_semester(request,semester_id):
+ if request.method == 'GET':
         student = Student.objects.get(user_id=request.user.id)
         assignments = Assignment.objects.filter(
-            class_belongs_id=student.batch_id, semester_id=student.semester_id)
-        context = {'assignments': assignments,'title': 'View Assignments'}
+            class_belongs_id=student.batch_id, semester_id=semester_id)
+        if len(assignments)==0:
+            messages.info(request,"No data available")
+            context={}
+        else:
+            context = {'assignments': assignments,'title': 'View Assignments'}
         return render(request, 'view_assignments.html', context)
+
+
+   
 
 @login_required
 def download_file(request):

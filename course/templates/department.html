@@ -11,6 +11,12 @@
 
 </div>
 </div>
+{%for message in messages%}
+<div class="alert alert-light text-center text-danger alert-dismissible fade show">
+    <span> {{message}}</span>
+
+</div>
+{%endfor%}
 
 <table class="table">
     <thead>

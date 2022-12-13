@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect,HttpResponse
-
+from django.contrib import messages
 from member.models import User
 from .models import Class, Department, EditSubject, Semester,Subject
 from django.contrib.auth.decorators import login_required
@@ -33,6 +33,12 @@ def add_department(request):
         if request.method == 'POST':
             dept_name = request.POST.get("dept_name")
             hod=request.POST.get("hod")
+            if Department.objects.filter(dname=dept_name).exists():
+                messages.info(request,"Depatment already added")
+                return redirect('department')
+            if Department.objects.filter(hod=hod).exists():
+                messages.info(request,"Hod already assigned")
+                return redirect('department')
             print(dept_name)
             Department.objects.create(dname=dept_name,hod_id=hod)
             return redirect('department')

@@ -28,6 +28,13 @@ def profile(request):
 
 
 def edit_profile(request):
+    if request.method=='GET':
+        student = Student.objects.get(user_id=request.user.id)
+        teacher = User.objects.get(id=request.user.id)
+        principal = User.objects.get(role=User.PRINCIPAL)
+
+        context={'title':'Edit Profile','student':student,'teacher':teacher,'principal':principal}
+        return render(request,'edit_profile.html',context)
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -155,6 +162,9 @@ def decline_request(request, user_id):
 
 @login_required
 def change_password(request):
+    if request.method == 'GET':
+        context={'title':'Change/Reset Password',}
+        return render(request,'change_password.html',context)
     if request.method == 'POST':
         current_password = request.POST.get('currentpassword')
         new_password = request.POST.get('newpassword')
@@ -296,10 +306,8 @@ def list_students(request):
             if request.user.role == User.TEACHER and is_tutor:
                 # tutor = User.objects.get(id=request.user.id)
                 class_students = Class.objects.get(tutor_id=request.user.id)
-                print(class_students)
                 tutor_students = Student.objects.filter(
                     batch_id=class_students.id, semester_id=class_students.Semester_id)
-                print(tutor_students)
                 context = {'is_tutor': is_tutor,
                            'tutor_students': tutor_students,'title': 'List Student'}
 
@@ -484,7 +492,9 @@ def my_class(request):
         teacher = Class.objects.get(tutor_id=request.user.id)
         print(teacher.id)
         print(teacher.Semester_id)
-        subject_details = Subject.objects.filter(tutor_id=request.user.id)
+        print(request.user.id)
+        subject_details = Subject.objects.filter(tutor_id=request.user.id,semester_id=teacher.Semester_id)
+        print(subject_details)
         timetable = TimeTable.objects.filter(
             batch_id=teacher.id, semester_id=teacher.Semester_id)
         is_uploaded = TimeTable.objects.filter(
@@ -609,13 +619,14 @@ def my_subjects(request):
 
 @login_required
 def student_details(request, class_id, subject_id, semester_id):
-    print(subject_id)
+    print(class_id)
     print(semester_id)
     if request.method == 'GET':
         print('g')
         subject = Subject.objects.get(id=subject_id)
         students = Student.objects.filter(
             batch_id=class_id, semester_id=semester_id)
+        print(students)
         context = {'students': students, 'subject': subject,'title': 'Student Details'}
         return render(request, 'student_details.html', context)
 
@@ -659,3 +670,35 @@ def download_file(request):
     response = HttpResponse(path, content_type=mime_type)
     response['Content-Disposition'] = "attachment; filename=%s" % filename
     return response
+
+
+@login_required
+def change_semester(request):
+    if request.method == 'POST':
+        # teacher=User.objects.get(user_id=request.user.id)
+        batch=Class.objects.get(tutor_id=request.user.id)
+        students=Student.objects.filter(semester_id=batch.Semester_id,batch_id=batch.id)
+        semesters=Semester.objects.all()
+        order_list=[]
+        for semester in semesters:
+            order_list.append(semester.order)
+        print(order_list)
+        max_order=max(order_list)
+        print(max_order)
+        for student in students:
+             if student.semester.order != (max_order):
+                print(student.semester)
+                order=int(student.semester.order )
+                print(type(order))
+                order_new=order+1
+                print(order_new)
+                newsemester=Semester.objects.get(order=order_new)
+                student.semester_id=newsemester.id
+                batch.Semester_id=newsemester.id
+                batch.tutor_id=request.user.id
+                subjects=Subject.objects.filter(tutor_id=request.user.id)
+                print(subjects)
+               
+                student.save()
+                batch.save()
+        return redirect('list_students')

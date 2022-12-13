@@ -7,6 +7,23 @@ from twilio.rest import Client
 # Create your models here.
 
 class Attendence(auditModel):
+    FIRST_HOUR = "H1"
+    SECOND_HOUR = "H2"
+    THIRD_HOUR = "H3"
+    FOURTH_HOUR = "H4"
+    FIFTH_HOUR = "H5"
+    SIXSTH_HOUR = "H6"
+
+    HOUR_CHOICES = [
+        (FIRST_HOUR, "FIrst hour"),
+        (SECOND_HOUR, "Second hour"),
+        (THIRD_HOUR, "Third hour"),
+        (FOURTH_HOUR, "Fourth hour"),
+        (FIFTH_HOUR, "Fifth hour"),
+        (SIXSTH_HOUR, "Sixsth hour"),
+    ]
+
+
     date=models.DateField()
     subject=models.ForeignKey(Subject, null=True, on_delete=models.CASCADE)
     student=models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
@@ -14,6 +31,8 @@ class Attendence(auditModel):
     semester=models.ForeignKey(Semester, null=True, on_delete=models.CASCADE)
     class_belongs=models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
     is_present=models.BooleanField(default=False)
+    hour= models.CharField(
+        max_length=3, choices=HOUR_CHOICES, null=False,blank=True)
 
     # def save(self,*args,**kwargs):
     #     print('ytr')

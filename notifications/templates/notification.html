@@ -1,8 +1,14 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
+<div class="row">
+  <div class="col-md-8"></div>
+  <div class="col-md-4">
+        <a href="/view-notification" class="btn btn-primary" type="submit">VIEW</a>
+  </div>
+</div>
+<div class="row mt-5">
 <div class="col-md-4 mx-auto ">
-
 <form method="post" action="/notification">
   {%csrf_token%}
   <label for="">Send To:</label>
@@ -28,5 +34,5 @@
 
 </form>
 </div>
-
+</div>
 {%endblock%}

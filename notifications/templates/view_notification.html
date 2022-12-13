@@ -1,0 +1,55 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="table-responsive">
+<table class="table" id="complaints">
+    <thead>
+      <tr>
+        <th scope="col">Send to</th>
+        <th scope="col">Sended date</th>
+        <th scope="col">Message</th>
+      </tr>
+    </thead>
+    <tbody>
+        {%for notification in notifications%}
+        <tr>
+        <td>
+        {%if notification.send_to == 'HD'%}
+         HOD
+         {%elif notification.send_to == 'TR'%}
+         TEACHER
+         {%elif notification.send_to == 'ST'%}
+         STUDENT
+        {%endif%}
+        
+        </td>
+        <td>{{notification.created_date}}</td>
+         <td><a href="" data-bs-toggle="modal" data-bs-target="#blockModal{{complaint.id}}" class="btn btn-danger"> <small>View Message</small></a></td>
+        <div class="modal fade" id="blockModal{{complaint.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <!-- <p class="modal-title text-danger" id="exampleModalLabel">Complaints</p> -->
+              </div>
+              <div class="modal-body ">
+                  <div>{{notification.message}}</div>
+                  <!-- <div>Order id -  {{orderitem.order.id}}</div>
+                  <div>Quantity - {{orderitem.quantity}}</div> -->
+          
+              </div>
+              <div class="modal-footer ">
+              <p class="modal-title text-danger" id="exampleModalLabel">Sended date: {{notification.created_date}}</p>
+
+              <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-bs-dismiss="modal">Close</button>
+              
+              </div>
+          </div>
+          </div>
+      </div>
+
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+</div>
+{%endblock%}

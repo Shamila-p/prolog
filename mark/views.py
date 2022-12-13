@@ -90,9 +90,17 @@ def edit_mark(request, class_id, subject_id, student_id, semester_id):
 @login_required
 def performance(request):
     if request.method == 'GET':
+        student=Student.objects.get(user_id=request.user.id)
+        current_semester=student.semester.order
+        print(current_semester)
+        semester_list=[]
         semesters = Semester.objects.all()
-        print(semesters)
-        context = {'semesters': semesters,'title': 'Performance'}
+        for semester in semesters:
+            if semester.order<=current_semester:
+                semester_list.append(semester)
+        # semesters = Semester.objects.all()
+        # print(semesters)
+        context = {'semester_list': semester_list,'title': 'Performance'}
         # print(context)
         return render(request, 'performance.html', context)
     if request.method == 'POST':

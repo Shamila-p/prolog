@@ -2,16 +2,18 @@
 {% load static %}
 {% block content %}
 <div class="row">
-  <div class="col-md-8"></div>
-  <div class="col-md-4">
-  
-        <a href="/add-student" class="btn btn-primary" type="submit">ADD STUDENT
-          <i class="mdi mdi-plus icon-sm align-middle"></i></a>
-     
-  
+  <div class="col-md-6"></div>
+  <div class="col-md-3">
+    <form method="post" action="/change-semester">
+      {%csrf_token%}<button class="btn btn-primary " type="submit">CHANGE SEMESTER</form>
+</div>
+<div class="col-md-3">
+      <a href="/add-student" class="btn btn-primary" type="submit">ADD STUDENT
+        <i class="mdi mdi-plus icon-sm align-middle"></i></a>
+</div>
+
   </div>
-  
-  </div>
+  <br>
   <div class="table-responsive">
 <table class="table" id="list_students">
     <thead>
@@ -49,20 +51,18 @@
         <td>{{student.semester.semname}}</td>
         <td>{{student.quota_value}}</td>
         <td>{{student.user.department.dname}}</td>
+        <td>{{student.user.phone}}</td>
+        <td>{{student.user.email}}</td>
         <td>
-         
-
           {%if student.user.is_active is True%}
           <button class="btn btn-info" type="submit">Approved</button>
           {%else%}
           <button class="btn btn-danger" type="submit">Dispproved</button>
           {%endif%}
-       
         </td>
         {%endif%}
         
-        <td>{{student.user.phone}}</td>
-        <td>{{student.user.email}}</td>
+        
         <td>{{student.parent_name}}</td>
         <td>{{student.parent_mobile}}</td>
         <td><img src="{{student.user.profile_image_url}}" alt=""></td>
@@ -102,7 +102,10 @@
         <td>{{student.semester.semname}}</td>
         <td>{{student.quota_value}}</td>
         <td>{{student.user.department.dname}}</td>
-        <!-- <td>
+       
+        <td>{{student.user.phone}}</td>
+        <td>{{student.user.email}}</td>
+        <td>
          
 
           {%if student.user.is_active is True%}
@@ -111,9 +114,7 @@
           <button class="btn btn-danger" type="submit">Dispproved</button>
           {%endif%}
        
-        </td> -->
-        <td>{{student.user.phone}}</td>
-        <td>{{student.user.email}}</td>
+        </td>
         <td>{{student.parent_name}}</td>
         <td>{{student.parent_mobile}}</td>
         <td><img src="{{student.user.profile_image_url}}" alt=""></td>

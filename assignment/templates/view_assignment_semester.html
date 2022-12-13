@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+  <div class="row">
+    {%for semester in semester_list %}
+
+    <div class="col-md-3 mb-5 mt-5">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+          
+          <a href="/view-assignments/semester/{{semester.id}}" class="btn btn-primary btn-default" name="semester">{{semester.semname}}</a>
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+  </div>
+{%endblock%}

@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<div class="row">
+<div class="row mb-5 mt-0">
   <div class="col-md-4"></div>
   <div class="col-md-4">
         <a href="/class/{{class_id}}/semester/{{semester_id}}/subject/{{subject_id}}/edit-attendence" class="btn btn-primary" type="submit">EDIT ATTENDENCE</a>
@@ -14,8 +14,16 @@
     
     <div class="col-md-6">
         <label class="form-label">Choose Date</label>
-        <input type="date" class="form-control" name="date" id="date">
+        <input type="date" class="form-control" name="date" id="date" value="{{selected_date}}">
     </div>
+    <div class="col-md-6">
+      <label class="form-label">Choose Hour</label>
+      <select id="classhour" class="form-select" name="hour">
+        {%for hour in hours%}
+          <option   name="hour" value="{{hour.0}}" id="hour">{{hour.1}}</option>
+        {%endfor%}
+        </select>
+  </div>
 </div>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -55,6 +63,8 @@
 
   function greet() {
     var date=document.getElementById('date')
+    var hour = document.getElementById("classhour").value;
+   
     var myTab = document.getElementById('attendence')
     var rowLength = myTab.rows.length;
     list=[]
@@ -81,7 +91,7 @@
        
     } 
     console.log(list) 
-    const newJSON={'attendences':JSON.stringify(list),'csrfmiddlewaretoken':'{{csrf_token}}','date':date.value}
+    const newJSON={'attendences':JSON.stringify(list),'csrfmiddlewaretoken':'{{csrf_token}}','date':date.value,'hour':hour}
     
     console.log(newJSON)
     
@@ -116,6 +126,32 @@
 <script>
   $(function () {
     $("#attendence").dataTable();
+  })
+</script>
+<script>
+  $(document).ready(function () {
+      console.log("offer check")
+      let today = new Date()
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+          dd = '0' + dd;
+      }
+      if (mm < 10) {
+          mm = '0' + mm;
+      }
+      today = yyyy + '-' + mm + '-' + dd;
+
+
+      $('#date').attr('max', today)
+      $('#date').change(function () {
+          let date = document.getElementById('date').value
+          $('#date').attr('max', date)
+      })
+
+      
   })
 </script>
 {%endblock%}

@@ -7,6 +7,7 @@ urlpatterns = [
     path('no-complaint',views.no_complaint,name="no_complaint"),
 
     path('notification',views.notification,name="notification"),
+    path('view-notification',views.view_notification,name="view_notification"),
     path('display-notification',views.display_notification,name="display_notification"),
 
 

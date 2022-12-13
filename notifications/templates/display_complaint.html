@@ -7,7 +7,7 @@
 
         <script>
           swal({title:'{{message}}'}).then(function() {
-            window.location.replace('/profile')
+            window.location.replace('/no-complaint')
         
           });
         </script>
@@ -44,7 +44,7 @@
         <td>{{complaint.department.dname}}</td>
         <td>{{complaint.semester.semname}}</td>
         <td>{{complaint.batch.classname}}</td>
-        <td><a href="" data-bs-toggle="modal" data-bs-target="#blockModal{{complaint.id}}" class="btn btn-danger"> <small>View Complaint</small></a></td>
+        <td><a href="" data-bs-toggle="modal" data-bs-target="#blockModal{{complaint.id}}" class="btn btn-danger"> <small>View Complaints</small></a></td>
         <div class="modal fade" id="blockModal{{complaint.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">

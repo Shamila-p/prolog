@@ -78,7 +78,7 @@ def display_complaint(request):
 @login_required
 def no_complaint(request):
     if request.method == 'GET':
-        return render(request, 'no_complaint.html')
+        return render(request, 'no_complaint.html',{'title':'Complaints'})
 
 @login_required
 def notification(request):
@@ -96,6 +96,13 @@ def notification(request):
         Notification.objects.create(send_to=send_to, message=notification)
         return redirect('notification')
 
+
+@login_required
+def view_notification(request):
+     if request.method == 'GET':
+        notifications=Notification.objects.all()
+        context={'notifications':notifications}
+        return render(request, 'view_notification.html', context)
 @login_required
 def display_notification(request):
     if request.method == 'GET':

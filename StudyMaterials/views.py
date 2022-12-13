@@ -76,8 +76,15 @@ def remove_materials(request, material_id, class_id, subject_id, semester_id, mo
 @never_cache
 def view_materials(request):
     if request.method == 'GET':
+        student=Student.objects.get(user_id=request.user.id)
+        current_semester=student.semester.order
+        print(current_semester)
+        semester_list=[]
         semesters = Semester.objects.all()
-        context = {'semesters': semesters,'title': 'View Materials'}
+        for semester in semesters:
+            if semester.order<=current_semester:
+                semester_list.append(semester)
+        context = {'semester_list': semester_list,'title': 'View Materials'}
         # student=Student.objects.get(user_id=request.user.id)
         # materials=Notes.objects.filter(class_belongs_id=student.batch_id,semester_id=student.semester_id)
         # context={'materials':materials}
