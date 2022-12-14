@@ -29,12 +29,25 @@ def profile(request):
 
 def edit_profile(request):
     if request.method=='GET':
-        student = Student.objects.get(user_id=request.user.id)
-        teacher = User.objects.get(id=request.user.id)
-        principal = User.objects.get(role=User.PRINCIPAL)
+        if request.method == 'GET':
+            if request.user.role == User.STUDENT:
+                student = Student.objects.get(user_id=request.user.id)
+                context = {'student': student, 'title': 'Edit Profile'}
+            elif request.user.role == User.TEACHER:
+                teacher = User.objects.get(id=request.user.id)
+                context = {'teacher': teacher, 'title': 'Edit Profile'}
+            elif request.user.role == User.PRINCIPAL:
+                principal = User.objects.get(role=User.PRINCIPAL)
+                context = {'principal': principal, 'title': 'Edit Profile'}
+       
+        return render(request, 'edit_profile.html', context)
+        # print(request.user.id)
+        # student = Student.objects.get(user_id=request.user.id)
+        # teacher = User.objects.get(id=request.user.id)
+        # principal = User.objects.get(role=User.PRINCIPAL)
 
-        context={'title':'Edit Profile','student':student,'teacher':teacher,'principal':principal}
-        return render(request,'edit_profile.html',context)
+        # context={'title':'Edit Profile','student':student,'teacher':teacher,'principal':principal}
+        # return render(request,'edit_profile.html',context)
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
